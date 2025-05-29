@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>The Last of Us | Disney++</title>
+  <link rel="icon" href="https://static-mh.content.disney.io/matterhorn/assets/favicon-94e3862e7fb9.ico">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    .video-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .header {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+      color: #fff;
+      z-index: 10;
+    }
+
+    .movie-title {
+      font-size: 22px;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+
+    .back-button {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .chevron-left {
+      width: 30px;
+      height: 30px;
+      fill: white;
+      transition: transform 0.3s ease;
+    }
+
+    .back-button:hover .chevron-left {
+      transform: rotate(170deg);
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 5;
+    }
+
+    .overlay .header {
+      z-index: 15;
+    }
+
+    .container {
+      --color: white;
+      --size: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      cursor: pointer;
+      font-size: var(--size);
+      user-select: none;
+      fill: var(--color);
+    }
+
+    .container .play,
+    .container .pause {
+      position: absolute;
+      animation: keyframes-fill 0.3s;
+    }
+
+    .container .pause {
+      display: none;
+    }
+
+    .container input:checked ~ .play {
+      display: none;
+    }
+
+    .container input:checked ~ .pause {
+      display: block;
+    }
+
+    .container input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+    }
+
+    @keyframes keyframes-fill {
+      0% { transform: scale(0); opacity: 0; }
+      50% { transform: scale(1.1); }
+    }
+
+    .loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #0f0f0f;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .hippopotame {
+      --hue: 210;
+      --size: 100px;
+      --border: 10px;
+      --speed: 1s;
+      --blur: var(--border);
+      width: var(--border);
+      aspect-ratio: 1;
+      background: white;
+      border-radius: 50%;
+      position: absolute;
+      --y: calc((var(--size) * -0.5) + (var(--border) * 0.5));
+      transform: rotate(0deg) translateY(var(--y));
+      animation: spin var(--speed) infinite linear;
+    }
+
+    .hippopotame::before {
+      content: "";
+      position: absolute;
+      inset: calc(var(--border) * -0.5);
+      border-radius: 50%;
+      background: white;
+      filter: blur(var(--blur));
+      z-index: -1;
+    }
+
+    .hippopotame::after {
+      content: "";
+      width: var(--size);
+      aspect-ratio: 1;
+      position: absolute;
+      top: 0%;
+      left: 50%;
+      translate: -50% 0;
+      background: conic-gradient(
+        white,
+        hsl(var(--hue), 100%, 70%),
+        hsl(var(--hue), 100%, 10%),
+        transparent 65%
+      );
+      border-radius: 50%;
+      mask: radial-gradient(
+        transparent calc(((var(--size) * 0.5) - var(--border)) - 1px),
+        white calc((var(--size) * 0.5) - var(--border))
+      );
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(-360deg) translateY(var(--y));
+      }
+    }
+
+    .next-episode {
+      position: fixed;
+      bottom: 60px; /* remonté */
+      right: 20px;
+      background-color: white;
+      color: black;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-weight: bold;
+      font-size: 18px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      z-index: 100;
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+
+    .next-episode.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="video-container">
+    <iframe id="video" src="https://filemoon.to/e/iof1tesol1hs/The.Last.of.Us.S01E09.FiNAL.MULTi.VFi.1080p.HDLight.AC3.5.1.H265-TARDiS.mkv" allowfullscreen></iframe>
+
+    <div class="header">
+      <a href="https://magnetic-lowly-sodalite.glitch.me/the%20last%20of%20us.html" class="back-button">
+        <svg class="chevron-left" viewBox="0 0 320 512" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"/>
+        </svg>
+      </a>
+      <div class="movie-title">The Last of Us Épisode 9: Cherchez la lumière</div>
+    </div>
+
+    <div class="overlay" id="overlay">
+      <label class="container">
+        <input type="checkbox" id="playPauseButton" />
+        <svg class="play" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512">
+          <path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/>
+        </svg>
+        <svg class="pause" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 320 512">
+          <path d="M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H80c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48h32c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H240z"/>
+        </svg>
+      </label>
+    </div>
+
+    <a href="https://zesty-quixotic-diascia.glitch.me/the%20last%20of%20us%207.html" class="next-episode" id="nextEpisodeBtn">Épisode suivant</a>
+  </div>
+
+  <div class="loading" id="loading">
+    <div class="hippopotame" aria-live="assertive" role="alert"></div>
+  </div>
+
+  <script>
+    window.addEventListener('load', function () {
+      document.getElementById('loading').style.display = 'none';
+    });
+
+    document.getElementById('overlay').addEventListener('click', function (event) {
+      if (event.target.closest('.container')) {
+        event.stopPropagation();
+      } else {
+        document.getElementById('video').click();
+      }
+    });
+
+    document.getElementById('playPauseButton').addEventListener('change', function () {
+      let videoFrame = document.getElementById('video');
+      let iframeWindow = videoFrame.contentWindow;
+      iframeWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+      document.getElementById('overlay').style.display = 'none';
+    });
+
+    // Bouton "Épisode suivant"
+    let timeout;
+    const btn = document.getElementById('nextEpisodeBtn');
+
+    function showButton() {
+      btn.classList.remove('hidden');
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        btn.classList.add('hidden');
+      }, 5000);
+    }
+
+    // Détection sur toute la fenêtre
+    window.addEventListener('mousemove', showButton);
+    window.addEventListener('touchstart', showButton);
+
+    // Initialement visible
+    showButton();
+  </script>
+</body>
+</html>

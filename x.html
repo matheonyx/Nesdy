@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Clone de X</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    .video-container {
+      text-align: center;
+      margin: 20px auto;
+      max-width: 640px;
+    }
+    .comments-section {
+      margin: 20px auto;
+      max-width: 640px;
+      padding: 10px;
+      border: 1px solid #fff;
+    }
+    .comment {
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed #fff;
+    }
+    form textarea {
+      width: 100%;
+      padding: 5px;
+      background: #333;
+      border: 1px solid #fff;
+      color: #fff;
+    }
+    form input[type="submit"] {
+      background: #555;
+      border: none;
+      padding: 10px 20px;
+      color: #fff;
+      cursor: pointer;
+    }
+    form input[type="submit"]:hover {
+      background: #777;
+    }
+  </style>
+</head>
+<body>
+  <h1>Bienvenue sur le clone de X</h1>
+  
+  <!-- Section vidéo -->
+  <div class="video-container">
+    <video width="640" height="360" controls>
+      <source src="video.mp4" type="video/mp4">
+      Votre navigateur ne supporte pas la balise vidéo.
+    </video>
+  </div>
+  
+  <!-- Section commentaires -->
+  <div class="comments-section">
+    <h2>Commentaires</h2>
+    <div id="comments"></div>
+    
+    <!-- Formulaire d'ajout de commentaire -->
+    <form id="commentForm">
+      <textarea id="commentInput" rows="4" placeholder="Laissez un commentaire..."></textarea><br>
+      <input type="submit" value="Envoyer">
+    </form>
+  </div>
+  
+  <!-- Inclusion des scripts Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+  
+  <script>
+    // Configuration Firebase (remplacez ces valeurs par celles de votre projet)
+    var firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      databaseURL: "YOUR_DATABASE_URL",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+    // Initialisation de Firebase
+    firebase.initializeApp(firebaseConfig);
+    
+    // Référence à la base de données pour les commentaires
+    var commentsRef = firebase.database().ref('comments');
+    
+    // Gestion de la soumission du formulaire
+    document.getElementById('commentForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var commentText = document.getElementById('commentInput').value.trim();
+      if(commentText !== ""){
+        // Envoi du commentaire dans Firebase avec un timestamp
+        commentsRef.push({
+          text: commentText,
+          timestamp: Date.now()
+        });
+        // Réinitialisation du champ de saisie
+        document.getElementById('commentInput').value = "";
+      }
+    });
+    
+    // Écoute des ajouts de commentaires en temps réel
+    commentsRef.on('child_added', function(data) {
+      var comment = data.val();
+      var commentDiv = document.createElement('div');
+      commentDiv.className = 'comment';
+      commentDiv.textContent = comment.text;
+      document.getElementById('comments').appendChild(commentDiv);
+    });
+  </script>
+</body>
+</html>
