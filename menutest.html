@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+
+
+    <!-- Recommendations Section -->
+    <div class="section recommendations">
+      <h2>More Like This</h2>
+      <button class="arrow left" onclick="scrollRecommendations(-250)">&#8249;</button>
+      <div class="recommendations-grid" id="recommendationsGrid">
+        <img src="https://via.placeholder.com/180x270" alt="Recommendation 1">
+        <img src="https://via.placeholder.com/180x270" alt="Recommendation 2">
+        <img src="https://via.placeholder.com/180x270" alt="Recommendation 3">
+        <img src="https://via.placeholder.com/180x270" alt="Recommendation 4">
+        <img src="https://via.placeholder.com/180x270" alt="Recommendation 5">
+        <img src="https://via.placeholder.com/180x270" alt="Recommendation 6">
+      </div>
+      <button class="arrow right" onclick="scrollRecommendations(250)">&#8250;</button>
+    </div>
+  </div>
+
+  <script>
+    // Function to scroll the recommendations grid
+    function scrollRecommendations(distance) {
+      const grid = document.getElementById('recommendationsGrid');
+      grid.scrollBy({ left: distance, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>

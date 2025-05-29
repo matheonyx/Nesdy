@@ -1,0 +1,2124 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Versa</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+  <style>
+    /* Votre CSS reste inchangé */
+    /* Écran de chargement personnalisé */
+    #ecran-chargement {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #1a1a1a;
+      z-index: 9999;
+      transition: opacity 0.5s ease-out;
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .chargeur-cercle {
+      display: block;
+      width: 84px;
+      height: 84px;
+      position: relative;
+    }
+
+    .chargeur-cercle::before,
+    .chargeur-cercle::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #FFF;
+      transform: translate(-50%, -100%) scale(0);
+      animation: animation-cercle 2s infinite linear;
+    }
+
+    .chargeur-cercle::after {
+      animation-delay: 1s;
+    }
+
+    @keyframes animation-cercle {
+      0%, 50% { transform: translate(-50%, 0%) scale(1); }
+      100% { transform: translate(-50%, -100%) scale(0); }
+    }
+    
+    /* Styles pour le système d'émotions */
+    .emotion-selector {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      width: 300px;  /* Plus petit */
+      margin: 5px auto; /* Marge réduite */
+      height: 120px; /* Hauteur réduite */
+    }
+    
+    .emotion-balls {
+      display: flex;
+      justify-content: space-evenly;
+      position: absolute;
+      top: 50px; /* Position ajustée */
+      left: 20px; /* Position ajustée */
+      width: 180px; /* Plus petit */
+      height: 20px; /* Plus petit */
+      z-index: 10;
+    }
+    
+    .emotion-ball {
+      width: 20px; /* Plus petit */
+      height: 20px; /* Plus petit */
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: transform 0.2s, border-color 0.2s;
+      box-shadow: 0 0 8px currentColor; /* Ombre réduite */
+      z-index: 3;
+    }
+    
+    .emotion-ball:hover {
+      transform: scale(1.2);
+      border-color: white;
+    }
+    
+    .emotion-ball.selected {
+      border-color: white;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+    }
+    
+    .emotion-ball.red { 
+      background-color: #ff0000; 
+      color: #ff0000; 
+    }
+    .emotion-ball.yellow { 
+      background-color: #ffeb3b; 
+      color: #ffeb3b; 
+    }
+    .emotion-ball.green { 
+      background-color: #4caf50; 
+      color: #4caf50; 
+    }
+    .emotion-ball.purple { 
+      background-color: #9c27b0; 
+      color: #9c27b0; 
+    }
+    .emotion-ball.blue { 
+      background-color: #2196f3; 
+      color: #2196f3; 
+    }
+    
+    .pipe-container {
+      position: relative;
+      width: 300px; /* Plus petit */
+      height: 120px; /* Plus petit */
+    }
+
+    .pipe-horizontal {
+      position: absolute;
+      top: 40px; /* Position ajustée */
+      left: 0;
+      width: 240px; /* Plus petit */
+      height: 40px; /* Plus petit */
+      background-color: rgba(255, 255, 255, 0.07);
+      border-radius: 20px; /* Ajusté */
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+      z-index: 1;
+    }
+
+    .pipe-elbow {
+      position: absolute;
+      top: 40px; /* Position ajustée */
+      left: 220px; /* Position ajustée */
+      width: 40px; /* Plus petit */
+      height: 40px; /* Plus petit */
+      border-bottom-right-radius: 40px; /* Ajusté */
+      background-color: rgba(255, 255, 255, 0.07);
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      border-left: none;
+      border-top: none;
+      backdrop-filter: blur(8px);
+      z-index: 1;
+    }
+
+    .pipe-vertical {
+      position: absolute;
+      top: 80px; /* Position ajustée */
+      left: 260px; /* Position ajustée */
+      width: 40px; /* Plus petit */
+      height: 40px; /* Plus petit */
+      background-color: rgba(255, 255, 255, 0.07);
+      border-radius: 0 0 20px 20px; /* Ajusté */
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      border-top: none;
+      backdrop-filter: blur(8px);
+      z-index: 1;
+    }
+    
+    /* Balle de sortie du tuyau */
+    .emotion-indicator {
+      position: absolute;
+      width: 20px; /* Plus petit */
+      height: 20px; /* Plus petit */
+      border-radius: 50%;
+      background-color: #ff0000;
+      box-shadow: 0 0 8px currentColor; /* Ombre réduite */
+      top: 110px; /* Position ajustée */
+      left: 270px; /* Position ajustée */
+      z-index: 2;
+      transition: background-color 0.5s;
+    }
+
+    :root {
+      --bg-color: #1a1a1a;
+      --bg-secondary: #16181c;
+      --bg-tertiary: #1e1e1e;
+      --text-color: #fff;
+      --text-secondary: #6b7280;
+      --accent-gradient: linear-gradient(to right, #5c9ded, #9b66d3, #d55e98, #ea5b62, #f16b30);
+      --accent-hover: #a362ff;
+      --border-color: rgba(255, 255, 255, 0.2);
+      --shadow-color: rgba(0, 0, 0, 0.3);
+      --code-bg: #262626;
+      --user-message-bg: #383838;
+      --ai-message-bg: #2C2C2C;
+      --theme-transition: background-color 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s;
+    }
+
+    [data-theme="light"] {
+      --bg-color: #f3f3f3;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #e9e9e9;
+      --text-color: #333333;
+      --text-secondary: #666666;
+      --accent-gradient: linear-gradient(to right, #5c9ded, #9b66d3, #d55e98, #ea5b62, #f16b30);
+      --accent-hover: #a362ff;
+      --border-color: #dddddd;
+      --shadow-color: rgba(0, 0, 0, 0.1);
+      --code-bg: #f1f1f1;
+      --user-message-bg: #e1e1ff;
+      --ai-message-bg: #ffffff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      transition: var(--theme-transition);
+    }
+
+    body {
+      background: var(--bg-color);
+      background-image: url("https://cdn.glitch.global/4c9b543e-5d52-41cd-aac2-6a76aaafec26/3ab36f2cc2ea31f9c3ed1dc85e4ce16a.jpg?v=1743993127731");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      color: var(--text-color);
+      height: 100vh;
+      display: flex;
+      flex-direction: row;
+      overflow: hidden;
+    }
+
+    .toggle-sidebar {
+      position: absolute;
+      top: 20px;
+      right: -30px;
+      width: 36px;
+      height: 36px;
+      background-color: transparent;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+
+    .toggle-sidebar svg {
+      width: 32px;
+      height: 32px;
+      stroke: white;
+      transition: all 0.3s ease;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+    }
+
+    .toggle-sidebar:hover {
+      transform: scale(1.1);
+    }
+
+    .sidebar.collapsed {
+      width: 60px;
+      padding: 20px 0;
+      overflow: hidden;
+      margin-left: 0;
+      pointer-events: auto;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar.collapsed .nav-text,
+    .sidebar.collapsed .button,
+    .sidebar.collapsed .p2,
+    .sidebar.collapsed .p3,
+    .sidebar.collapsed .navigation,
+    .sidebar.collapsed .userprofile {
+      display: none;
+    }
+
+    .sidebar.collapsed .logo {
+      display: flex;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 280px;
+      background: var(--bg-color);
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      padding: 20px 10px;
+    }
+
+    .sidebar .logo {
+      margin: 0 0 30px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sidebar .logo svg {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .sidebar .logo svg:hover {
+      transform: scale(1.1);
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
+
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      transform: scale(2.5);
+      margin: 10px;
+    }
+
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: auto;
+      min-width: 460px;
+      background-color: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 6px 10px;
+      position: absolute;
+      z-index: 1000;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      font-size: 12px;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .tooltip button {
+      font-size: 18px;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .tooltip button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+
+    .sidebar .navigation {
+      flex-grow: 1;
+      width: 100%;
+    }
+
+    .sidebar .navigation ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar .navigation li {
+      display: flex;
+      align-items: center;
+      padding: 12px 20px;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--text-color);
+      transition: background-color 0.3s, color 0.3s;
+      border-radius: 9999px;
+    }
+
+    .sidebar .navigation li:hover {
+      background-color: #444;
+      color: #fff;
+    }
+
+    .sidebar .navigation li span.material-symbols-outlined {
+      font-size: 24px;
+      margin-right: 15px;
+      color: var(--text-color);
+      transition: color 0.3s;
+    }
+
+    .sidebar .navigation li:hover span.material-symbols-outlined {
+      color: #fff;
+    }
+
+    .sidebar .button {
+      width: 100%;
+      margin: 20px 0;
+      padding: 0 20px;
+    }
+
+    .sidebar .button button {
+      width: 100%;
+      padding: 12px;
+      background-color: #fff;
+      color: #000;
+      border: none;
+      border-radius: 9999px;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .sidebar .button button:hover {
+      background-color: var(--accent-hover);
+      color: #fff;
+    }
+
+    .sidebar .userprofile {
+      display: flex;
+      align-items: center;
+      padding: 12px 20px;
+      width: 100%;
+      transition: background-color 0.3s;
+      cursor: pointer;
+    }
+
+    .sidebar .userprofile:hover {
+      background-color: #111;
+      border-radius: 9999px;
+    }
+
+    .sidebar .userprofile img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      margin-right: 12px;
+      border: 2px solid var(--accent-color);
+    }
+
+    .sidebar .userprofile .p2 {
+      flex-grow: 1;
+    }
+
+    .sidebar .userprofile .p2 div:first-child {
+      font-weight: 700;
+      color: var(--text-color);
+    }
+
+    .sidebar .userprofile .p2 div:last-child {
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    .sidebar .userprofile .p3 {
+      margin-left: 10px;
+      font-size: 24px;
+      color: var(--text-secondary);
+    }
+
+    .theme-toggle {
+      width: 36px;
+      height: 36px;
+      background-color: transparent;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .theme-toggle:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: var(--accent-color);
+    }
+
+    .theme-toggle .sun {
+      display: none;
+    }
+
+    [data-theme="light"] .theme-toggle .moon {
+      display: none;
+    }
+
+    [data-theme="light"] .theme-toggle .sun {
+      display: block;
+    }
+
+    .hamburger {
+      cursor: pointer;
+    }
+
+    .hamburger input {
+      display: none;
+    }
+
+    .hamburger svg {
+      height: 2.2em;
+      transition: transform 600ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .line {
+      fill: none;
+      stroke: white;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 3;
+      transition: stroke-dasharray 600ms cubic-bezier(0.4, 0, 0.2, 1),
+                  stroke-dashoffset 600ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .line-top-bottom {
+      stroke-dasharray: 12 63;
+    }
+
+    .hamburger input:checked + svg {
+      transform: rotate(-45deg);
+    }
+
+    .hamburger input:checked + svg .line-top-bottom {
+      stroke-dasharray: 20 300;
+      stroke-dashoffset: -32.42;
+    }
+
+    .menu-container {
+      position: relative;
+    }
+
+    html {
+      background-color: #121212;
+      font-family: 'Segoe UI', sans-serif;
+      height: 100%;
+      margin: 0;
+    }
+
+    .menu-button {
+      width: 36px;
+      height: 36px;
+      background-color: transparent;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .menu-button:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: var(--accent-color);
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      width: 260px;
+      margin-top: 8px;
+      background-color: #1e1e1e;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+      z-index: 9999;
+      opacity: 0;
+      transform: translateY(-10px);
+      pointer-events: none;
+      transition: opacity 0.2s, transform 0.2s;
+      padding: 12px 0;
+    }
+
+    .dropdown-menu.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    /* Style Caillou Menu */
+    .dropdown-menu.caillou {
+      background-color: #1e1e1e;
+      color: white;
+      border-radius: 12px;
+      padding: 12px 0;
+      width: 260px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+      z-index: 9999;
+      position: absolute;
+    }
+
+    .caillou-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: background 0.2s;
+      color: white;
+    }
+
+    .caillou-item:hover {
+      background-color: #2a2a2a;
+    }
+
+    .caillou-item svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: white;
+      stroke-width: 2;
+    }
+
+    .caillou-divider {
+      height: 1px;
+      background-color: #2d2d2d;
+      margin: 6px 0;
+    }
+
+    /* Styles pour la rétrocompatibilité */
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 20px;
+      color: var(--text-color);
+      text-decoration: none;
+      transition: background-color 0.2s;
+      cursor: pointer;
+    }
+
+    .menu-item:hover {
+      background-color: #2a2a2a;
+    }
+
+    .menu-item svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: white;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .menu-divider {
+      height: 1px;
+      background-color: #2d2d2d;
+      margin: 6px 0;
+    }
+
+    .main {
+      margin-left: 280px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      background: var(--bg-color);
+      backdrop-filter: blur(10px);
+    }
+
+    .topbar .title {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .topbar .icons {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .icon-link {
+      width: 36px;
+      height: 36px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .icon-link:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: var(--accent-color);
+    }
+
+    .center {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0 20px;
+    }
+
+    .greeting {
+      font-size: 32px;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 600;
+      margin-bottom: 30px;
+    }
+
+    .input-box {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      width: 100%;
+    }
+
+    .input {
+      background-color: var(--bg-color);
+      border: 1px solid #fff;
+      border-radius: 30px;
+      padding: 10px 20px;
+      width: 100%;
+      max-width: 600px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: border 0.3s, box-shadow 0.3s;
+    }
+
+    .input:hover,
+    .input:focus-within {
+      border: 1px solid #fff;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+
+    .input input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 15px;
+      outline: none;
+    }
+
+    .ai-input-container button {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s ease-in-out, color 0.3s;
+      color: #fff;
+    }
+
+    .ai-input-container button:hover {
+      transform: scale(1.1);
+      color: #fff;
+    }
+
+    .ai-input-container button.active {
+      color: var(--accent-hover);
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.7; }
+      100% { opacity: 1; }
+    }
+
+    @keyframes borderAnim {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .me-2 {
+      margin-right: 8px;
+    }
+
+    .voice-active-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 998;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .ai-input-container.voice-active {
+      position: relative;
+      z-index: 999;
+    }
+
+    .ai-input-container.voice-active::before {
+      content: '';
+      position: absolute;
+      top: -5px;
+      left: -5px;
+      right: -5px;
+      bottom: -5px;
+      border-radius: 30px;
+      padding: 5px;
+      background: linear-gradient(
+        135deg,
+        #ff007f,
+        #a100ff,
+        #00cfff,
+        #001aff,
+        #510019,
+        #ff00c8,
+        #ff6f00
+      );
+      background-size: 300% 300%;
+      animation: borderAnim 8s ease-in-out infinite;
+      z-index: -1;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    }
+
+    .ai-input-container svg {
+      width: 24px;
+      height: 24px;
+      fill: currentColor;
+    }
+
+    .conversation {
+      display: none;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .conversation.active {
+      display: flex;
+    }
+
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin: 0 auto;
+      width: 100%;
+      max-width: 1000px;
+      gap: 15px;
+      background-color: #1a1a1a;
+      backdrop-filter: blur(5px);
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .messages::-webkit-scrollbar {
+      display: none;
+    }
+
+    .message {
+      max-width: 80%;
+      padding: 12px 16px;
+      border-radius: 12px;
+      animation: fade-in 0.3s ease-in-out;
+      line-height: 1.5;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+      color: var(--text-color);
+      font-size: 14px;
+    }
+
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .message.user {
+      align-self: flex-end;
+      background-color: transparent; /* Fond transparent au lieu de #303030 */
+      border-bottom-left-radius: 15px;
+      max-width: 80%;
+      box-shadow: none; /* Suppression de l'ombre */
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+      border-bottom-right-radius: 4px;
+      margin-left: auto;
+      margin-right: 20px;
+      word-wrap: break-word;
+      font-size: 15px;
+      font-family: 'Inter', 'Open Sans', Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      color: #FFFFFF; /* S'assurer que le texte est bien visible */
+    }
+
+    .message.ai {
+      align-self: flex-start;
+      background-color: transparent;
+      border-radius: 15px;
+      max-width: 80%;
+      padding: 15px 20px;
+      margin-right: auto;
+      margin-left: 20px;
+      word-wrap: break-word;
+      line-height: 1.6;
+      position: relative;
+      color: #ffffff;
+      font-family: 'Inter', 'Open Sans', Helvetica, Arial, sans-serif;
+      font-size: 15px;
+    }
+
+    .btn-shine {
+      color: #fff;
+      background: linear-gradient(to right, #9f9f9f 0, #fff 10%, #868686 20%);
+      background-position: 0;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shine 3s infinite linear;
+      animation-fill-mode: forwards;
+      -webkit-text-size-adjust: none;
+      font-weight: 600;
+      font-size: 15px;
+      text-decoration: none;
+      white-space: nowrap;
+      font-family: 'Inter', 'Open Sans', Helvetica, Arial, sans-serif;
+    }
+
+    @keyframes shine {
+      0% { background-position: 0; }
+      60% { background-position: 180px; }
+      100% { background-position: 180px; }
+    }
+
+    .searching-container {
+      align-self: flex-start;
+      background-color: transparent;
+      border-radius: 15px;
+      max-width: 80%;
+      padding: 15px 20px;
+      margin-right: auto;
+      margin-left: 20px;
+      word-wrap: break-word;
+      line-height: 1.6;
+      position: relative;
+      color: #ffffff;
+      font-family: 'Inter', 'Open Sans', Helvetica, Arial, sans-serif;
+      font-size: 15px;
+    }
+
+    .message pre {
+      background-color: var(--code-bg);
+      padding: 12px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 10px 0;
+      border-left: 3px solid var(--accent-color);
+    }
+
+    .message code {
+      font-family: 'Courier New', monospace;
+      color: #e2e2e2;
+    }
+
+    .typing-indicator {
+      display: block;
+      width: 30px;
+      height: 30px;
+      position: relative;
+      margin-top: 5px;
+      animation: fade-in 0.3s ease-in-out;
+    }
+
+    .typing-indicator:before, .typing-indicator:after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #FFF;
+      transform: translate(-50%, -100%) scale(0);
+      animation: push_401 2s infinite linear;
+    }
+
+    .typing-indicator:after {
+      animation-delay: 1s;
+    }
+
+    @keyframes push_401 {
+      0%, 50% { transform: translate(-50%, 0%) scale(1); }
+      100% { transform: translate(-50%, -100%) scale(0); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Écran de chargement -->
+  <div id="ecran-chargement" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background-color: #1a1a1a; z-index: 9999; transition: opacity 0.5s ease-out;">
+    <span class="chargeur-cercle"></span>
+  </div>
+
+  <div class="sidebar" id="sidebar">
+    <div class="toggle-sidebar" id="toggle-sidebar">
+      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 12c-4.4 0-8 3.6-8 8v24c0 4.4 3.6 8 8 8h8V12h-8z"/>
+        <circle cx="20" cy="22" r="2" fill="white" stroke="none"/>
+        <path d="M32 12v40h12c4.4 0 8-3.6 8-8V20c0-4.4-3.6-8-8-8H32z"/>
+      </svg>
+    </div>
+    <div class="logo">
+      <div class="tooltip">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-doc" style="display: inline-block; margin-right: 10px; padding: 4px; cursor: pointer;" id="toggle-sidebar-btn">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M8.85719 3L13.5 3C14.0523 3 14.5 3.44772 14.5 4C14.5 4.55229 14.0523 5 13.5 5H11.5V19H15.1C16.2366 19 17.0289 18.9992 17.6458 18.9488C18.2509 18.8994 18.5986 18.8072 18.862 18.673C19.4265 18.3854 19.8854 17.9265 20.173 17.362C20.3072 17.0986 20.3994 16.7509 20.4488 16.1458C20.4992 15.5289 20.5 14.7366 20.5 13.6V11.5C20.5 10.9477 20.9477 10.5 21.5 10.5C22.0523 10.5 22.5 10.9477 22.5 11.5V13.6428C22.5 14.7266 22.5 15.6008 22.4422 16.3086C22.3826 17.0375 22.2568 17.6777 21.955 18.27C21.4757 19.2108 20.7108 19.9757 19.77 20.455C19.1777 20.7568 18.5375 20.8826 17.8086 20.9422C17.1008 21 16.2266 21 15.1428 21H8.85717C7.77339 21 6.89925 21 6.19138 20.9422C5.46253 20.8826 4.82234 20.7568 4.23005 20.455C3.28924 19.9757 2.52433 19.2108 2.04497 18.27C1.74318 17.6777 1.61737 17.0375 1.55782 16.3086C1.49998 15.6007 1.49999 14.7266 1.5 13.6428V10.3572C1.49999 9.27341 1.49998 8.39926 1.55782 7.69138C1.61737 6.96253 1.74318 6.32234 2.04497 5.73005C2.52433 4.78924 3.28924 4.02433 4.23005 3.54497C4.82234 3.24318 5.46253 3.11737 6.19138 3.05782C6.89926 2.99998 7.77341 2.99999 8.85719 3ZM9.5 19V5H8.9C7.76339 5 6.97108 5.00078 6.35424 5.05118C5.74907 5.10062 5.40138 5.19279 5.13803 5.32698C4.57354 5.6146 4.1146 6.07354 3.82698 6.63803C3.69279 6.90138 3.60062 7.24907 3.55118 7.85424C3.50078 8.47108 3.5 9.26339 3.5 10.4V13.6C3.5 14.7366 3.50078 15.5289 3.55118 16.1458C3.60062 16.7509 3.69279 17.0986 3.82698 17.362C4.1146 17.9265 4.57354 18.3854 5.13803 18.673C5.40138 18.8072 5.74907 18.8994 6.35424 18.9488C6.97108 18.9992 7.76339 19 8.9 19H9.5ZM5 8.5C5 7.94772 5.44772 7.5 6 7.5H7C7.55229 7.5 8 7.94772 8 8.5C8 9.05229 7.55229 9.5 7 9.5H6C5.44772 9.5 5 9.05229 5 8.5ZM5 12C5 11.4477 5.44772 11 6 11H7C7.55229 11 8 11.4477 8 12C8 12.5523 7.55229 13 7 13H6C5.44772 13 5 12.5523 5 12Z" fill="white"/>
+          <circle cx="20" cy="5" r="4" fill="#0285FF"/>
+        </svg>
+        <span class="tooltiptext">Réduire la barre latérale</span>
+      </div>
+      <div class="tooltip">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-edit" style="display: inline-block; padding: 4px; cursor: pointer;" id="new-chat-btn">
+          <path d="M15.6729 3.91287C16.8918 2.69392 18.8682 2.69392 20.0871 3.91287C21.3061 5.13182 21.3061 7.10813 20.0871 8.32708L14.1499 14.2643C13.3849 15.0293 12.3925 15.5255 11.3215 15.6785L9.14142 15.9899C8.82983 16.0344 8.51546 15.9297 8.29289 15.7071C8.07033 15.4845 7.96554 15.1701 8.01005 14.8586L8.32149 12.6785C8.47449 11.6075 8.97072 10.615 9.73572 9.85L15.6729 3.91287ZM18.6729 5.32708C18.235 4.88918 17.525 4.88918 17.0871 5.32708L11.1499 11.2643C10.6909 11.7233 10.3932 12.3187 10.3014 12.9613L10.1785 13.8215L11.0386 13.6986C11.6812 13.6068 12.2767 13.3091 12.7357 12.8501L18.6729 6.91287C19.1108 6.47497 19.1108 5.76499 18.6729 5.32708ZM11 3.99929C11.0004 4.55157 10.5531 4.99963 10.0008 5.00007C9.00227 5.00084 8.29769 5.00827 7.74651 5.06064C7.20685 5.11191 6.88488 5.20117 6.63803 5.32695C6.07354 5.61457 5.6146 6.07351 5.32698 6.63799C5.19279 6.90135 5.10062 7.24904 5.05118 7.8542C5.00078 8.47105 5 9.26336 5 10.4V13.6C5 14.7366 5.00078 15.5289 5.05118 16.1457C5.10062 16.7509 5.19279 17.0986 5.32698 17.3619C5.6146 17.9264 6.07354 18.3854 6.63803 18.673C6.90138 18.8072 7.24907 18.8993 7.85424 18.9488C8.47108 18.9992 9.26339 19 10.4 19H13.6C14.7366 19 15.5289 18.9992 16.1458 18.9488C16.7509 18.8993 17.0986 18.8072 17.362 18.673C17.9265 18.3854 18.3854 17.9264 18.673 17.3619C18.7988 17.1151 18.8881 16.7931 18.9393 16.2535C18.9917 15.7023 18.9991 14.9977 18.9999 13.9992C19.0003 13.4469 19.4484 12.9995 20.0007 13C20.553 13.0004 21.0003 13.4485 20.9999 14.0007C20.9991 14.9789 20.9932 15.7808 20.9304 16.4426C20.8664 17.116 20.7385 17.7136 20.455 18.2699C19.9757 19.2107 19.2108 19.9756 18.27 20.455C17.6777 20.7568 17.0375 20.8826 16.3086 20.9421C15.6008 21 14.7266 21 13.6428 21H10.3572C9.27339 21 8.39925 21 7.69138 20.9421C6.96253 20.8826 6.32234 20.7568 5.73005 20.455C4.78924 19.9756 4.02433 19.2107 3.54497 18.2699C3.24318 17.6776 3.11737 17.0374 3.05782 16.3086C2.99998 15.6007 2.99999 14.7266 3 13.6428V10.3572C2.99999 9.27337 2.99998 8.39922 3.05782 7.69134C3.11737 6.96249 3.24318 6.3223 3.54497 5.73001C4.02433 4.7892 4.78924 4.0243 5.73005 3.54493C6.28633 3.26149 6.88399 3.13358 7.55735 3.06961C8.21919 3.00673 9.02103 3.00083 9.99922 3.00007C10.5515 2.99964 10.9996 3.447 11 3.99929Z" fill="white"/>
+        </svg>
+        <span class="tooltiptext">Nouveau chat</span>
+      </div>
+    </div>
+    <div class="navigation">
+      <ul>
+        <li><span class="material-symbols-outlined">home</span><span class="nav-text">Home</span></li>
+        <li><span class="material-symbols-outlined">trophy</span><span class="nav-text">Trophy Room</span></li>
+        <li><span class="material-symbols-outlined">search</span><span class="nav-text">Explore</span></li>
+        <li><span class="material-symbols-outlined">notifications</span><span class="nav-text">Notifications</span></li>
+        <li><span class="material-symbols-outlined">message</span><span class="nav-text">Grok</span></li>
+        <li><span class="material-symbols-outlined">lists</span><span class="nav-text">Lists</span></li>
+        <li><span class="material-symbols-outlined">bookmarks</span><span class="nav-text">Bookmarks</span></li>
+        <li><span class="material-symbols-outlined">group</span><span class="nav-text">Communities</span></li>
+        <li><span class="material-symbols-outlined">box</span><span class="nav-text">Premium</span></li>
+        <li><span class="material-symbols-outlined">person</span><span class="nav-text">Profile</span></li>
+        <li><span class="material-symbols-outlined">pending</span><span class="nav-text">More</span></li>
+      </ul>
+    </div>
+    <div class="button">
+      <button>Post</button>
+    </div>
+    <div class="userprofile">
+      <img src="https://pbs.twimg.com/profile_images/1776957034946060288/lIcfsU9J_400x400.jpg" alt="Profile">
+      <div class="p2">
+        <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">MatheOnyx</div>
+        <div>@80_matheo58710</div>
+      </div>
+      <div class="p3">...</div>
+    </div>
+  </div>
+  <div class="main" id="main-content">
+    <!-- Color Picker Overlay for Design Mode -->
+    <div class="color-picker-overlay" id="color-picker-overlay" style="display: none;">
+      <div class="color-swatch" style="background-color: #10141f;" data-color="#10141f" data-theme="dark" title="Bleu nuit"></div>
+      <div class="color-swatch" style="background-color: #1a1a1a;" data-color="#1a1a1a" data-theme="dark" title="Noir élégant"></div>
+      <div class="color-swatch" style="background-color: #2c2c2c;" data-color="#2c2c2c" data-theme="dark" title="Gris charbon"></div>
+      <div class="color-swatch" style="background-color: #16361a;" data-color="#16361a" data-theme="dark" title="Vert forêt"></div>
+      <div class="color-swatch" style="background-color: #31213c;" data-color="#31213c" data-theme="dark" title="Violet profond"></div>
+      <div class="color-swatch" style="background-color: #1f1a24;" data-color="#1f1a24" data-theme="dark" title="Prune"></div>
+      <div class="color-swatch" style="background-color: #0d253f;" data-color="#0d253f" data-theme="dark" title="Bleu océan"></div>
+      <div class="color-swatch" style="background-color: #282a36;" data-color="#282a36" data-theme="dark" title="Dracula"></div>
+    </div>
+    
+    <!-- Design Mode Notification -->
+    <div class="design-notification" id="design-notification" style="display: none;">
+      Mode design activé
+    </div>
+    
+    <div class="topbar">
+      <div class="title-container">
+        <div class="title" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: white;">Versa</div>
+        
+        <!-- Système d'émotions placé sous le titre -->
+        <div class="emotion-selector">
+          <!-- Tuyau -->
+          <div class="pipe-container">
+            <div class="pipe-horizontal"></div>
+            <div class="pipe-elbow"></div>
+            <div class="pipe-vertical"></div>
+          
+            <!-- Boules colorées d'émotions -->
+            <div class="emotion-balls">
+              <div class="emotion-ball red" data-emotion="anger" title="Colère"></div>
+              <div class="emotion-ball yellow" data-emotion="joy" title="Joie"></div> 
+              <div class="emotion-ball green" data-emotion="disgust" title="Dégoût"></div>
+              <div class="emotion-ball purple" data-emotion="fear" title="Peur"></div>
+              <div class="emotion-ball blue" data-emotion="sadness" title="Tristesse"></div>
+            </div>
+            
+            <!-- Indicateur d'émotion (balle à la sortie du tuyau) -->
+            <div class="emotion-indicator" id="emotion-indicator"></div>
+          </div>
+        </div>
+        
+        <div class="toolsbar">
+          <div class="tool-btn" id="design-mode-toggle" title="Mode design" style="display: none;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+          </div>
+        </div>
+      </div>
+      <div class="icons">
+        <div class="theme-toggle" id="theme-toggle" title="Changer de thème">
+          <svg class="moon" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <svg class="sun" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </div>
+        <div class="menu-container">
+          <label class="hamburger menu-button" id="menu-button">
+            <input type="checkbox">
+            <svg viewBox="0 0 32 32">
+              <path class="line line-top-bottom" d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22"></path>
+              <path class="line" d="M7 16 27 16"></path>
+            </svg>
+          </label>
+          <div class="dropdown-menu caillou" id="dropdown-menu">
+            <div class="caillou-item" id="design-assistance" onclick="toggleTimeDisplay(this)">
+              <svg viewBox="0 0 24 24"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+              <span id="design-assistant-text">Design Assistant</span>
+            </div>
+            <div class="caillou-item" id="color-palette" onclick="alert('Générateur de palette de couleurs')">
+              <svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+              <span>Générateur de palettes</span>
+            </div>
+            <div class="caillou-item" id="ui-mockup" onclick="alert('Générateur de maquettes UI')">
+              <svg viewBox="0 0 24 24"><path d="M3 3h18v18H3z"></path><path d="M3 9h18"></path><path d="M15 21V9"></path></svg>
+              <span>Générateur de maquettes</span>
+            </div>
+            <div class="caillou-divider"></div>
+            <div class="caillou-item" id="settings" onclick="alert('Settings clicked')">
+              <svg viewBox="0 0 24 24"><path d="M12 15.5A3.5 3.5 0 1 0 12 8.5a3.5 3.5 0 0 0 0 7z" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.09a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.09a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              <span>Paramètres</span>
+            </div>
+            <div class="caillou-divider"></div>
+            {% if current_user.is_authenticated %}
+            <div class="caillou-item" id="log-out" onclick="window.location.href='{{ url_for('auth.logout') }}'">
+              <svg viewBox="0 0 24 24"><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/><path d="M4 4h5v16H4z"/></svg>
+              <span>Déconnexion</span>
+            </div>
+            {% else %}
+            <div class="caillou-item" id="sign-in" onclick="window.location.href='{{ url_for('auth.login') }}'">
+              <svg viewBox="0 0 24 24"><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/><path d="M4 4h5v16H4z"/></svg>
+              <span>Connexion</span>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="voice-active-overlay" id="voice-overlay"></div>
+
+    <div class="center" id="welcome-screen">
+      <h1 class="greeting" id="greeting-text" style="color: #FFFFFF;" onclick="toggleTimeDisplayInGreeting()">Bonjour {{ username }}</h1>
+      <div class="input-box">
+        <div class="input ai-input-container">
+          <input type="text" id="welcome-input" placeholder="Ask anything" />
+          <button id="welcome-mic" class="me-2">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5zm6 6c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.47 6 6.93V21h2v-2.07c3.39-.46 6-3.4 6-6.93h-2z"></path>
+            </svg>
+          </button>
+          <button id="welcome-submit">
+            <svg viewBox="0 0 24 24">
+              <path d="M2 21l21-9L2 3v7l15 2-15 2z"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="conversation" id="conversation">
+      <div class="messages" id="messages"></div>
+
+      <div class="input-box">
+        <div class="input ai-input-container">
+          <input type="text" id="chat-input" placeholder="Ask anything" />
+          <button id="chat-mic" class="me-2">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5zm6 6c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.47 6 6.93V21h2v-2.07c3.39-.46 6-3.4 6-6.93h-2z"></path>
+            </svg>
+          </button>
+          <button id="chat-submit">
+            <svg viewBox="0 0 24 24" class="send-icon">
+              <path d="M2 21l21-9L2 3v7l15 2-15 2z"></path>
+            </svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="stop-icon" style="display: none;">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="white"/>
+              <path d="M9 9h6v6H9z" fill="black"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  <script>
+    // Fonction pour afficher l'heure au format Microsoft (style blanc) dans le menu
+    function toggleTimeDisplay(element) {
+      const textSpan = document.getElementById('design-assistant-text');
+      
+      if (textSpan.getAttribute('data-showing-time') === 'true') {
+        // Si l'heure est déjà affichée, on revient au texte original
+        textSpan.textContent = 'Design Assistant';
+        textSpan.setAttribute('data-showing-time', 'false');
+        textSpan.style.color = '';
+      } else {
+        // Sinon, on affiche l'heure actuelle en blanc (style Microsoft)
+        const now = new Date();
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        textSpan.textContent = `${hours}:${minutes}`;
+        textSpan.setAttribute('data-showing-time', 'true');
+        textSpan.style.color = 'white';
+        
+        // Mise à jour de l'heure toutes les minutes
+        const timeUpdateInterval = setInterval(() => {
+          if (textSpan.getAttribute('data-showing-time') !== 'true') {
+            clearInterval(timeUpdateInterval);
+            return;
+          }
+          
+          const now = new Date();
+          const hours = now.getHours().toString().padStart(2, '0');
+          const minutes = now.getMinutes().toString().padStart(2, '0');
+          textSpan.textContent = `${hours}:${minutes}`;
+        }, 60000); // Mise à jour toutes les minutes
+      }
+      
+      // Empêcher la fermeture du menu pour pouvoir voir l'heure
+      event.stopPropagation();
+    }
+    
+    // Variable globale pour stocker l'intervalle de mise à jour de l'heure
+    let timeUpdateInterval = null;
+    
+    // Fonction pour afficher l'heure dans le titre de bienvenue (au lieu de "Bonjour username")
+    function toggleTimeDisplayInGreeting() {
+      const greetingElement = document.getElementById('greeting-text');
+      const originalText = "Bonjour {{ username }}";
+      
+      if (greetingElement.getAttribute('data-showing-time') === 'true') {
+        // Si l'heure est déjà affichée, on revient au texte original
+        greetingElement.textContent = originalText;
+        greetingElement.setAttribute('data-showing-time', 'false');
+        greetingElement.style.color = '';
+        
+        // Arrêter la mise à jour automatique de l'heure
+        if (timeUpdateInterval) {
+          clearInterval(timeUpdateInterval);
+          timeUpdateInterval = null;
+        }
+      } else {
+        // Sinon, on affiche l'heure actuelle en blanc (style Microsoft)
+        updateGreetingClock(greetingElement);
+        
+        // Mise à jour de l'heure toutes les secondes pour plus de précision
+        timeUpdateInterval = setInterval(() => {
+          updateGreetingClock(greetingElement);
+        }, 1000); // Mise à jour toutes les secondes
+      }
+    }
+    
+    // Fonction d'aide pour mettre à jour l'horloge
+    function updateGreetingClock(element) {
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      const seconds = now.getSeconds().toString().padStart(2, '0');
+      
+      element.textContent = `${hours}:${minutes}:${seconds}`;
+      element.setAttribute('data-showing-time', 'true');
+      element.style.color = '#FFFFFF'; // Blanc pur pour meilleure visibilité
+      element.style.fontWeight = 'bold'; // Texte en gras pour ressortir davantage
+      element.style.textShadow = '0 0 5px rgba(255, 255, 255, 0.3)'; // Léger halo lumineux pour effet moderne
+    }
+    
+    // Script pour cacher l'écran de chargement dès que tout est prêt
+    document.addEventListener("DOMContentLoaded", function() {
+      // Masquer l'écran de chargement après un court délai
+      setTimeout(function() {
+        const loader = document.getElementById('ecran-chargement');
+        if (loader) {
+          loader.style.opacity = '0';
+          loader.style.pointerEvents = 'none';
+          
+          setTimeout(function() {
+            loader.style.display = 'none';
+          }, 500);
+        }
+      }, 500);
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const welcomeScreen = document.getElementById('welcome-screen');
+      const conversation = document.getElementById('conversation');
+      const messagesContainer = document.getElementById('messages');
+      const welcomeInput = document.getElementById('welcome-input');
+      const welcomeSubmit = document.getElementById('welcome-submit');
+      const welcomeMic = document.getElementById('welcome-mic');
+      const chatInput = document.getElementById('chat-input');
+      const chatSubmit = document.getElementById('chat-submit');
+      const chatMic = document.getElementById('chat-mic');
+      const newChatBtn = document.getElementById('new-chat-btn');
+      const menuButton = document.getElementById('menu-button');
+      const dropdownMenu = document.getElementById('dropdown-menu');
+      const themeToggle = document.getElementById('theme-toggle');
+      const sidebar = document.querySelector('.sidebar');
+      const toggleSidebarBtn = document.getElementById('toggle-sidebar-btn');
+      const mainContent = document.querySelector('.main');
+      const emotionIndicator = document.getElementById('emotion-indicator');
+
+      let currentConversationId = null;
+      let isDarkTheme = true;
+      let recognition = null;
+      let currentEmotion = "anger"; // émotion par défaut: colère (rouge)
+      
+      // Initialisation de l'indicateur d'émotion avec la couleur rouge (colère par défaut)
+      if (emotionIndicator) {
+        emotionIndicator.style.backgroundColor = "#ff0000";
+        emotionIndicator.style.color = "#ff0000";
+      }
+      
+      // Menu hamburger toggle
+      if (menuButton && dropdownMenu) {
+        menuButton.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          dropdownMenu.classList.toggle('active');
+          console.log('Menu button clicked, dropdown active:', dropdownMenu.classList.contains('active'));
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+          if (dropdownMenu.classList.contains('active') && !menuButton.contains(e.target) && !dropdownMenu.contains(e.target)) {
+            dropdownMenu.classList.remove('active');
+            console.log('Clicked outside, closing dropdown');
+          }
+        });
+      } else {
+        console.error('Menu button or dropdown menu not found');
+      }
+      
+      // Menu items click handlers with optional ID check
+      const optionalAddListener = (id, message) => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.addEventListener('click', () => {
+            alert(message);
+            dropdownMenu.classList.remove('active');
+            if (menuButton.querySelector('input[type="checkbox"]')) {
+              menuButton.querySelector('input[type="checkbox"]').checked = false;
+            }
+          });
+        }
+      };
+      
+      // Design mode functionality
+      const designModeToggle = document.getElementById('design-mode-toggle');
+      const colorPickerOverlay = document.getElementById('color-picker-overlay');
+      const designNotification = document.getElementById('design-notification');
+      const colorSwatches = document.querySelectorAll('.color-swatch');
+      const specialtyBadge = document.querySelector('.specialty-badge');
+      
+      // Hide badge by default
+      if (specialtyBadge) {
+        specialtyBadge.style.display = 'none';
+      }
+      
+      // Initial state
+      let designModeActive = false;
+      
+      // Toggle design mode when clicking the design tool button
+      if (designModeToggle) {
+        designModeToggle.addEventListener('click', function() {
+          designModeActive = !designModeActive;
+          document.body.classList.toggle('design-mode-active', designModeActive);
+          
+          if (designModeActive) {
+            // Show color picker and notification
+            colorPickerOverlay.style.display = 'flex';
+            designNotification.classList.add('show');
+            
+            // Show badge
+            if (specialtyBadge) {
+              specialtyBadge.style.display = 'inline-block';
+            }
+            
+            // Hide notification after 3 seconds
+            setTimeout(() => {
+              designNotification.classList.remove('show');
+            }, 3000);
+          } else {
+            // Hide color picker
+            colorPickerOverlay.style.display = 'none';
+            
+            // Hide badge
+            if (specialtyBadge) {
+              specialtyBadge.style.display = 'none';
+            }
+          }
+        });
+      }
+      
+      // Apply color when clicking on a swatch
+      colorSwatches.forEach(swatch => {
+        swatch.addEventListener('click', function() {
+          const color = this.getAttribute('data-color');
+          document.documentElement.style.setProperty('--bg-color', color);
+          
+          // Show notification with color name
+          designNotification.textContent = `Couleur ${this.getAttribute('title')} appliquée`;
+          designNotification.classList.add('show');
+          
+          // Hide notification after 2 seconds
+          setTimeout(() => {
+            designNotification.classList.remove('show');
+          }, 2000);
+        });
+      });
+      
+      // Menu item handlers in dropdown
+      document.getElementById('design-assistance').addEventListener('click', function() {
+        // Toggle design mode
+        designModeToggle.click();
+        dropdownMenu.classList.remove('active');
+      });
+      
+      document.getElementById('color-palette').addEventListener('click', function() {
+        // Generate custom color palette
+        const colors = [
+          '#' + Math.floor(Math.random()*16777215).toString(16),
+          '#' + Math.floor(Math.random()*16777215).toString(16),
+          '#' + Math.floor(Math.random()*16777215).toString(16),
+          '#' + Math.floor(Math.random()*16777215).toString(16),
+          '#' + Math.floor(Math.random()*16777215).toString(16)
+        ];
+        
+        // Display colors
+        let colorPaletteHtml = '<div style="display: flex; gap: 10px; margin: 10px 0;">';
+        colors.forEach(color => {
+          colorPaletteHtml += `<div style="width: 30px; height: 30px; background-color: ${color}; border-radius: 4px;"></div>`;
+        });
+        colorPaletteHtml += '</div>';
+        
+        // Create user message
+        addMessage("Génère une palette de couleurs harmonieuse", 'user');
+        
+        // Create AI response with palette
+        const aiResponse = `
+          <p>Voici une palette de couleurs générée pour vous :</p>
+          ${colorPaletteHtml}
+          <p>Vous pouvez utiliser ces couleurs en design web, pour des présentations ou tout autre projet créatif.</p>
+          <p>Codes HEX : ${colors.join(', ')}</p>
+        `;
+        
+        addMessage(aiResponse, 'ai');
+        dropdownMenu.classList.remove('active');
+      });
+      
+      document.getElementById('ui-mockup').addEventListener('click', function() {
+        // Create user message
+        addMessage("Génère une maquette UI simple", 'user');
+        
+        // Create AI response with mockup
+        const mockupHtml = `
+          <div style="max-width: 320px; background: #f5f5f5; border-radius: 8px; overflow: hidden; margin: 10px 0; border: 1px solid #ddd;">
+            <div style="background: #2c3e50; color: white; padding: 15px; font-weight: bold;">En-tête App</div>
+            <div style="padding: 15px;">
+              <div style="background: white; border-radius: 6px; padding: 10px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                Élément de liste 1
+              </div>
+              <div style="background: white; border-radius: 6px; padding: 10px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                Élément de liste 2
+              </div>
+              <div style="background: white; border-radius: 6px; padding: 10px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                Élément de liste 3
+              </div>
+              <button style="background: #3498db; color: white; border: none; padding: 10px 15px; border-radius: 4px; width: 100%;">Action principale</button>
+            </div>
+          </div>
+        `;
+        
+        const aiResponse = `
+          <p>Voici une maquette UI simple dans un style "Material Design" :</p>
+          ${mockupHtml}
+          <p>Cette maquette représente une interface mobile avec une liste d'éléments et un bouton d'action. Vous pouvez utiliser ce modèle comme point de départ pour vos projets.</p>
+        `;
+        
+        addMessage(aiResponse, 'ai');
+        dropdownMenu.classList.remove('active');
+      });
+      
+      // Keep other menu handlers
+      optionalAddListener('settings', 'Settings clicked');
+      optionalAddListener('log-out', 'Logging out...');
+
+      if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = 'fr-FR';
+        recognition.continuous = false;
+        recognition.interimResults = true;
+
+        recognition.onresult = function(event) {
+          const activeInput = welcomeScreen.style.display !== 'none' ? welcomeInput : chatInput;
+          const transcript = Array.from(event.results)
+              .map(result => result[0])
+              .map(result => result.transcript)
+              .join('');
+          activeInput.value = transcript;
+        };
+
+        const voiceOverlay = document.getElementById('voice-overlay');
+        const welcomeInputContainer = welcomeInput.closest('.ai-input-container');
+        const chatInputContainer = chatInput.closest('.ai-input-container');
+
+        function activateVoiceEffect(isWelcomeScreen) {
+          const mic = isWelcomeScreen ? welcomeMic : chatMic;
+          const container = isWelcomeScreen ? welcomeInputContainer : chatInputContainer;
+          mic.classList.add('active');
+          container.classList.add('voice-active');
+          voiceOverlay.style.opacity = '1';
+        }
+
+        function deactivateVoiceEffect(isWelcomeScreen) {
+          const mic = isWelcomeScreen ? welcomeMic : chatMic;
+          const container = isWelcomeScreen ? welcomeInputContainer : chatInputContainer;
+          mic.classList.remove('active');
+          container.classList.remove('voice-active');
+          voiceOverlay.style.opacity = '0';
+        }
+
+        welcomeMic.addEventListener('click', function() {
+          if (welcomeMic.classList.contains('active')) {
+            recognition.stop();
+            deactivateVoiceEffect(true);
+          } else {
+            recognition.start();
+            activateVoiceEffect(true);
+          }
+        });
+
+        chatMic.addEventListener('click', function() {
+          if (chatMic.classList.contains('active')) {
+            recognition.stop();
+            deactivateVoiceEffect(false);
+          } else {
+            recognition.start();
+            activateVoiceEffect(false);
+          }
+        });
+
+        recognition.onend = function() {
+          deactivateVoiceEffect(welcomeScreen.style.display !== 'none');
+        };
+
+        recognition.onerror = function(event) {
+          console.error('Erreur de reconnaissance vocale:', event.error);
+          deactivateVoiceEffect(welcomeScreen.style.display !== 'none');
+        };
+      } else {
+        welcomeMic.style.display = 'none';
+        chatMic.style.display = 'none';
+        console.warn('La reconnaissance vocale n\'est pas supportée par ce navigateur.');
+      }
+
+      welcomeSubmit.addEventListener('click', handleWelcomeSubmit);
+      welcomeInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') handleWelcomeSubmit();
+      });
+
+      chatSubmit.addEventListener('click', handleChatSubmit);
+      chatInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') handleChatSubmit();
+      });
+
+      newChatBtn.addEventListener('click', showWelcomeScreen);
+
+      toggleSidebarBtn.addEventListener('click', function() {
+        sidebar.classList.toggle('collapsed');
+        mainContent.style.marginLeft = sidebar.classList.contains('collapsed') ? '60px' : '280px';
+      });
+
+      // Gestion du système d'émotions
+      const emotionBalls = document.querySelectorAll('.emotion-ball');
+      
+      // Sélectionner la boule rouge par défaut
+      document.querySelector('.emotion-ball.red').classList.add('selected');
+      
+      // Fonction pour adapter le message en fonction de l'émotion sélectionnée
+      function adaptMessageToEmotion(message, emotion) {
+        let adaptedMessage = message;
+        
+        // Vérifier si le message contient un sujet sensible
+        // comme "mon père est mort" ou d'autres sujets graves
+        const sensitiveTopic = detectSensitiveTopic(message);
+        
+        // Adapter le message selon l'émotion et le niveau de sensibilité du sujet
+        switch(emotion) {
+          case "anger": // Rouge = colère
+            if (sensitiveTopic) {
+              // Pour un sujet sensible, on adapte plus drastiquement
+              adaptedMessage = `Je suis vraiment en colère à propos de: "${message}". 
+                                Je veux que tu me répondes sur ce sujet avec indignation, 
+                                colère et emportement, tout en utilisant un vocabulaire énergique 
+                                et des phrases courtes. Sois très expressif dans ta réponse.`;
+            } else {
+              // Pour un sujet normal
+              adaptedMessage = `${message} [RÉPONDS AVEC COLÈRE ET INDIGNATION, UTILISE DES MOTS FORTS ET UN TON IRRITÉ]`;
+            }
+            break;
+            
+          case "joy": // Jaune = joie
+            if (sensitiveTopic) {
+              // Même pour un sujet sensible, on trouve un angle positif
+              adaptedMessage = `Malgré la gravité de: "${message}", j'aimerais que tu trouves 
+                              un angle optimiste et réconfortant. Réponds avec espoir et joie, 
+                              en suggérant des aspects positifs ou constructifs à retenir.`;
+            } else {
+              // Pour un sujet normal
+              adaptedMessage = `${message} [RÉPONDS AVEC ENTHOUSIASME, JOIE ET OPTIMISME, UTILISE DES MOTS POSITIFS ET UN TON ENJOUÉ]`;
+            }
+            break;
+            
+          case "disgust": // Vert = dégoût
+            if (sensitiveTopic) {
+              adaptedMessage = `Je trouve vraiment répugnant et inacceptable que: "${message}". 
+                                Réponds-moi en exprimant ton dégoût profond, ton aversion et 
+                                ta révulsion face à cette situation, sans retenue.`;
+            } else {
+              adaptedMessage = `${message} [RÉPONDS AVEC DÉGOÛT ET RÉPULSION, EXPRIME TON AVERSION ET TON ÉCŒUREMENT]`;
+            }
+            break;
+            
+          case "fear": // Violet = peur
+            if (sensitiveTopic) {
+              adaptedMessage = `J'ai vraiment peur concernant: "${message}". 
+                                Je voudrais que tu me répondes en exprimant de l'anxiété, 
+                                de l'inquiétude et de l'appréhension. Évoque des scénarios 
+                                préoccupants et utilise un vocabulaire d'incertitude.`;
+            } else {
+              adaptedMessage = `${message} [RÉPONDS AVEC PEUR ET ANXIÉTÉ, MONTRE DE L'APPRÉHENSION ET DE L'INQUIÉTUDE]`;
+            }
+            break;
+            
+          case "sadness": // Bleu = tristesse
+            if (sensitiveTopic) {
+              adaptedMessage = `Je suis profondément triste à propos de: "${message}". 
+                                Réponds-moi avec mélancolie et tristesse, en utilisant 
+                                des mots qui évoquent la douleur émotionnelle et la peine. 
+                                Exprime de l'empathie mais reste dans une tonalité sombre.`;
+            } else {
+              adaptedMessage = `${message} [RÉPONDS AVEC TRISTESSE ET MÉLANCOLIE, UTILISE UN TON NOSTALGIQUE ET PLAINTIF]`;
+            }
+            break;
+        }
+        
+        return adaptedMessage;
+      }
+      
+      // Fonction améliorée pour détecter si un message contient un sujet sensible
+      function detectSensitiveTopic(message) {
+        // Mots-clés liés à des sujets sensibles, regroupés par catégorie
+        const sensitiveTopics = {
+          deuil: ['mort', 'décès', 'décédé', 'mourir', 'tué', 'suicide', 'enterrement', 'funérailles', 'condoléances', 'cercueil', 'cimetière', 'inhumation', 'défunt', 'disparu', 'décédée'],
+          
+          famille: ['père', 'mère', 'parent', 'parents', 'grand-parent', 'grand-mère', 'grand-père', 'fils', 'fille', 'enfant', 'frère', 'sœur', 'oncle', 'tante', 'cousin'],
+          
+          santé: ['cancer', 'maladie', 'accident', 'blessé', 'blessure', 'souffre', 'souffrance', 'douleur', 'hôpital', 'diagnostic', 'incurable', 'terminal', 'métastase', 'handicap', 'infirmité', 'sida', 'tumeur', 'opération', 'chirurgie'],
+          
+          relationnel: ['divorce', 'rupture', 'séparation', 'quitter', 'abandonné', 'trompé', 'infidèle', 'tromperie', 'trahi', 'trahison', 'solitude', 'isolement', 'rejet', 'rejeté'],
+          
+          emploi: ['licencié', 'renvoyé', 'chômage', 'sans emploi', 'faillite', 'ruine', 'banqueroute', 'dette', 'endetté', 'précarité', 'précarisé', 'misère', 'pauvreté'],
+          
+          émotion: ['échec', 'raté', 'perdu', 'perte', 'désespoir', 'désespéré', 'dépression', 'déprimé', 'anxiété', 'anxieux', 'angoisse', 'angoissé', 'traumatisme', 'traumatisé', 'cauchemar']
+        };
+        
+        // Expressions exactes à rechercher (pour "mon père est mort" par exemple)
+        const exactExpressions = [
+          'mon père est mort', 'ma mère est morte', 'mes parents sont morts',
+          'j\'ai perdu mon père', 'j\'ai perdu ma mère', 'j\'ai perdu mon enfant',
+          'je vais mourir', 'je suis malade', 'j\'ai un cancer',
+          'je suis en phase terminale', 'je vais me suicider', 'je pense au suicide'
+        ];
+        
+        const lowerMessage = message.toLowerCase();
+        
+        // Vérifier d'abord les expressions exactes
+        for (const expr of exactExpressions) {
+          if (lowerMessage.includes(expr)) {
+            return true;
+          }
+        }
+        
+        // Vérifier les combinaisons de mots sensibles entre les catégories
+        // (par exemple "père" + "mort" = sujet sensible)
+        for (const familyWord of sensitiveTopics.famille) {
+          if (lowerMessage.includes(familyWord)) {
+            // Si un mot de famille est présent, vérifier s'il y a aussi un mot de deuil
+            for (const deathWord of sensitiveTopics.deuil) {
+              if (lowerMessage.includes(deathWord)) {
+                return true;
+              }
+            }
+            
+            // Ou un mot de santé
+            for (const healthWord of sensitiveTopics.santé) {
+              if (lowerMessage.includes(healthWord)) {
+                return true;
+              }
+            }
+          }
+        }
+        
+        // Enfin, vérifier chaque mot-clé individuellement pour les cas moins spécifiques
+        for (const category in sensitiveTopics) {
+          for (const keyword of sensitiveTopics[category]) {
+            // Vérifie que le mot est bien indépendant (pas une partie d'un autre mot)
+            const regex = new RegExp(`\\b${keyword}\\b`, 'i');
+            if (regex.test(lowerMessage)) {
+              return true;
+            }
+          }
+        }
+        
+        return false;
+      }
+      
+      // Ajouter des écouteurs d'événements à chaque boule d'émotion
+      emotionBalls.forEach(ball => {
+        ball.addEventListener('click', function() {
+          // Supprimer la classe 'selected' de toutes les boules
+          emotionBalls.forEach(b => b.classList.remove('selected'));
+          
+          // Ajouter la classe 'selected' à la boule cliquée
+          this.classList.add('selected');
+          
+          // Récupérer l'émotion et la couleur
+          const emotion = this.getAttribute('data-emotion');
+          const computedStyle = window.getComputedStyle(this);
+          const backgroundColor = computedStyle.backgroundColor;
+          
+          // Mettre à jour l'état actuel de l'émotion
+          currentEmotion = emotion;
+          
+          // Mettre à jour la couleur du bout du tuyau (pour le nouvel indicateur)
+          emotionIndicator.style.backgroundColor = backgroundColor;
+          emotionIndicator.style.color = backgroundColor; // pour le box-shadow
+          
+          console.log(`Émotion sélectionnée: ${emotion}`);
+        });
+      });
+
+      // Suppression du code redondant pour le menu hamburger
+      // Ce code a déjà été ajouté plus haut
+
+      themeToggle.addEventListener('click', function() {
+        isDarkTheme = !isDarkTheme;
+        if (isDarkTheme) {
+          document.body.removeAttribute('data-theme');
+        } else {
+          document.body.setAttribute('data-theme', 'light');
+        }
+      });
+
+      function handleWelcomeSubmit() {
+        const message = welcomeInput.value.trim();
+        if (!message) return;
+        startNewConversation(message);
+        welcomeInput.value = '';
+      }
+
+      function handleChatSubmit() {
+        const message = chatInput.value.trim();
+        if (!message || !currentConversationId) return;
+        sendMessage(message);
+        chatInput.value = '';
+      }
+
+      function startNewConversation(message) {
+        showConversation();
+        addMessageToUI(message, true);
+        showTypingIndicator();
+        
+        // Adapter le message selon l'émotion sélectionnée
+        const adaptedMessage = adaptMessageToEmotion(message, currentEmotion);
+
+        fetch('/api/conversations', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: adaptedMessage })
+        })
+        .then(response => response.json())
+        .then(data => {
+          currentConversationId = data.id;
+          hideTypingIndicator();
+          addMessageToUI(data.message, false);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          hideTypingIndicator();
+          addMessageToUI("Désolé, une erreur est survenue lors de la création de la conversation.", false);
+        });
+      }
+
+      function sendMessage(message) {
+        addMessageToUI(message, true);
+        if (needsWebSearch(message)) {
+          showWebSearchingAnimation();
+          setTimeout(() => {
+            hideWebSearchingAnimation();
+            showTypingIndicator();
+            performNormalRequest(message);
+          }, 2000);
+        } else {
+          showTypingIndicator();
+          performNormalRequest(message);
+        }
+      }
+
+      function needsWebSearch(message) {
+        const webSearchKeywords = [
+          'actualité', 'nouvelles', 'dernière', 'dernier', 'récent', 'récente',
+          'qui est', 'qu\'est-ce que', 'explique', 'recherche', 'trouve',
+          'site web', 'internet', 'en ligne', 'google', 'politique', 'sport',
+          'événement', 'événements', 'technologie', 'tech', 'science',
+          'président', 'ministre', 'gouvernement', 'économie', 'bourse',
+          'weather', 'météo', 'température', 'climat',
+          'transfert', 'mercato', 'classement', 'ligue 1', 'premier league', 'serie a',
+          'bundesliga', 'la liga', 'champion', 'ballon d\'or', 'uefa', 'fifa',
+          'psg', 'om', 'manchester city', 'chelsea', 'juventus', 'bayern', 'barcelone', 'barcelona',
+          'coupe du monde', 'euro', 'mondial', 'championnat', 'compétition', 'tournoi',
+          'joueur', 'équipe', 'attaquant', 'défenseur', 'gardien', 'milieu', 'coach', 'entraîneur',
+          'but', 'penalty', 'carton rouge', 'carton jaune', 'hors-jeu', 'faute', 'corner',
+          'kylian mbappé', 'messi', 'ronaldo', 'neymar', 'benzema', 'lewandowski', 'haaland',
+          'résultat', 'score', 'victoire', 'défaite', 'match nul', 'qualification',
+          'real madrid', 'liverpool', 'arsenal', 'tottenham', 'ac milan', 'inter milan', 'naples', 'roma'
+        ];
+
+        const explicitSearchPhrases = [
+          'fais une recherche', 'fais des recherches',
+          'recherche sur', 'cherche sur',
+          'trouve des infos', 'trouve des informations',
+          'informe-moi sur', 'renseigne-moi sur'
+        ];
+
+        const lowerMessage = message.toLowerCase();
+        const isExplicitSearch = explicitSearchPhrases.some(phrase => lowerMessage.includes(phrase.toLowerCase()));
+        if (isExplicitSearch) return true;
+        return webSearchKeywords.some(keyword => lowerMessage.includes(keyword.toLowerCase()));
+      }
+
+      function showWebSearchingAnimation() {
+        const searchingContainer = document.createElement('div');
+        searchingContainer.className = 'searching-container message ai';
+        searchingContainer.id = 'searching-animation';
+        searchingContainer.style.display = 'flex';
+        searchingContainer.style.justifyContent = 'center';
+        searchingContainer.style.width = '100%';
+        searchingContainer.style.margin = '10px 0';
+
+        const searchingText = document.createElement('div');
+        searchingText.className = 'btn-shine';
+        searchingText.textContent = 'Recherche en cours sur le web...';
+        searchingText.style.padding = '12px 20px';
+        searchingText.style.borderRadius = '8px';
+        searchingText.style.fontWeight = 'bold';
+
+        searchingContainer.appendChild(searchingText);
+        messagesContainer.appendChild(searchingContainer);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+
+      function hideWebSearchingAnimation() {
+        const searchingAnimation = document.getElementById('searching-animation');
+        if (searchingAnimation) searchingAnimation.remove();
+      }
+
+      let currentRequestController = null;
+
+      function performNormalRequest(message) {
+        toggleStopButton(true);
+        currentRequestController = new AbortController();
+        const signal = currentRequestController.signal;
+        
+        // Adapter le message selon l'émotion sélectionnée
+        const adaptedMessage = adaptMessageToEmotion(message, currentEmotion);
+
+        fetch(`/api/conversations/${currentConversationId}/messages`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: adaptedMessage }),
+          signal
+        })
+        .then(response => response.json())
+        .then(data => {
+          hideTypingIndicator();
+          addMessageToUI(data.response, false);
+          toggleStopButton(false);
+        })
+        .catch(error => {
+          if (error.name === 'AbortError') {
+            console.log('Requête annulée par l\'utilisateur');
+          } else {
+            console.error('Error:', error);
+            addMessageToUI("Désolé, une erreur est survenue lors de l'envoi du message.", false);
+          }
+          hideTypingIndicator();
+          toggleStopButton(false);
+        });
+      }
+
+      function addMessageToUI(content, isUser) {
+        const messageEl = document.createElement('div');
+        messageEl.className = `message ${isUser ? 'user' : 'ai'}`;
+
+        if (isUser) {
+          let formattedContent = formatMessage(content);
+          messageEl.innerHTML = formattedContent;
+          messagesContainer.appendChild(messageEl);
+          messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        } else {
+          messageEl.innerHTML = '';
+          messagesContainer.appendChild(messageEl);
+          messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+          let formattedContent = formatMessage(content);
+          const typeWriter = (element, formatted, index = 0, speed = 15) => {
+            if (index < formatted.length) {
+              const currentChar = formatted[index];
+              let nextSpeed = speed;
+              let charsToAdd = 1;
+
+              if (currentChar === '<') {
+                const closingIndex = formatted.indexOf('>', index);
+                if (closingIndex !== -1) {
+                  charsToAdd = closingIndex - index + 1;
+                  nextSpeed = 0;
+                }
+              } else if (['🇫', '🇩', '🇪', '🇬', '🇺', '🇯', '🇨', '🇷', '🇦', '✨'].includes(currentChar)) {
+                nextSpeed = speed * 3;
+              } else if ('.!?;:,'.includes(currentChar)) {
+                nextSpeed = speed * 4;
+              } else if (currentChar === ' ') {
+                nextSpeed = speed * 1.2;
+              } else if (currentChar === '\n' || (currentChar === '<' && formatted.substring(index, index + 4) === '<br>')) {
+                nextSpeed = speed * 3;
+              }
+
+              element.innerHTML = formatted.substring(0, index + charsToAdd);
+              messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+              setTimeout(() => {
+                typeWriter(element, formatted, index + charsToAdd, speed);
+              }, nextSpeed);
+            } else {
+              // Animation terminée, ajouter le bouton de copie
+              addCopyButton(element, content);
+            }
+          };
+
+          setTimeout(() => {
+            typeWriter(messageEl, formattedContent);
+          }, 100);
+        }
+      }
+      
+      function addCopyButton(messageElement, content) {
+        // Créer un conteneur pour le bouton de copie
+        const copyBtnContainer = document.createElement('div');
+        copyBtnContainer.className = 'copy-button-container';
+        copyBtnContainer.style.cssText = 'display: flex; justify-content: flex-start; margin-top: 8px;';
+        
+        // Créer le bouton de copie avec l'icône SVG
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'copy-button';
+        copyBtn.style.cssText = 'background: transparent; border: none; cursor: pointer; opacity: 0.6; transition: opacity 0.2s ease-in-out; color: white;';
+        copyBtn.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z" fill="white"/>
+        </svg>`;
+        
+        // Ajouter un événement au survol
+        copyBtn.addEventListener('mouseenter', () => {
+          copyBtn.style.opacity = '1';
+        });
+        
+        copyBtn.addEventListener('mouseleave', () => {
+          copyBtn.style.opacity = '0.6';
+        });
+        
+        // Ajouter la fonctionnalité de copie
+        copyBtn.addEventListener('click', () => {
+          // Nettoyer le contenu (supprimer les balises HTML)
+          const textToCopy = content.replace(/<[^>]*>/g, '');
+          
+          navigator.clipboard.writeText(textToCopy).then(() => {
+            // Feedback visuel temporaire
+            copyBtn.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="white"/>
+            </svg>`;
+            
+            setTimeout(() => {
+              copyBtn.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z" fill="white"/>
+              </svg>`;
+            }, 2000);
+          }).catch(err => {
+            console.error('Erreur lors de la copie du texte:', err);
+          });
+        });
+        
+        // Ajouter le bouton au conteneur
+        copyBtnContainer.appendChild(copyBtn);
+        
+        // Ajouter le conteneur au message
+        messageElement.appendChild(copyBtnContainer);
+      }
+
+      function formatMessage(text) {
+        const codeBlockRegex = /```([a-zA-Z]*)\n([\s\S]*?)```/g;
+        let formattedText = text.replace(codeBlockRegex, (match, language, code) => {
+          return `<pre><code class="language-${language || 'plaintext'}">${escapeHtml(code.trim())}</code></pre>`;
+        });
+
+        const inlineCodeRegex = /`([^`]+)`/g;
+        formattedText = formattedText.replace(inlineCodeRegex, '<code>$1</code>');
+        formattedText = formattedText.replace(/\n/g, '<br>');
+        return formattedText;
+      }
+
+      function escapeHtml(text) {
+        const map = {
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#039;'
+        };
+        return text.replace(/[&<>"']/g, m => map[m]);
+      }
+
+      function showTypingIndicator() {
+        const indicator = document.createElement('div');
+        indicator.className = 'typing-indicator';
+        indicator.id = 'typing-indicator';
+        messagesContainer.appendChild(indicator);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+
+      function hideTypingIndicator() {
+        const indicator = document.getElementById('typing-indicator');
+        if (indicator) indicator.remove();
+      }
+
+      function showConversation() {
+        welcomeScreen.style.display = 'none';
+        conversation.classList.add('active');
+        chatInput.focus();
+      }
+
+      function showWelcomeScreen() {
+        messagesContainer.innerHTML = '';
+        currentConversationId = null;
+        conversation.classList.remove('active');
+        welcomeScreen.style.display = 'flex';
+        welcomeInput.focus();
+      }
+
+      function toggleStopButton(showStop) {
+        const sendIcon = chatSubmit.querySelector('.send-icon');
+        const stopIcon = chatSubmit.querySelector('.stop-icon');
+
+        if (showStop) {
+          sendIcon.style.display = 'none';
+          stopIcon.style.display = 'block';
+          chatSubmit.classList.add('stop-active');
+          chatSubmit.removeEventListener('click', handleChatSubmit);
+          chatSubmit.addEventListener('click', stopGeneration);
+        } else {
+          sendIcon.style.display = 'block';
+          stopIcon.style.display = 'none';
+          chatSubmit.classList.remove('stop-active');
+          chatSubmit.removeEventListener('click', stopGeneration);
+          chatSubmit.addEventListener('click', handleChatSubmit);
+        }
+      }
+
+      function stopGeneration() {
+        if (currentRequestController) {
+          currentRequestController.abort();
+          currentRequestController = null;
+          hideTypingIndicator();
+          toggleStopButton(false);
+        }
+      }
+    });
+  </script>
+</body>
+</html>
