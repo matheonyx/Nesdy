@@ -1,0 +1,390 @@
+@import url(https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap);
+#logo {
+    height: 48px;
+}
+.navbar,
+.navbar__button {
+    display: flex;
+    align-items: center;
+}
+.navbar__buttonWrapper {
+    margin-right: 25px;
+}
+.navbar__menuIcon {
+    margin-top: 10px;
+    margin-right: 10px;
+}
+.navbar__list {
+    display: none;
+}
+.navbar__button {
+    color: #f9f9f9!important;
+    font-weight: 700!important;
+    letter-spacing: 2px!important;
+}
+@media (min-width: 1200px) {
+    .navbar__list {
+        display: flex;
+        align-items: center;
+        margin-left: 35px;
+        margin-top: 7px;
+    }
+    .navbar__menuIcon {
+        display: none!important;
+    }
+    .navbar__button {
+        position: relative;
+    }
+    .navbar__button .MuiButton-label:before {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        left: 30px;
+        right: 100%;
+        bottom: 0;
+        background: #f9f9f9;
+        height: 2px;
+        width: 0;
+        opacity: 0;
+        transition: all .25s ease-in-out;
+    }
+    .navbar__button:hover .MuiButton-label:before {
+        transition: all .25s ease-in-out;
+        opacity: 1;
+        width: calc(100% - 37px);
+    }
+}
+.userSelector {
+    display: flex;
+    align-items: center;
+}
+.userSelector__name {
+    margin-right: 10px;
+}
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 30px;
+    color: #fff;
+}
+.headerTransparent {
+    background: transparent;
+}
+@media (min-width: 992px) {
+    header {
+        padding: 20px 30px;
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        width: 100%;
+        z-index: 4;
+        background: #09090c; /* Couleur unie */
+    }
+}
+.slider__img {
+    width: 100%;
+    border-radius: 4px;
+    box-shadow: var(--main-shadow);
+    display: block;
+    margin: 0 auto;
+}
+.slick-dots {
+    display: block;
+    list-style: none;
+    position: absolute;
+    text-align: right;
+    bottom: 20px;
+    margin: 0;
+    padding: 0;
+    right: 8px;
+    width: 100%;
+}
+.slider__container {
+    padding: 5px;
+    position: relative;
+    outline: none!important;
+}
+.imageSlider .slick-list,
+.imageSlider .slick-track {
+    overflow: unset;
+}
+.imageSlider .slick-list {
+    margin: 0 -10px;
+}
+.imageSlider .slick-dots li button:before {
+    color: #969eab;
+    left: 0;
+    top: 0;
+    opacity: 1;
+    content: "•";
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    line-height: 20px;
+    position: absolute;
+    text-align: center;
+    -webkit-font-smoothing: antialiased;
+}
+.imageSlider .slick-dots li.slick-active button:before {
+    color: #f9f9f9;
+}
+.slider__textImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transform: translateX(15px);
+    transition: transform .4s cubic-bezier(.25, .46, .45, .94) .1s;
+}
+.slick-slide:not(.slick-cloned).slick-active .slider__textImage {
+    opacity: 1;
+    transform: translateX(0);
+    transition: transform .4s cubic-bezier(.25, .46, .45, .94) .42s, opacity .95s cubic-bezier(.25, .46, .45, .94) .42s;
+}
+@media (min-width: 768px) {
+    .slider__container {
+        padding: 10px;
+    }
+}
+.collectionsCards {
+    background: var(--card-background);
+    border-radius: 10px;
+    border: 3.5px solid #3e404c;
+    position: relative;
+    transition: all .3s ease-in-out 0s;
+    transform: scale(1);
+    box-shadow: var(--main-shadow);
+    margin: 15px 8px 0;
+}
+.collectionsCards__image {
+    max-width: 100%;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    pointer-events: none;
+}
+.collectionsCards__video {
+    bottom: 0;
+    object-fit: cover;
+    display: block;
+    position: absolute;
+    height: 100%;
+    left: 0;
+    opacity: 0;
+    right: 0;
+    top: 0;
+    border-radius: 4px;
+    transition: opacity .15s ease-in-out 0s;
+    width: 100%;
+}
+.collectionsCards:hover {
+    transform: scale(1.08);
+    border-color: #fff;
+    box-shadow: var(--main-shadow-hover);
+}
+.collectionsCards:hover .collectionsCards__video {
+    opacity: 1;
+}
+@media (min-width: 992px) {
+    .collectionsCards {
+        margin: 0 12px;
+    }
+}
+.collections {
+    margin: 0 -8px;
+}
+@media (min-width: 768px) {
+    .collections {
+        margin: 25px 0;
+    }
+    .collections .slider {
+        display: flex;
+        justify-content: center;
+        margin: 0 -12px;
+    }
+}
+.movieCard {
+    max-width: 340px;
+    border-radius: 4px;
+    box-shadow: var(--main-shadow);
+    transform: scale(1);
+    transition: all .25s ease-in-out;
+    position: relative;
+}
+.movieCard__poster {
+    max-width: 100%;
+    width: 100%;
+    border-radius: 4px;
+    vertical-align: middle;
+}
+span.movieCard__title {
+    position: absolute;
+    right: 0;
+    left: 21px;
+    bottom: 12px;
+    color: #fff;
+    font-size: 9px;
+}
+.movieCard:hover {
+    transform: scale(1.04);
+    transition: all .25s ease-in-out;
+    box-shadow: var(--main-shadow-hover);
+}
+.movieCard:hover .movieCard__container:after {
+    opacity: 1;
+    transition: opacity .15s ease-in-out;
+}
+.movieCard__container:after {
+    content: "";
+    position: absolute;
+    border: 4.2px solid hsla(0, 0%, 97.6%, .8);
+    height: 97%;
+    width: 98%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity .15s ease-in-out;
+    z-index: 3;
+}
+.movieCard__watchingData {
+    height: 100%;
+    background: transparent; /* Suppression de l'effet sombre */
+    opacity: 0;
+    padding: 15px 15px 0;
+    color: #fff;
+}
+.movieCard__progressBar,
+.movieCard__watchingData {
+    position: absolute;
+    width: 100%;
+    transition: all .25s ease-in-out;
+}
+.movieCard__progressBar {
+    background: hsla(0, 0%, 100%, .22);
+    height: 7px;
+    bottom: 0;
+    z-index: 1;
+}
+.movieCard__colorBar {
+    background: #02e7f5;
+    width: 25%;
+    height: 7px;
+    border-radius: 10px;
+}
+.movieCard:hover .movieCard__watchingData {
+    opacity: 1;
+    padding-bottom: 15px;
+    transition: all .25s ease-in-out;
+}
+.movieCard:hover .movieCard__progressBar {
+    bottom: 10px;
+    margin: 0 15px;
+    border-radius: 12px;
+    width: calc(100% - 30px);
+    transition: all .25s ease-in-out;
+}
+.movieCard__lowerPart {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    bottom: -36%;
+}
+.movieCard__timeLeft {
+    font-size: 13px;
+    color: #c3c3c3;
+}
+@media (min-width: 768px) {
+    .movieCard__lowerPart {
+        bottom: -50%;
+    }
+}
+@media (min-width: 992px) {
+    .movieCard__lowerPart {
+        bottom: -50%;
+    }
+}
+.movieCard__extraInfo {
+    display: flex;
+    align-items: center;
+}
+.movieCard__extraInfo span {
+    font-size: 13px;
+    color: #c3c3c3;
+    margin-right: 15px;
+}
+.movieCard__extraInfo img {
+    height: 18px;
+}
+.trailerHeader {
+    margin-bottom: 25px;
+}
+.trailerHeader__title {
+    color: #fff;
+    font-size: 22px;
+    margin-top: 15px;
+}
+.trailerHeader__description {
+    color: #fff;
+    font-size: 14px;
+    margin-top: 10px;
+}
+.trailerHeader__rating {
+    color: #c4c5ca;
+    font-size: 16px;
+}
+.trailerHeader__icons {
+    display: flex;
+    margin-top: 10px;
+}
+.trailerHeader__icons img {
+    margin-right: 15px;
+}
+.rating {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+.rating span {
+    color: #fff;
+    font-size: 18px;
+    margin-left: 5px;
+}
+.rating img {
+    height: 20px;
+    width: 20px;
+}
+.movieCard__trailerContent {
+    color: #fff;
+    font-size: 16px;
+}
+.movieCard__trailerContent img {
+    height: 22px;
+    margin-left: 5px;
+}
+.detailPage {
+    background: #242638; /* Gardé une couleur unie non sombre */
+}
+.searchPage__searchBar {
+    background: linear-gradient(
+        180deg,
+        #33353d,
+        #4b4e5a
+    );
+}
+.brandPage:after {
+    content: "";
+    height: 100vh;
+    bottom: 0;
+    background: #1a1d29; /* Couleur unie, pas de dégradé sombre */
+}
