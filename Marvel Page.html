@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<!-- saved from url=(0051)https://disneyplus-clone-f8077.web.app/brand/marvel -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="icon" href="https://static-mh.content.disney.io/matterhorn/assets/favicon-94e3862e7fb9.ico"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#000000"><meta name="description" content="Disney+ UI Clone made with React by Tobías Corradi"><meta name="keywords" content="disney+ clone, tobías corradi, ui, front end, reactjs"><meta name="author" content="Tobías Corradi"><link rel="apple-touch-icon" href="https://cdn.glitch.global/dc313770-740d-4175-8e23-f42dd5e13e28/disney-plus-logo-1.png?v=1716541913618"><link rel="manifest" href="https://disneyplus-clone-f8077.web.app/manifest.json"><title>Marvel-Disney++</title><link href="https://matheonyx.github.io/style/2.165ff965.chunk.css" rel="stylesheet"><link href="https://matheonyx.github.io/style/main.d27d7777.chunk.css" rel="stylesheet"><style data-jss="" data-meta="MuiTouchRipple">
+.MuiTouchRipple-root {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  overflow: hidden;
+  position: absolute;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.MuiTouchRipple-ripple {
+  opacity: 0;
+  position: absolute;
+}
+.MuiTouchRipple-rippleVisible {
+  opacity: 0.3;
+  animation: MuiTouchRipple-keyframes-enter 550ms cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(1);
+}
+.MuiTouchRipple-ripplePulsate {
+  animation-duration: 200ms;
+}
+.MuiTouchRipple-child {
+  width: 100%;
+  height: 100%;
+  display: block;
+  opacity: 1;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+.MuiTouchRipple-childLeaving {
+  opacity: 0;
+  animation: MuiTouchRipple-keyframes-exit 550ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.MuiTouchRipple-childPulsate {
+  top: 0;
+  left: 0;
+  position: absolute;
+  animation: MuiTouchRipple-keyframes-pulsate 2500ms cubic-bezier(0.4, 0, 0.2, 1) 200ms infinite;
+}
+@-webkit-keyframes MuiTouchRipple-keyframes-enter {
+  0% {
+    opacity: 0.1;
+    transform: scale(0);
+  }
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+}
+@-webkit-keyframes MuiTouchRipple-keyframes-exit {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@-webkit-keyframes MuiTouchRipple-keyframes-pulsate {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.92);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+</style><style data-jss="" data-meta="MuiButtonBase">
+.MuiButtonBase-root {
+  color: inherit;
+  border: 0;
+  cursor: pointer;
+  margin: 0;
+  display: inline-flex;
+  outline: 0;
+  padding: 0;
+  position: relative;
+  align-items: center;
+  user-select: none;
+  border-radius: 0;
+  vertical-align: middle;
+  -moz-appearance: none;
+  justify-content: center;
+  text-decoration: none;
+  background-color: transparent;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.MuiButtonBase-root::-moz-focus-inner {
+  border-style: none;
+}
+.MuiButtonBase-root.Mui-disabled {
+  cursor: default;
+  pointer-events: none;
+}
+@media print {
+  .MuiButtonBase-root {
+    -webkit-print-color-adjust: exact;
+  }
+}
+</style><style data-jss="" data-meta="MuiButton">
+.MuiButton-root {
+  color: rgba(0, 0, 0, 0.87);
+  padding: 6px 16px;
+  font-size: 0.875rem;
+  min-width: 64px;
+  box-sizing: border-box;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 500;
+  line-height: 1.75;
+  border-radius: 4px;
+  letter-spacing: 0.02857em;
+  text-transform: uppercase;
+}
+.MuiButton-root:hover {
+  text-decoration: none;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+.MuiButton-root.Mui-disabled {
+  color: rgba(0, 0, 0, 0.26);
+}
+@media (hover: none) {
+  .MuiButton-root:hover {
+    background-color: transparent;
+  }
+}
+.MuiButton-root:hover.Mui-disabled {
+  background-color: transparent;
+}
+.MuiButton-label {
+  width: 100%;
+  display: inherit;
+  align-items: inherit;
+  justify-content: inherit;
+}
+.MuiButton-text {
+  padding: 6px 8px;
+}
+.MuiButton-textPrimary {
+  color: #3f51b5;
+}
+.MuiButton-textPrimary:hover {
+  background-color: rgba(63, 81, 181, 0.04);
+}
+@media (hover: none) {
+  .MuiButton-textPrimary:hover {
+    background-color: transparent;
+  }
+}
+.MuiButton-textSecondary {
+  color: #f50057;
+}
+.MuiButton-textSecondary:hover {
+  background-color: rgba(245, 0, 87, 0.04);
+}
+@media (hover: none) {
+  .MuiButton-textSecondary:hover {
+    background-color: transparent;
+  }
+}
+.MuiButton-outlined {
+  border: 1px solid rgba(0, 0, 0, 0.23);
+  padding: 5px 15px;
+}
+.MuiButton-outlined.Mui-disabled {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+.MuiButton-outlinedPrimary {
+  color: #3f51b5;
+  border: 1px solid rgba(63, 81, 181, 0.5);
+}
+.MuiButton-outlinedPrimary:hover {
+  border: 1px solid #3f51b5;
+  background-color: rgba(63, 81, 181, 0.04);
+}
+@media (hover: none) {
+  .MuiButton-outlinedPrimary:hover {
+    background-color: transparent;
+  }
+}
+.MuiButton-outlinedSecondary {
+  color: #f50057;
+  border: 1px solid rgba(245, 0, 87, 0.5);
+}
+.MuiButton-outlinedSecondary:hover {
+  border: 1px solid #f50057;
+  background-color: rgba(245, 0, 87, 0.04);
+}
+.MuiButton-outlinedSecondary.Mui-disabled {
+  border: 1px solid rgba(0, 0, 0, 0.26);
+}
+@media (hover: none) {
+  .MuiButton-outlinedSecondary:hover {
+    background-color: transparent;
+  }
+}
+.MuiButton-contained {
+  color: rgba(0, 0, 0, 0.87);
+  box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 1px 5px 0px rgba(0,0,0,0.12);
+  background-color: #e0e0e0;
+}
+.MuiButton-contained:hover {
+  box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2),0px 4px 5px 0px rgba(0,0,0,0.14),0px 1px 10px 0px rgba(0,0,0,0.12);
+  background-color: #d5d5d5;
+}
+.MuiButton-contained.Mui-focusVisible {
+  box-shadow: 0px 3px 5px -1px rgba(0,0,0,0.2),0px 6px 10px 0px rgba(0,0,0,0.14),0px 1px 18px 0px rgba(0,0,0,0.12);
+}
+.MuiButton-contained:active {
+  box-shadow: 0px 5px 5px -3px rgba(0,0,0,0.2),0px 8px 10px 1px rgba(0,0,0,0.14),0px 3px 14px 2px rgba(0,0,0,0.12);
+}
+.MuiButton-contained.Mui-disabled {
+  color: rgba(0, 0, 0, 0.26);
+  box-shadow: none;
+  background-color: rgba(0, 0, 0, 0.12);
+}
+@media (hover: none) {
+  .MuiButton-contained:hover {
+    box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 1px 5px 0px rgba(0,0,0,0.12);
+    background-color: #e0e0e0;
+  }
+}
+.MuiButton-contained:hover.Mui-disabled {
+  background-color: rgba(0, 0, 0, 0.12);
+}
+.MuiButton-containedPrimary {
+  color: #fff;
+  background-color: #3f51b5;
+}
+.MuiButton-containedPrimary:hover {
+  background-color: #303f9f;
+}
+@media (hover: none) {
+  .MuiButton-containedPrimary:hover {
+    background-color: #3f51b5;
+  }
+}
+.MuiButton-containedSecondary {
+  color: #fff;
+  background-color: #f50057;
+}
+.MuiButton-containedSecondary:hover {
+  background-color: #c51162;
+}
+@media (hover: none) {
+  .MuiButton-containedSecondary:hover {
+    background-color: #f50057;
+  }
+}
+.MuiButton-disableElevation {
+  box-shadow: none;
+}
+.MuiButton-disableElevation:hover {
+  box-shadow: none;
+}
+.MuiButton-disableElevation.Mui-focusVisible {
+  box-shadow: none;
+}
+.MuiButton-disableElevation:active {
+  box-shadow: none;
+}
+.MuiButton-disableElevation.Mui-disabled {
+  box-shadow: none;
+}
+.MuiButton-colorInherit {
+  color: inherit;
+  border-color: currentColor;
+}
+.MuiButton-textSizeSmall {
+  padding: 4px 5px;
+  font-size: 0.8125rem;
+}
+.MuiButton-textSizeLarge {
+  padding: 8px 11px;
+  font-size: 0.9375rem;
+}
+.MuiButton-outlinedSizeSmall {
+  padding: 3px 9px;
+  font-size: 0.8125rem;
+}
+.MuiButton-outlinedSizeLarge {
+  padding: 7px 21px;
+  font-size: 0.9375rem;
+}
+.MuiButton-containedSizeSmall {
+  padding: 4px 10px;
+  font-size: 0.8125rem;
+}
+.MuiButton-containedSizeLarge {
+  padding: 8px 22px;
+  font-size: 0.9375rem;
+}
+.MuiButton-fullWidth {
+  width: 100%;
+}
+.MuiButton-startIcon {
+  display: inherit;
+  margin-left: -4px;
+  margin-right: 8px;
+}
+.MuiButton-startIcon.MuiButton-iconSizeSmall {
+  margin-left: -2px;
+}
+.MuiButton-endIcon {
+  display: inherit;
+  margin-left: 8px;
+  margin-right: -4px;
+}
+.MuiButton-endIcon.MuiButton-iconSizeSmall {
+  margin-right: -2px;
+}
+.MuiButton-iconSizeSmall > *:first-child {
+  font-size: 18px;
+}
+.MuiButton-iconSizeMedium > *:first-child {
+  font-size: 20px;
+}
+.MuiButton-iconSizeLarge > *:first-child {
+  font-size: 22px;
+}
+</style><style data-jss="" data-meta="MuiSvgIcon">
+.MuiSvgIcon-root {
+  fill: currentColor;
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  font-size: 1.5rem;
+  transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  flex-shrink: 0;
+  user-select: none;
+}
+.MuiSvgIcon-colorPrimary {
+  color: #3f51b5;
+}
+.MuiSvgIcon-colorSecondary {
+  color: #f50057;
+}
+.MuiSvgIcon-colorAction {
+  color: rgba(0, 0, 0, 0.54);
+}
+.MuiSvgIcon-colorError {
+  color: #f44336;
+}
+.MuiSvgIcon-colorDisabled {
+  color: rgba(0, 0, 0, 0.26);
+}
+.MuiSvgIcon-fontSizeInherit {
+  font-size: inherit;
+}
+.MuiSvgIcon-fontSizeSmall {
+  font-size: 1.25rem;
+}
+.MuiSvgIcon-fontSizeLarge {
+  font-size: 2.1875rem;
+}
+</style><style data-jss="" data-meta="MuiAvatar">
+.MuiAvatar-root {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  font-size: 1.25rem;
+  align-items: center;
+  flex-shrink: 0;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  line-height: 1;
+  user-select: none;
+  border-radius: 50%;
+  justify-content: center;
+}
+.MuiAvatar-colorDefault {
+  color: #fafafa;
+  background-color: #bdbdbd;
+}
+.MuiAvatar-rounded {
+  border-radius: 4px;
+}
+.MuiAvatar-square {
+  border-radius: 0;
+}
+.MuiAvatar-img {
+  color: transparent;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  text-align: center;
+  text-indent: 10000px;
+}
+.MuiAvatar-fallback {
+  width: 75%;
+  height: 75%;
+}
+</style></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"><header class="headerTransparent"><nav class="navbar"><svg class="MuiSvgIcon-root navbar__menuIcon" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path></svg><a href="https://careful-immense-replace.glitch.me/Disney%2B%2B.html"><img id="logo" src="https://cdn.glitch.global/dc313770-740d-4175-8e23-f42dd5e13e28/disney-plus-logo-1.png?v=1716541913618" alt="Disney Plus Logo"></a><ul class="navbar__list"><li class="navbar__buttonWrapper"><button class="MuiButtonBase-root MuiButton-root MuiButton-text navbar__button" tabindex="0" type="button"><span class="MuiButton-label"><span class="MuiButton-startIcon MuiButton-iconSizeMedium"><svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path></svg></span>Home</span><span class="MuiTouchRipple-root"></span></button></li><li class="navbar__buttonWrapper"><a href="https://disneyplus-clone-f8077.web.app/search"><button class="MuiButtonBase-root MuiButton-root MuiButton-text navbar__button" tabindex="0" type="button"><span class="MuiButton-label"><span class="MuiButton-startIcon MuiButton-iconSizeMedium"><svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg></span>Search</span><span class="MuiTouchRipple-root"></span></button></a></li><li class="navbar__buttonWrapper"><button class="MuiButtonBase-root MuiButton-root MuiButton-text navbar__button" tabindex="0" type="button"><span class="MuiButton-label"><span class="MuiButton-startIcon MuiButton-iconSizeMedium"><svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path></svg></span>Watchlist</span><span class="MuiTouchRipple-root"></span></button></li><li class="navbar__buttonWrapper"><button class="MuiButtonBase-root MuiButton-root MuiButton-text navbar__button" tabindex="0" type="button"><span class="MuiButton-label"><span class="MuiButton-startIcon MuiButton-iconSizeMedium"><svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg></span>Originals</span><span class="MuiTouchRipple-root"></span></button></li><li class="navbar__buttonWrapper"><button class="MuiButtonBase-root MuiButton-root MuiButton-text navbar__button" tabindex="0" type="button"><span class="MuiButton-label"><span class="MuiButton-startIcon MuiButton-iconSizeMedium"><svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"></path></svg></span>Movies</span><span class="MuiTouchRipple-root"></span></button></li><li class="navbar__buttonWrapper"><button class="MuiButtonBase-root MuiButton-root MuiButton-text navbar__button" tabindex="0" type="button"><span class="MuiButton-label"><span class="MuiButton-startIcon MuiButton-iconSizeMedium"><svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"></path></svg></span>Series</span><span class="MuiTouchRipple-root"></span></button></li></ul></nav><div class="userSelector"><span class="userSelector__name">User</span><div class="MuiAvatar-root MuiAvatar-circle"><img src="./Marvel Page_files/scale" class="MuiAvatar-img"></div></div></header><main class="brandPage"><div class="brandPage__background"><img alt="" src="https://is1-ssl.mzstatic.com/image/thumb/IkRTx8aoWQA94ELsYpjyEQ/2638x1484sr.webp"></div><div class="brandPage__image"><img src="https://cdn.glitch.global/2b4f195f-bfc7-4020-8c02-68564b44fbf1/marvel.png?v=1716542938426" alt=""></div><div class="brandPage__movies movieRows__container"><article class="singleRow"><h2 class="singleRow__title">BlockBusters</h2><div class="slick-slider singleRow__slider slick-initialized" dir="ltr"><button class="slick-arrow slick-prev slick-disabled" data-role="none" currentslide="0" slidecount="22" style="display: block;"><svg class="MuiSvgIcon-root slick-arrows" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z"></path></svg></button><div class="slick-list"><div class="slick-track" style="width: 7568px; opacity: 1; transform: translate3d(0px, 0px, 0px);"><div data-index="0" class="slick-slide slick-active slick-current" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://magnetic-lowly-sodalite.glitch.me/Ant-man.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://is1-ssl.mzstatic.com/image/thumb/Video113/v4/d3/55/7b/d3557bf1-ad18-d17d-b4b2-c67c03e54d16/DIS_ANT_WW_ARTWORK_EN_3840x2160_1OFQ9A000000CS.lsr/738x416.webp" alt="Iron Man"></div></a></div></div></div><div data-index="1" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://skinny-warp-land.glitch.me/Les%20Gardiens%20de%20la%20galaxie%20Vol.3.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://www.geekgeneration.fr/wp-content/uploads/2023/04/Les-Gardiens-de-la-Galaxie-Volume-3-1.jpg" alt="The Incredible Hulk"></div></a></div></div></div><div data-index="2" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://magnetic-lowly-sodalite.glitch.me/Spider%20Man%20across%20the%20spider%20verse.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://cdn.glitch.global/dec50b52-1fc2-417a-80a4-dfe25959cc90/venom3.png?v=1730664265207" alt="Iron Man 2"></div></a></div></div></div><div data-index="3" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://magnetic-lowly-sodalite.glitch.me/The%20Amazing%20Spider-Man.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/9F7626F40F04BD3384BA580BD66527E8DE1C5B6406D9121E93D2C72710EFE18B/scale?width=1200&aspectRatio=1.78&format=jpeg" alt="Thor"></div></a></div></div></div><div data-index="4" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://magnetic-lowly-sodalite.glitch.me/Thor%20Love%20and%20Thunder.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://cdn.glitch.global/dec50b52-1fc2-417a-80a4-dfe25959cc90/Design%20sans%20titre%20(66).png?v=1722102208003" alt="Captain America: The First Avenger"></div></a></div></div></div><div data-index="5" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/24428"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/9BBTo63ANSmhC4e6r62OJFuK2GL.jpg" alt="The Avengers"></div></a></div></div></div><div data-index="6" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="file:///G:/Disney++/IRON%20MAN%203.html"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/aFTYFqrWp4RS46Twm87l5e0ItYb.jpg" alt="Iron Man 3"></div></a></div></div></div><div data-index="7" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="file:///G:/Disney++/thor%20le%20monde%20des%20t%C3%A9n%C3%A9bres.html"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/4zTsF0RtO0av3YX1NaKDqGKPxYF.jpg" alt="Thor: The Dark World"></div></a></div></div></div><div data-index="8" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="file:///G:/Disney++/captain%20america%20et%20le%20soldat%20de%20l'hiver.html"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/1RWLMyC9KcFfcaoViMiJGSSZzzr.jpg" alt="Captain America: The Winter Soldier"></div></a></div></div></div><div data-index="9" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="file:///G:/Disney++/Les%20Gardiens%20de%20la%20galaxie%20vol.1.html"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/uLtVbjvS1O7gXL8lUOwsFOH4man.jpg" alt="Guardians of the Galaxy"></div></a></div></div></div><div data-index="10" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/99861"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/6YwkGolwdOMNpbTOmLjoehlVWs5.jpg" alt="Avengers: Age of Ultron"></div></a></div></div></div><div data-index="11" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/102899"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/a7sAqMKv5tkAdMzFfIhPqIBmQ9g.jpg" alt="Ant-Man"></div></a></div></div></div><div data-index="12" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="file:///G:/Disney++/captain%20america%20civil%20war.html"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/wdwcOBMkt3zmPQuEMxB3FUtMio2.jpg" alt="Captain America: Civil War"></div></a></div></div></div><div data-index="13" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/284052"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/qUv51IFUvVRAP2379ThmA3eLJx6.jpg" alt="Doctor Strange"></div></a></div></div></div><div data-index="14" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="file:///G:/Disney++/les%20gardiens%20de%20la%20galaxie%20vol.2.html"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/aJn9XeesqsrSLKcHfHP4u5985hn.jpg" alt="Guardians of the Galaxy Vol. 2"></div></a></div></div></div><div data-index="15" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/315635"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/fn4n6uOYcB6Uh89nbNPoU2w80RV.jpg" alt="Spider-Man: Homecoming"></div></a></div></div></div><div data-index="16" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/284053"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/kaIfm5ryEOwYg8mLbq8HkPuM1Fo.jpg" alt="Thor: Ragnarok"></div></a></div></div></div><div data-index="17" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="file:///G:/Disney++/black%20panther.html"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/b6ZJZHUdMEFECvGiDpJjlfUWela.jpg" alt="Black Panther"></div></a></div></div></div><div data-index="18" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/299536"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/mDfJG3LC3Dqb67AZ52x3Z0jU0uB.jpg" alt="Avengers: Infinity War"></div></a></div></div></div><div data-index="19" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/363088"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/iYdgEUE2W2aJkgqfSjf1x3gFfuV.jpg" alt="Ant-Man and the Wasp"></div></a></div></div></div><div data-index="20" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/299537"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/k5V2cbDZvYIu6BKIK0Q0KGyAUDB.jpg" alt="Captain Marvel"></div></a></div></div></div><div data-index="21" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/299534"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/7RyHsO4yDXtBv1zUU3mTpHeQ0d5.jpg" alt="Avengers: Endgame"></div></a></div></div></div></div></div><button class="slick-arrow slick-next" data-role="none" currentslide="0" slidecount="22" style="display: block;"><svg class="MuiSvgIcon-root slick-arrows" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.88 4.12L13.76 12l-7.88 7.88L8 22l10-10L8 2z"></path></svg></button></div></article><article class="singleRow"><h2 class="singleRow__title">Phase 1</h2><div class="slick-slider singleRow__slider slick-initialized" dir="ltr"><button class="slick-arrow slick-prev slick-disabled" data-role="none" currentslide="0" slidecount="6" style="display: block;"><svg class="MuiSvgIcon-root slick-arrows" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z"></path></svg></button><div class="slick-list"><div class="slick-track" style="width: 2064px; opacity: 1; transform: translate3d(0px, 0px, 0px);"><div data-index="0" class="slick-slide slick-active slick-current" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://magnetic-lowly-sodalite.glitch.me/Iron%20Man.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://is1-ssl.mzstatic.com/image/thumb/Video113/v4/2d/74/f4/2d74f463-8fd3-f960-aeaa-d9757cc37203/DIS_IRON_WW_ARTWORK_EN_3840x2160_1MO1NI000000CI.lsr/738x416.webp" alt="Iron Man"></div></a></div></div></div><div data-index="1" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://magnetic-lowly-sodalite.glitch.me/Hulk.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/A6CC9A2581AE4D71C319B17BF2BB6FEEE578172DD118A6011E50FFCDE9F1FF26/scale?width=1200&aspectRatio=1.78&format=jpeg" alt="The Incredible Hulk"></div></a></div></div></div><div data-index="2" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://magnetic-lowly-sodalite.glitch.me/iron%20man%202.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://is1-ssl.mzstatic.com/image/thumb/Video123/v4/f5/1e/79/f51e79a3-cb2e-ecc5-8a96-83f604f4e2a4/DIS_IRON2_WW_ARTWORK_EN-US_3840x2160_1MO23U000000CL.lsr/738x416.webp" alt="Iron Man 2"></div></a></div></div></div><div data-index="3" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://magnetic-lowly-sodalite.glitch.me/thor.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://is1-ssl.mzstatic.com/image/thumb/Video114/v4/b1/f1/cc/b1f1cc16-35bb-9122-9b87-06610fe9d507/DIS_THOR_WW_ARTWORK_EN-US_3840x2160_1MP5YQ000000CL.lsr/738x416.webp" alt="Thor"></div></a></div></div></div><div data-index="4" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="file:///G:/Disney++/captain%20america%20first%20avengers.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/AFF20C70608850FB08710BB04C511761E85C7F1D34E6DA305C2F55C8AF272166/scale?width=1200&aspectRatio=1.78&format=jpeg" alt="Captain America: The First Avenger"></div></a></div></div></div><div data-index="5" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/24428"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/9BBTo63ANSmhC4e6r62OJFuK2GL.jpg" alt="The Avengers"></div></a></div></div></div></div></div><button class="slick-arrow slick-next" data-role="none" currentslide="0" slidecount="6" style="display: block;"><svg class="MuiSvgIcon-root slick-arrows" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.88 4.12L13.76 12l-7.88 7.88L8 22l10-10L8 2z"></path></svg></button></div></article><article class="singleRow"><h2 class="singleRow__title">Phase 2</h2><div class="slick-slider singleRow__slider slick-initialized" dir="ltr"><button class="slick-arrow slick-prev slick-disabled" data-role="none" currentslide="0" slidecount="7" style="display: block;"><svg class="MuiSvgIcon-root slick-arrows" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z"></path></svg></button><div class="slick-list"><div class="slick-track" style="width: 2408px; opacity: 1; transform: translate3d(0px, 0px, 0px);"><div data-index="0" class="slick-slide slick-active slick-current" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://magnetic-lowly-sodalite.glitch.me/captain%20america%20et%20le%20soldat%20de%20l'hiver.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/60B188990D3F0619A167A76200CCB6985675ACC044D9BEAD5194E02D37C2D440/scale?width=1200&aspectRatio=1.78&format=jpeg" alt="Captain America: The Winter Soldier"></div></a></div></div></div><div data-index="1" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://magnetic-lowly-sodalite.glitch.me/IRON%20MAN%203.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/4F1E945B7AB933F7A474C5ECAD5AB895ECBF763F80DF64B835D131D41F4D90BD/scale?width=1200&aspectRatio=1.78&format=jpeg" alt="Iron Man 3"></div></a></div></div></div><div data-index="2" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://magnetic-lowly-sodalite.glitch.me/Les%20Gardiens%20de%20la%20galaxie%20vol.1.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://is1-ssl.mzstatic.com/image/thumb/Video124/v4/93/e3/ea/93e3eaad-b661-805d-742d-f9748a7ac386/DIS_GUARD1_WW_ARTWORK_EN-US_3840x2160_1MO05F000000CL.lsr/738x416.webp" alt="Guardians of the Galaxy"></div></a></div></div></div><div data-index="3" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="file:///G:/Disney++/thor%20le%20monde%20des%20t%C3%A9n%C3%A9bres.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/2D9550B97FFCF476FAE165E2F79BA22FA1F9248674CAACB19DDD7427D0707E7A/scale?width=1200&aspectRatio=1.78&format=jpeg" alt="Thor: The Dark World"></div></a></div></div></div><div data-index="4" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://magnetic-lowly-sodalite.glitch.me/avengers.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/3244A585F6BA64DC3204BF43D7422DC53849873C5635E660521ED37E8CE3CCC0/scale?width=1200&aspectRatio=1.78&format=jpeg" alt="Avengers: Age of Ultron"></div></a></div></div></div><div data-index="5" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/253980"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/e6RHrRaG8t5o2REYMfYkvhoamw2.jpg" alt="Marvel One-Shot: All Hail the King"></div></a></div></div></div><div data-index="6" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/211387"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/jvm3kwALwfmVcj3stddZzKRQNrN.jpg" alt="Marvel One-Shot: Agent Carter"></div></a></div></div></div></div></div><button class="slick-arrow slick-next" data-role="none" currentslide="0" slidecount="7" style="display: block;"><svg class="MuiSvgIcon-root slick-arrows" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.88 4.12L13.76 12l-7.88 7.88L8 22l10-10L8 2z"> </path></svg></button></div></article><article class="singleRow"><h2 class="singleRow__title">Phase 3</h2><div class="slick-slider singleRow__slider slick-initialized" dir="ltr"><button class="slick-arrow slick-prev slick-disabled" data-role="none" currentslide="0" slidecount="9" style="display: block;"><svg class="MuiSvgIcon-root slick-arrows" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z"></path></svg></button><div class="slick-list"><div class="slick-track" style="width: 3096px; opacity: 1; transform: translate3d(0px, 0px, 0px);"><div data-index="0" class="slick-slide slick-active slick-current" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://magnetic-lowly-sodalite.glitch.me/captain%20america%20civil%20war.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://is1-ssl.mzstatic.com/image/thumb/Video124/v4/31/73/51/317351c0-9a1e-756b-d1ad-c176abc02bd8/DIS_CAPTAIN3_WW_ARTWORK_EN-US_3840x2160_1MNY4E000000CI.lsr/738x416.webp" alt="Captain America: Civil War"></div></a></div></div></div><div data-index="1" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://quilt-righteous-saffron.glitch.me/black%20panther.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://is1-ssl.mzstatic.com/image/thumb/Video114/v4/56/7d/66/567d66f7-889d-7802-bf68-c8d6f8aa0d6a/DIS_BLACK_WW_ARTWORK_EN-US_3840x2160_1MNHXZ000000D6.lsr/738x416.webp" alt="Doctor Strange"></div></a></div></div></div><div data-index="2" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="file:///G:/Disney++/les%20gardiens%20de%20la%20galaxie%20vol.2.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/B948CA0576A38827326618C7B1DAD51667CD9200E9AD4D6F50F7E7FEB38D6459/scale?width=1200&aspectRatio=1.78&format=jpeg" alt="Guardians of the Galaxy Vol. 2"></div></a></div></div></div><div data-index="3" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://gentle-light-spinosaurus.glitch.me/thor%20ragnarok.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://cdn.glitch.global/dec50b52-1fc2-417a-80a4-dfe25959cc90/Ragnarok.png?v=1723658763247" alt="Thor: Ragnarok"></div></a></div></div></div><div data-index="4" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://magnetic-lowly-sodalite.glitch.me/Black%20panther%20wakanda%20forever.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://cdn.glitch.global/dec50b52-1fc2-417a-80a4-dfe25959cc90/Black%20Panther%20Wakanda%20Forever.png?v=1724058827682" alt="Black Panther"></div></a></div></div></div><div data-index="5" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/299536"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/mDfJG3LC3Dqb67AZ52x3Z0jU0uB.jpg" alt="Avengers: Infinity War"></div></a></div></div></div><div data-index="6" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/363088"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/iYdgEUE2W2aJkgqfSjf1x3gFfuV.jpg" alt="Ant-Man and the Wasp"></div></a></div></div></div><div data-index="7" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/299537"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/k5V2cbDZvYIu6BKIK0Q0KGyAUDB.jpg" alt="Captain Marvel"></div></a></div></div></div><div data-index="8" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/299534"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/7RyHsO4yDXtBv1zUU3mTpHeQ0d5.jpg" alt="Avengers: Endgame"></div></a></div></div></div></div></div></path></svg></button></div></article><article class="singleRow"><h2 class="singleRow__title">Phase 4</h2><div class="slick-slider singleRow__slider slick-initialized" dir="ltr"><button class="slick-arrow slick-prev slick-disabled" data-role="none" currentslide="0" slidecount="9" style="display: block;"><svg class="MuiSvgIcon-root slick-arrows" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z"></path></svg></button><div class="slick-list"><div class="slick-track" style="width: 3096px; opacity: 1; transform: translate3d(0px, 0px, 0px);"><div data-index="0" class="slick-slide slick-active slick-current" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="file:///G:/Disney++/black%20widow.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/072FC4330C9F3D78010A0FF53836D4015265E6226307D4E1280633D46080BF6A/scale?width=1200&aspectRatio=1.78&format=jpeg" alt="Captain America: Civil War"></div></a></div></div></div><div data-index="1" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://magnetic-lowly-sodalite.glitch.me/eternals.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/AFCB276281C4C5EA93DFAC6E0183F7F901504A1E733C75D0D6D6D25D042163F4/scale?width=1200&aspectRatio=1.78&format=jpeg" alt="Doctor Strange"></div></a></div></div></div><div data-index="2" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://magnetic-lowly-sodalite.glitch.me/Shang-Shi.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/FBBABDB3C228DF92522C961734FC59CB751A82717204C296ABEE29D1E5CEDF55/scale?width=1200&aspectRatio=1.78&format=jpeg" alt="shang-shi"></div></a></div></div></div><div data-index="3" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://magnetic-lowly-sodalite.glitch.me/doctor%20strange%20in%20the%20multiverse%20of%20madness.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/6EB479687DDB78C087550ADC004EDEEF96DF6354724342E3599BABB94389B6E3/scale?width=1200&aspectRatio=1.78&format=jpeg" alt="Thor: Ragnarok"></div></a></div></div></div><div data-index="4" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://magnetic-lowly-sodalite.glitch.me/doctor%20strange.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/1AED6998C4DB33CBF49EE2C76FEB6FB4062CA732F1A58D861D4D05D2E876D8C6/scale?width=1200&aspectRatio=1.78&format=jpeg" alt="Black Panther"></div></a></div></div></div><div data-index="5" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/299536"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/mDfJG3LC3Dqb67AZ52x3Z0jU0uB.jpg" alt="Avengers: Infinity War"></div></a></div></div></div><div data-index="6" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/363088"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/iYdgEUE2W2aJkgqfSjf1x3gFfuV.jpg" alt="Ant-Man and the Wasp"></div></a></div></div></div><div data-index="7" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/299537"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/k5V2cbDZvYIu6BKIK0Q0KGyAUDB.jpg" alt="Captain Marvel"></div></a></div></div></div><div data-index="8" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/299534"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/7RyHsO4yDXtBv1zUU3mTpHeQ0d5.jpg" alt="Avengers: Endgame"></div></a></div></div></div></div></div></path></svg></button></div></article><article class="singleRow"><h2 class="singleRow__title">Phase 5</h2><div class="slick-slider singleRow__slider slick-initialized" dir="ltr"><button class="slick-arrow slick-prev slick-disabled" data-role="none" currentslide="0" slidecount="9" style="display: block;"><svg class="MuiSvgIcon-root slick-arrows" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z"></path></svg></button><div class="slick-list"><div class="slick-track" style="width: 3096px; opacity: 1; transform: translate3d(0px, 0px, 0px);"><div data-index="0" class="slick-slide slick-active slick-current" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://magnetic-lowly-sodalite.glitch.me/ant-man%20and%20the%20wasp%20quantumania.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://posterspy.com/wp-content/uploads/2023/02/ANT-MAN_QUANTUMANIAv2.jpg" alt="Captain America: Civil War"></div></a></div></div></div><div data-index="1" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://skinny-warp-land.glitch.me/Les%20Gardiens%20de%20la%20galaxie%20Vol.3.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://whatsondisneyplus.b-cdn.net/wp-content/uploads/2022/07/loki-1024x576.jpg" alt="Doctor Strange"></div></a></div></div></div><div data-index="2" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="file:///D:/Disney++/Les%20Gardiens%20de%20la%20galaxie%20Vol.3.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://posterspy.com/wp-content/uploads/2023/06/guardians_3.jpg" alt="Guardians of the Galaxy Vol. 2"></div></a></div></div></div><div data-index="3" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://magnetic-lowly-sodalite.glitch.me/avengers%20l'%C3%A8re%20d'ultron.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/B828B85D669F0F3ECFE14931F45CE6C14039F276E19BFA85C9B96A5D027E4C7B/scale?width=1200&aspectRatio=1.78&format=jpeg" alt="Thor: Ragnarok"></div></a></div></div></div><div data-index="4" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://rectangular-humble-fear.glitch.me/Captain%20Marvel.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://posterspy.com/wp-content/uploads/2019/07/captainmarvelpster.png" alt="Black Panther"></div></a></div></div></div><div data-index="5" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/299536"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/mDfJG3LC3Dqb67AZ52x3Z0jU0uB.jpg" alt="Avengers: Infinity War"></div></a></div></div></div><div data-index="6" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/363088"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/iYdgEUE2W2aJkgqfSjf1x3gFfuV.jpg" alt="Ant-Man and the Wasp"></div></a></div></div></div><div data-index="7" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/299537"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/k5V2cbDZvYIu6BKIK0Q0KGyAUDB.jpg" alt="Captain Marvel"></div></a></div></div></div><div data-index="8" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/299534"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/7RyHsO4yDXtBv1zUU3mTpHeQ0d5.jpg" alt="Avengers: Endgame"></div></a></div></div></div></div></div></path></svg></button></div></article><article class="singleRow"><h2 class="singleRow__title">Spider-Verse</h2><div class="slick-slider singleRow__slider slick-initialized" dir="ltr"><button class="slick-arrow slick-prev slick-disabled" data-role="none" currentslide="0" slidecount="9" style="display: block;"><svg class="MuiSvgIcon-root slick-arrows" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z"></path></svg></button><div class="slick-list"><div class="slick-track" style="width: 3096px; opacity: 1; transform: translate3d(0px, 0px, 0px);"><div data-index="0" class="slick-slide slick-active slick-current" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="file:///G:/Disney++/Spider-Man%20NWH.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://cdn.wallpapersafari.com/30/28/2GuUqd.jpg" alt="Captain America: Civil War"></div></a></div></div></div><div data-index="1" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="file:///G:/Disney++/spider%20man%20home%20coming.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/BC43084FDE2395898283560F553EA284E5D9A65A3062564F9286891E0FD84F41/scale?width=1200&aspectRatio=1.78&format=jpeg" alt="Doctor Strange"></div></a></div></div></div><div data-index="2" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="file:///G:/Disney++/spider-man%20far%20from%20home.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/7791A92CA30EF9F51223B11EF62661ED67689005008D16B1876A97AE80964444/scale?width=1200&aspectRatio=1.78&format=jpeg" alt="Guardians of the Galaxy Vol. 2"></div></a></div></div></div><div data-index="3" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="file:///G:/Disney++/Spider%20Man%20into%20the%20Spider%20Verse.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/D737007B187C33D45A8AC88AF2C6586E255C7E71A5C334100C86E95BB6A7758F/scale?width=1200&aspectRatio=1.78&format=jpeg" alt="Thor: Ragnarok"></div></a></div></div></div><div data-index="4" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/284054"><div class="movieCard__container"><img class="movieCard__poster" src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/A4C5F4FE2BC34CE6202FF6F4E54DA2E0BA5425321AB6BB51B03921E3D60CC720/scale?width=1200&aspectRatio=1.78&format=jpeg" alt="Black Panther"></div></a></div></div></div><div data-index="5" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/299536"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/mDfJG3LC3Dqb67AZ52x3Z0jU0uB.jpg" alt="Avengers: Infinity War"></div></a></div></div></div><div data-index="6" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/363088"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/iYdgEUE2W2aJkgqfSjf1x3gFfuV.jpg" alt="Ant-Man and the Wasp"></div></a></div></div></div><div data-index="7" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/299537"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/k5V2cbDZvYIu6BKIK0Q0KGyAUDB.jpg" alt="Captain Marvel"></div></a></div></div></div><div data-index="8" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/299534"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/7RyHsO4yDXtBv1zUU3mTpHeQ0d5.jpg" alt="Avengers: Endgame"></div></a></div></div></div></div></div></div></article><article class="singleRow"><h2 class="singleRow__title">Marvel Series</h2><div class="slick-slider singleRow__slider slick-initialized" dir="ltr"><button class="slick-arrow slick-prev slick-disabled" data-role="none" currentslide="0" slidecount="9" style="display: block;"><svg class="MuiSvgIcon-root slick-arrows" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z"></path></svg></button><div class="slick-list"><div class="slick-track" style="width: 3096px; opacity: 1; transform: translate3d(0px, 0px, 0px);"><div data-index="0" class="slick-slide slick-active slick-current" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="file:///G:/Disney++/Secret%20Invasion.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/56FAEC39AEE955917C3CEF46B46AF1B25099548E893B178FBAF3F35C6E578CD9/scale?width=1200&aspectRatio=1.78&format=jpeg" alt="Captain America: Civil War"></div></a></div></div></div><div data-index="1" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="file:///G:/Disney++/What%20if.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/1B05A74E67C60E1EDC5F9D74213B1513A9DD6363313E37CAAF573AB7B7305ECC/scale?width=1200&aspectRatio=1.78&format=jpeg" alt="Doctor Strange"></div></a></div></div></div><div data-index="2" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="file:///G:/Disney++/Echo.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/8382B24FD9B14525C4C061FAAA6D7BA91FBEC359A9876A96B388A94BA8BAA317/scale?width=1200&aspectRatio=1.78&format=jpeg" alt="Guardians of the Galaxy Vol. 2"></div></a></div></div></div><div data-index="3" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/284053"><div class="movieCard__container"><img class="movieCard__poster" src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/F3BB30030947F6D88FAAC34A76E06BF9999B91AB2BAC2A84920B235D3CEDBCFA/scale?width=1200&aspectRatio=1.78&format=jpeg" alt="Thor: Ragnarok"></div></a></div></div></div><div data-index="4" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/284054"><div class="movieCard__container"><img class="movieCard__poster" src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/F5E7E617673DE73A2AF564A68B303168681C0A9F2C83205ED9126C6B4A79C17C/scale?width=1200&aspectRatio=1.78&format=jpeg" alt="Black Panther"></div></a></div></div></div><div data-index="5" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/299536"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/mDfJG3LC3Dqb67AZ52x3Z0jU0uB.jpg" alt="Avengers: Infinity War"></div></a></div></div></div><div data-index="6" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/363088"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/iYdgEUE2W2aJkgqfSjf1x3gFfuV.jpg" alt="Ant-Man and the Wasp"></div></a></div></div></div><div data-index="7" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/299537"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/k5V2cbDZvYIu6BKIK0Q0KGyAUDB.jpg" alt="Captain Marvel"></div></a></div></div></div><div data-index="8" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/299534"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/7RyHsO4yDXtBv1zUU3mTpHeQ0d5.jpg" alt="Avengers: Endgame"></div></a></div></div></div></div></div></article><article class="singleRow"><h2 class="singleRow__title">X-Men</h2><div class="slick-slider singleRow__slider slick-initialized" dir="ltr"><button class="slick-arrow slick-prev slick-disabled" data-role="none" currentslide="0" slidecount="9" style="display: block;"><svg class="MuiSvgIcon-root slick-arrows" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z"></path></svg></button><div class="slick-list"><div class="slick-track" style="width: 3096px; opacity: 1; transform: translate3d(0px, 0px, 0px);"><div data-index="0" class="slick-slide slick-active slick-current" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="file:///G:/Disney++/Secret%20Invasion.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/69EC10BBF7C495ED71E3868B08C3A184BF62570B5FB7EE33EB3D0C7F76440CAB/scale?width=1200&aspectRatio=1.78&format=jpeg" alt="Captain America: Civil War"></div></a></div></div></div><div data-index="1" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="file:///G:/Disney++/What%20if.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/58A5003873B70BF4AC3D6D49CB843B519BEA4DC247523E091BC6BFF94C37D0EF/scale?width=1200&amp;aspectRatio=1.78&amp;format=webp" alt="Doctor Strange"></div></a></div></div></div><div data-index="2" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://magnetic-lowly-sodalite.glitch.me/x-men%20day%20of%20future%20past.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/538E36C20FD81793563BCDB786A7572628A26F73911CBA7F850C80EBA00359A1/scale?width=1200&aspectRatio=1.78&format=jpeg" alt="Guardians of the Galaxy Vol. 2"></div></a></div></div></div><div data-index="3" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/284053"><div class="movieCard__container"><img class="movieCard__poster" src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/F8565E649381FF95779B712AC6F65A87EDF9EC614DF10E4D8519613BCBC59627/scale?width=1200&aspectRatio=1.78&format=jpeg" alt="Thor: Ragnarok"></div></a></div></div></div><div data-index="4" class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://magnetic-lowly-sodalite.glitch.me/x-men%20apocalypse.html"><div class="movieCard__container"><img class="movieCard__poster" src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/E98D13F91C06E25C7CE6DF8DBDF89862D9D193A8D0F24A04349A83C35F1101D7/scale?width=1200&aspectRatio=1.78&format=jpeg" alt="Black Panther"></div></a></div></div></div><div data-index="5" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/299536"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/mDfJG3LC3Dqb67AZ52x3Z0jU0uB.jpg" alt="Avengers: Infinity War"></div></a></div></div></div><div data-index="6" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/363088"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/iYdgEUE2W2aJkgqfSjf1x3gFfuV.jpg" alt="Ant-Man and the Wasp"></div></a></div></div></div><div data-index="7" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/299537"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/k5V2cbDZvYIu6BKIK0Q0KGyAUDB.jpg" alt="Captain Marvel"></div></a></div></div></div><div data-index="8" class="slick-slide" tabindex="-1" aria-hidden="true" style="outline: none; width: 344px;"><div><div class="movieCard "><a href="https://disneyplus-clone-f8077.web.app/play/299534"><div class="movieCard__container"><img class="movieCard__poster" src="./Marvel Page_files/7RyHsO4yDXtBv1zUU3mTpHeQ0d5.jpg" alt="Avengers: Endgame"></div></a></div></div></div></div></div></div></div></div></div>
