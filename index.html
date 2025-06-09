@@ -2018,11 +2018,9 @@ scrollbar-thumb:active {
             door.classList.toggle('open');
             
             if (isOpening) {
-                // Play sound when opening the door
+                // Play sound and redirect when opening the door, after animation completes (7s)
                 const audio = new Audio('https://www.soundjay.com/doors/door-creak-06.mp3');
                 audio.play().catch(() => console.log('Audio playback failed'));
-            } else {
-                // Redirect when closing the door, after animation completes (7s)
                 setTimeout(() => {
                     window.location.href = 'https://example.com';
                 }, 7000); // Matches the 7s transition duration in CSS
