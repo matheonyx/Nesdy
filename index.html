@@ -1980,41 +1980,56 @@ scrollbar-thumb:active {
 
   <pre>
 
-<link rel="stylesheet" href="https://matheonyx.github.io/style/style20.css">
-
-
-<div class="door-wrapper">
-    <div class="door-container" id="doorContainer">
-        <div class="background-portal">
-            <div class="portal-sparks"></div>
-        </div>
-        <div class="stone-frame">
-            <div class="stone-cracks"></div>
-        </div>
-        <div class="door" id="door">
-            <div class="stone-texture"></div>
-            <div class="runes"></div>
-            <div class="chains"></div>
-            <div class="flames"></div>
-            <div class="smoke"></div>
-            <div class="ashes"></div>
-            <div class="hinges hinge-top"></div>
-            <div class="hinges hinge-bottom"></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Door</title>
+    <link rel="stylesheet" href="https://matheonyx.github.io/style/style20.css">
+</head>
+<body>
+    <div class="door-wrapper">
+        <div class="door-container" id="doorContainer">
+            <div class="background-portal">
+                <div class="portal-sparks"></div>
+            </div>
+            <div class="stone-frame">
+                <div class="stone-cracks"></div>
+            </div>
+            <div class="door" id="door">
+                <div class="stone-texture"></div>
+                <div class="runes"></div>
+                <div class="chains"></div>
+                <div class="flames"></div>
+                <div class="smoke"></div>
+                <div class="ashes"></div>
+                <div class="hinges hinge-top"></div>
+                <div class="hinges hinge-bottom"></div>
+            </div>
         </div>
     </div>
-</div>
+    <script>
+        const door = document.getElementById('door');
+        const doorContainer = document.getElementById('doorContainer');
 
-<script>
-    const door = document.getElementById('door');
-    const doorContainer = document.getElementById('doorContainer');
-
-    doorContainer.addEventListener('click', () => {
-        door.classList.toggle('open');
-        if (door.classList.contains('open')) {
-            const audio = new Audio('https://www.soundjay.com/doors/door-creak-06.mp3');
-            audio.play().catch(() => console.log('Audio playback failed'));
-        }
-    });
-</script>
+        doorContainer.addEventListener('click', () => {
+            const isOpening = !door.classList.contains('open');
+            door.classList.toggle('open');
+            
+            if (isOpening) {
+                // Play sound when opening the door
+                const audio = new Audio('https://www.soundjay.com/doors/door-creak-06.mp3');
+                audio.play().catch(() => console.log('Audio playback failed'));
+            } else {
+                // Redirect when closing the door, after animation completes (7s)
+                setTimeout(() => {
+                    window.location.href = 'https://example.com';
+                }, 7000); // Matches the 7s transition duration in CSS
+            }
+        });
+    </script>
+</body>
+</html>
 
   </pre>
