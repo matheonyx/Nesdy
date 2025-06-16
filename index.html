@@ -2030,4 +2030,61 @@ scrollbar-thumb:active {
 </body>
 </html>
 
+
+    <!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Hey Meta LED</title>
+  <link rel="stylesheet" href="led.css">
+</head>
+<body>
+
+  <div class="led" id="led"></div>
+
+  <script>
+    const led = document.getElementById('led');
+
+    function activateLED() {
+      led.classList.add('active');
+      setTimeout(() => {
+        led.classList.remove('active');
+      }, 3000); // LED reste active pendant 3 secondes
+    }
+
+    // Activation par touche "m"
+    document.addEventListener('keydown', (e) => {
+      if (e.key.toLowerCase() === 'm') {
+        activateLED();
+      }
+    });
+
+    // Activation vocale avec "Hey Meta"
+    window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (window.SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = false;
+      recognition.lang = 'fr-FR';
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[event.results.length - 1][0].transcript.trim().toLowerCase();
+        if (transcript.includes('hey meta')) {
+          activateLED();
+        }
+      };
+
+      recognition.onerror = (e) => {
+        console.error('Erreur de reconnaissance vocale :', e.error);
+      };
+
+      recognition.start();
+    } else {
+      console.warn('La reconnaissance vocale n\'est pas supportée par ce navigateur.');
+    }
+  </script>
+</body>
+</html>
+
+
   </pre>
