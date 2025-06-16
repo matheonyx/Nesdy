@@ -2031,7 +2031,7 @@ scrollbar-thumb:active {
 </html>
 
 
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
@@ -2041,7 +2041,7 @@ scrollbar-thumb:active {
       margin: 0;
       padding: 0;
       background-color: #171717;
-      height: 3000px; /* pour tester le scroll */
+      height: 3000px;
       overflow-x: hidden;
     }
 
@@ -2070,22 +2070,44 @@ scrollbar-thumb:active {
 
   <script>
     const led = document.getElementById('led');
+    let commandMode = false;
 
     function activateLED() {
       led.classList.add('active');
+      commandMode = true;
+
       setTimeout(() => {
         led.classList.remove('active');
-      }, 3000); // LED reste active pendant 3 secondes
+        commandMode = false;
+      }, 3000);
     }
 
-    // Activation par touche "m"
+    // Définir les commandes vocales reconnues
+    const commandes = {
+      'mets mario': 'https://www.nintendo.com/fr-fr/Jeux/Super-Mario/',
+      'mets youtube': 'https://www.youtube.com/',
+      'mets google': 'https://www.google.com/',
+    };
+
+    // Fonction pour traiter une commande
+    function traiterCommande(texte) {
+      const phrase = texte.trim().toLowerCase();
+      for (const clé in commandes) {
+        if (phrase.includes(clé)) {
+          window.open(commandes[clé], '_blank');
+          break;
+        }
+      }
+    }
+
+    // Activation par la touche "m"
     document.addEventListener('keydown', (e) => {
       if (e.key.toLowerCase() === 'm') {
         activateLED();
       }
     });
 
-    // Activation vocale avec "Hey Meta"
+    // Activation vocale "Hey Meta" et commandes
     window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (window.SpeechRecognition) {
       const recognition = new SpeechRecognition();
@@ -2095,8 +2117,11 @@ scrollbar-thumb:active {
 
       recognition.onresult = (event) => {
         const transcript = event.results[event.results.length - 1][0].transcript.trim().toLowerCase();
+        
         if (transcript.includes('hey meta')) {
           activateLED();
+        } else if (commandMode) {
+          traiterCommande(transcript);
         }
       };
 
@@ -2111,6 +2136,7 @@ scrollbar-thumb:active {
   </script>
 </div>
 </html>
+
 
 
 
