@@ -2031,15 +2031,41 @@ scrollbar-thumb:active {
 </html>
 
 
-    <!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
   <title>Hey Meta LED</title>
-  <link rel="stylesheet" href="led.css">
-</head>
-<body>
+  <style>
+    html {
+      margin: 0;
+      padding: 0;
+      background-color: #171717;
+      height: 3000px; /* pour tester le scroll */
+      overflow-x: hidden;
+    }
 
+    .led {
+      position: fixed;
+      top: 40px;
+      right: calc(50vw - 250px);
+      width: 12px;
+      height: 12px;
+      background-color: white;
+      border-radius: 50%;
+      box-shadow: 0 0 0 rgba(255,255,255,0);
+      transition: box-shadow 0.3s ease, opacity 0.3s ease;
+      opacity: 0;
+      z-index: 9999;
+    }
+
+    .led.active {
+      opacity: 1;
+      box-shadow: 0 0 8px 4px rgba(255,255,255,0.8);
+    }
+  </style>
+</head>
+<div id="app">
   <div class="led" id="led"></div>
 
   <script>
@@ -2083,8 +2109,9 @@ scrollbar-thumb:active {
       console.warn('La reconnaissance vocale n\'est pas supportée par ce navigateur.');
     }
   </script>
-</body>
+</div>
 </html>
+
 
 
   </pre>
