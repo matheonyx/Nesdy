@@ -2035,20 +2035,21 @@ scrollbar-thumb:active {
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Hey Meta LED</title>
+  <title>Hey Meta - IA Streaming</title>
   <style>
     html {
       margin: 0;
       padding: 0;
-      background-color: #171717;
+      background-color: #121212;
       height: 3000px;
       overflow-x: hidden;
+      font-family: sans-serif;
     }
 
     .led {
       position: fixed;
       top: 40px;
-      right: calc(50vw - 250px);
+      right: calc(50vw - 200px);
       width: 12px;
       height: 12px;
       background-color: white;
@@ -2071,77 +2072,82 @@ scrollbar-thumb:active {
   <script>
     const led = document.getElementById('led');
     let commandMode = false;
+    let commandTimer;
 
     function activateLED() {
       led.classList.add('active');
       commandMode = true;
-
-      setTimeout(() => {
+      clearTimeout(commandTimer);
+      commandTimer = setTimeout(() => {
         led.classList.remove('active');
         commandMode = false;
-      }, 3000);
+      }, 6000);
     }
 
-    const commandesSites = {
-      'mets mario': 'https://www.nintendo.com/fr-fr/Jeux/Super-Mario/',
-      'mets youtube': 'https://www.youtube.com/',
-      'mets google': 'https://www.google.com/',
-    };
+    function traiterCommande(phrase) {
+      const p = phrase.toLowerCase().trim();
 
-    function traiterCommande(texte) {
-      const phrase = texte.trim().toLowerCase();
-
-      // Scroll
-      if (phrase.includes('scroll en bas')) {
-        window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+      // Navigation interne
+      if (p.includes('lance film action')) {
+        window.location.href = '/films?genre=action';
+        return;
+      }
+      if (p.includes('lance comédie')) {
+        window.location.href = '/films?genre=comédie';
+        return;
+      }
+      if (p.includes('lance séries') || p.includes('lance série')) {
+        window.location.href = '/series';
+        return;
+      }
+      if (p.includes('film aléatoire')) {
+        window.location.href = '/random';
+        return;
+      }
+      if (p.includes('recherche')) {
+        const terme = p.split('recherche')[1]?.trim();
+        if (terme) {
+          window.location.href = `/search?q=${encodeURIComponent(terme)}`;
+        }
         return;
       }
 
-      if (phrase.includes('scroll en haut')) {
+      // Utilitaires
+      if (p.includes('scroll en bas')) {
+        window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+        return;
+      }
+      if (p.includes('scroll en haut')) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
         return;
       }
 
-      // Changement de fond
-      if (phrase.includes('augmente la luminosité')) {
-        document.documentElement.style.backgroundColor = '#444'; // gris plus clair
+      if (p.includes('augmente la luminosité')) {
+        document.documentElement.style.backgroundColor = '#444';
+        return;
+      }
+      if (p.includes('réduis la luminosité')) {
+        document.documentElement.style.backgroundColor = '#121212';
         return;
       }
 
-      if (phrase.includes('réduis la luminosité')) {
-        document.documentElement.style.backgroundColor = '#171717'; // fond sombre
-        return;
-      }
-
-      // Heure actuelle
-      if (phrase.includes('montre l\'heure') || phrase.includes("quelle heure est-il")) {
+      if (p.includes('montre l\'heure') || p.includes('quelle heure')) {
         const now = new Date();
         alert(`Il est ${now.getHours()}h${now.getMinutes().toString().padStart(2, '0')}`);
         return;
       }
 
-      // Recharge
-      if (phrase.includes('recharge la page')) {
+      if (p.includes('recharge la page')) {
         location.reload();
         return;
       }
 
-      // Fermer l'onglet
-      if (phrase.includes('ferme l\'onglet')) {
+      if (p.includes('ferme l\'onglet')) {
         window.close();
         return;
       }
-
-      // Commandes de navigation
-      for (const clé in commandesSites) {
-        if (phrase.includes(clé)) {
-          window.open(commandesSites[clé], '_blank');
-          return;
-        }
-      }
     }
 
-    // Activation par touche "m"
     document.addEventListener('keydown', (e) => {
       if (e.key.toLowerCase() === 'm') {
         activateLED();
@@ -2157,26 +2163,27 @@ scrollbar-thumb:active {
       recognition.lang = 'fr-FR';
 
       recognition.onresult = (event) => {
-        const transcript = event.results[event.results.length - 1][0].transcript.trim().toLowerCase();
+        const phrase = event.results[event.results.length - 1][0].transcript.trim().toLowerCase();
 
-        if (transcript.includes('hey meta')) {
+        if (phrase.includes('hey meta')) {
           activateLED();
         } else if (commandMode) {
-          traiterCommande(transcript);
+          traiterCommande(phrase);
         }
       };
 
       recognition.onerror = (e) => {
-        console.error('Erreur de reconnaissance vocale :', e.error);
+        console.error('Erreur vocale :', e.error);
       };
 
       recognition.start();
     } else {
-      console.warn('La reconnaissance vocale n\'est pas supportée par ce navigateur.');
+      console.warn('La reconnaissance vocale n’est pas supportée sur ce navigateur.');
     }
   </script>
 </div>
 </html>
+
 
 
 
