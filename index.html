@@ -2049,7 +2049,7 @@ scrollbar-thumb:active {
     .led {
       position: fixed;
       top: 40px;
-      right: calc(50vw - 200px);
+      left: 40px;
       width: 12px;
       height: 12px;
       background-color: white;
@@ -2100,7 +2100,6 @@ scrollbar-thumb:active {
     function traiterCommande(phrase) {
       const p = phrase.toLowerCase().trim();
 
-      // "Mets" un film spécifique
       if (p.startsWith("mets ")) {
         const titre = p.replace("mets", "").trim();
         for (let nom in filmsDispo) {
@@ -2111,7 +2110,6 @@ scrollbar-thumb:active {
         }
       }
 
-      // Recherche
       if (p.startsWith("recherche ")) {
         const terme = p.replace("recherche", "").trim();
         if (terme) {
@@ -2120,7 +2118,6 @@ scrollbar-thumb:active {
         }
       }
 
-      // Catégories
       if (p.includes("film action")) {
         window.location.href = '/films?genre=action';
         return;
@@ -2139,7 +2136,6 @@ scrollbar-thumb:active {
         return;
       }
 
-      // Scroll
       if (p.includes("scroll en bas")) {
         window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
         return;
@@ -2149,7 +2145,6 @@ scrollbar-thumb:active {
         return;
       }
 
-      // Thème
       if (p.includes("augmente la luminosité")) {
         document.documentElement.style.backgroundColor = '#444';
         return;
@@ -2159,7 +2154,6 @@ scrollbar-thumb:active {
         return;
       }
 
-      // Outils
       if (p.includes("montre l'heure") || p.includes("quelle heure")) {
         const now = new Date();
         alert(`Il est ${now.getHours()}h${now.getMinutes().toString().padStart(2, '0')}`);
@@ -2211,6 +2205,7 @@ scrollbar-thumb:active {
   </script>
 </div>
 </html>
+
 
 
 
