@@ -2082,20 +2082,32 @@ scrollbar-thumb:active {
       }, 3000);
     }
 
-    // Définir les commandes vocales reconnues
+    // Commandes pour ouvrir des sites
     const commandes = {
       'mets mario': 'https://www.nintendo.com/fr-fr/Jeux/Super-Mario/',
       'mets youtube': 'https://www.youtube.com/',
-      'mets google': 'https://www.google.com/',
+      'mets google': 'https://www.google.com/'
     };
 
-    // Fonction pour traiter une commande
     function traiterCommande(texte) {
       const phrase = texte.trim().toLowerCase();
+
+      // Commandes de scroll
+      if (phrase.includes('scroll en bas')) {
+        window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+        return;
+      }
+
+      if (phrase.includes('scroll en haut')) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+
+      // Commandes de navigation
       for (const clé in commandes) {
         if (phrase.includes(clé)) {
           window.open(commandes[clé], '_blank');
-          break;
+          return;
         }
       }
     }
@@ -2107,7 +2119,7 @@ scrollbar-thumb:active {
       }
     });
 
-    // Activation vocale "Hey Meta" et commandes
+    // Reconnaissance vocale
     window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (window.SpeechRecognition) {
       const recognition = new SpeechRecognition();
@@ -2136,6 +2148,7 @@ scrollbar-thumb:active {
   </script>
 </div>
 </html>
+
 
 
 
