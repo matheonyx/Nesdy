@@ -2085,30 +2085,33 @@ scrollbar-thumb:active {
     }
 
     const filmsDispo = {
-      "avatar": "avatar",
-      "inception": "inception",
-      "spider-man": "spider-man",
-      "le seigneur des anneaux": "le-seigneur-des-anneaux",
-      "interstellar": "interstellar",
-      "oppenheimer": "oppenheimer",
-      "matrix": "matrix"
+      "avatar": "/film/avatar",
+      "inception": "/film/inception",
+      "spider-man": "/film/spider-man",
+      "le seigneur des anneaux": "/film/le-seigneur-des-anneaux",
+      "interstellar": "/film/interstellar",
+      "oppenheimer": "/film/oppenheimer",
+      "matrix": "/film/matrix",
+      "dragons 1": "https://filemoon.to/e/bzxpk9pbol1x/",
+      "dragons 2": "https://matheonyx.github.io/Nesdy/dragons%202",
+      "dragons 3": "https://filemoon-t8c715ke.com/e/2hjfjo51vog7/"
     };
 
     function traiterCommande(phrase) {
       const p = phrase.toLowerCase().trim();
 
-      // Commandes film direct
+      // "Mets" un film spécifique
       if (p.startsWith("mets ")) {
         const titre = p.replace("mets", "").trim();
         for (let nom in filmsDispo) {
           if (titre.includes(nom)) {
-            window.location.href = `/film/${filmsDispo[nom]}`;
+            window.location.href = filmsDispo[nom];
             return;
           }
         }
       }
 
-      // Recherche générique
+      // Recherche
       if (p.startsWith("recherche ")) {
         const terme = p.replace("recherche", "").trim();
         if (terme) {
@@ -2117,7 +2120,7 @@ scrollbar-thumb:active {
         }
       }
 
-      // Genres ou catégories
+      // Catégories
       if (p.includes("film action")) {
         window.location.href = '/films?genre=action';
         return;
@@ -2136,7 +2139,7 @@ scrollbar-thumb:active {
         return;
       }
 
-      // Navigation
+      // Scroll
       if (p.includes("scroll en bas")) {
         window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
         return;
@@ -2156,7 +2159,7 @@ scrollbar-thumb:active {
         return;
       }
 
-      // Utilitaires
+      // Outils
       if (p.includes("montre l'heure") || p.includes("quelle heure")) {
         const now = new Date();
         alert(`Il est ${now.getHours()}h${now.getMinutes().toString().padStart(2, '0')}`);
@@ -2208,6 +2211,7 @@ scrollbar-thumb:active {
   </script>
 </div>
 </html>
+
 
 
 
