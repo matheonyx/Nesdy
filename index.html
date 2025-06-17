@@ -2035,7 +2035,7 @@ scrollbar-thumb:active {
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Hey Meta - IA Streaming</title>
+  <title>Hey Meta - Streaming IA</title>
   <style>
     html {
       margin: 0;
@@ -2084,65 +2084,91 @@ scrollbar-thumb:active {
       }, 6000);
     }
 
+    const filmsDispo = {
+      "avatar": "avatar",
+      "inception": "inception",
+      "spider-man": "spider-man",
+      "le seigneur des anneaux": "le-seigneur-des-anneaux",
+      "interstellar": "interstellar",
+      "oppenheimer": "oppenheimer",
+      "matrix": "matrix"
+    };
+
     function traiterCommande(phrase) {
       const p = phrase.toLowerCase().trim();
 
-      // Navigation interne
-      if (p.includes('lance film action')) {
+      // Commandes film direct
+      if (p.startsWith("mets ")) {
+        const titre = p.replace("mets", "").trim();
+        for (let nom in filmsDispo) {
+          if (titre.includes(nom)) {
+            window.location.href = `/film/${filmsDispo[nom]}`;
+            return;
+          }
+        }
+      }
+
+      // Recherche générique
+      if (p.startsWith("recherche ")) {
+        const terme = p.replace("recherche", "").trim();
+        if (terme) {
+          window.location.href = `/search?q=${encodeURIComponent(terme)}`;
+          return;
+        }
+      }
+
+      // Genres ou catégories
+      if (p.includes("film action")) {
         window.location.href = '/films?genre=action';
         return;
       }
-      if (p.includes('lance comédie')) {
+      if (p.includes("lance comédie")) {
         window.location.href = '/films?genre=comédie';
         return;
       }
-      if (p.includes('lance séries') || p.includes('lance série')) {
+      if (p.includes("lance séries") || p.includes("lance série")) {
         window.location.href = '/series';
         return;
       }
-      if (p.includes('film aléatoire')) {
+
+      if (p.includes("film aléatoire")) {
         window.location.href = '/random';
         return;
       }
-      if (p.includes('recherche')) {
-        const terme = p.split('recherche')[1]?.trim();
-        if (terme) {
-          window.location.href = `/search?q=${encodeURIComponent(terme)}`;
-        }
-        return;
-      }
 
-      // Utilitaires
-      if (p.includes('scroll en bas')) {
+      // Navigation
+      if (p.includes("scroll en bas")) {
         window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
         return;
       }
-      if (p.includes('scroll en haut')) {
+      if (p.includes("scroll en haut")) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
         return;
       }
 
-      if (p.includes('augmente la luminosité')) {
+      // Thème
+      if (p.includes("augmente la luminosité")) {
         document.documentElement.style.backgroundColor = '#444';
         return;
       }
-      if (p.includes('réduis la luminosité')) {
+      if (p.includes("réduis la luminosité")) {
         document.documentElement.style.backgroundColor = '#121212';
         return;
       }
 
-      if (p.includes('montre l\'heure') || p.includes('quelle heure')) {
+      // Utilitaires
+      if (p.includes("montre l'heure") || p.includes("quelle heure")) {
         const now = new Date();
         alert(`Il est ${now.getHours()}h${now.getMinutes().toString().padStart(2, '0')}`);
         return;
       }
 
-      if (p.includes('recharge la page')) {
+      if (p.includes("recharge la page")) {
         location.reload();
         return;
       }
 
-      if (p.includes('ferme l\'onglet')) {
+      if (p.includes("ferme l'onglet")) {
         window.close();
         return;
       }
@@ -2154,7 +2180,6 @@ scrollbar-thumb:active {
       }
     });
 
-    // Reconnaissance vocale
     window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (window.SpeechRecognition) {
       const recognition = new SpeechRecognition();
@@ -2178,7 +2203,7 @@ scrollbar-thumb:active {
 
       recognition.start();
     } else {
-      console.warn('La reconnaissance vocale n’est pas supportée sur ce navigateur.');
+      console.warn('Reconnaissance vocale non supportée.');
     }
   </script>
 </div>
