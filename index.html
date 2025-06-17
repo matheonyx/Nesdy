@@ -2065,93 +2065,49 @@ scrollbar-thumb:active {
     }
   </style>
 </head>
-<body>
 <div id="app">
   <div class="led" id="led"></div>
-  <div id="log" style="position:fixed;bottom:20px;left:20px;color:#fff;background:#222;padding:8px 16px;border-radius:6px;font-size:15px;z-index:9999;max-width:80vw;max-height:30vh;overflow:auto;"></div>
+
   <script>
-    // --- Elements
     const led = document.getElementById('led');
-    const logDiv = document.getElementById('log');
-
-    // --- State
     let commandMode = false;
-    let commandTimeout = null;
-    let lastTranscript = '';
-    let listening = false;
 
-    // --- Helper: Logging
-    function log(msg) {
-      logDiv.innerHTML = (msg ? msg + '<br>' : '') + logDiv.innerHTML;
-      // Limit log size
-      if (logDiv.innerHTML.length > 4000) logDiv.innerHTML = logDiv.innerHTML.slice(0, 4000);
-    }
-
-    // --- LED Activation
     function activateLED() {
       led.classList.add('active');
       commandMode = true;
-      clearTimeout(commandTimeout);
-      commandTimeout = setTimeout(() => {
+
+      setTimeout(() => {
         led.classList.remove('active');
         commandMode = false;
-        log('(Mode commande terminé)');
-      }, 6000); // Allonge le temps à 6s pour + confort
-      log('(Mode commande activé)');
+      }, 3000);
     }
 
-    // --- Commandes vocales configurables
+    // Définir les commandes vocales reconnues
     const commandes = {
-      'mets mario': () => window.open('https://www.nintendo.com/fr-fr/Jeux/Super-Mario/', '_blank'),
-      'mets youtube': () => window.open('https://www.youtube.com/', '_blank'),
-      'mets google': () => window.open('https://www.google.com/', '_blank'),
-      'scrolle en bas': () => window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'}),
-      'scrolle en haut': () => window.scrollTo({top: 0, behavior: 'smooth'}),
-      'mode sombre': () => { document.body.style.backgroundColor = "#171717"; log("🌙 Mode sombre activé"); },
-      'mode clair': () => { document.body.style.backgroundColor = "#f5f5f5"; log("☀️ Mode clair activé"); },
-      'rafraîchis la page': () => location.reload(),
-      'quelle heure est-il': () => {
-        const now = new Date();
-        speak(`Il est ${now.getHours()} heures ${now.getMinutes()}`);
-        log(`🕒 ${now.toLocaleTimeString()}`);
-      }
+      'mets mario': 'https://www.nintendo.com/fr-fr/Jeux/Super-Mario/',
+      'mets youtube': 'https://www.youtube.com/',
+      'mets google': 'https://www.google.com/',
     };
 
-    // --- Parole synthétique
-    function speak(text) {
-      if ('speechSynthesis' in window) {
-        const utter = new SpeechSynthesisUtterance(text);
-        utter.lang = 'fr-FR';
-        speechSynthesis.speak(utter);
-      }
-    }
-
-    // --- Traiter une commande
+    // Fonction pour traiter une commande
     function traiterCommande(texte) {
       const phrase = texte.trim().toLowerCase();
-      let found = false;
       for (const clé in commandes) {
         if (phrase.includes(clé)) {
-          commandes[clé]();
-          log("Commande reconnue : " + clé);
-          found = true;
+          window.open(commandes[clé], '_blank');
           break;
         }
       }
-      if (!found) {
-        log("Commande non reconnue : " + phrase);
-        speak("Commande non reconnue");
-      }
     }
 
-    // --- Activation clavier : touche 'm'
+    // Activation par la touche "m"
     document.addEventListener('keydown', (e) => {
-      if (e.key.toLowerCase() === 'm' && !commandMode) {
+      if (e.key.toLowerCase() === 'm') {
         activateLED();
       }
     });
 
-    // --- Activation vocale "Hey Meta" et commandes
+    // Activation vocale "Hey Meta" et commandes
     window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (window.SpeechRecognition) {
       const recognition = new SpeechRecognition();
@@ -2161,49 +2117,26 @@ scrollbar-thumb:active {
 
       recognition.onresult = (event) => {
         const transcript = event.results[event.results.length - 1][0].transcript.trim().toLowerCase();
-        lastTranscript = transcript;
+        
         if (transcript.includes('hey meta')) {
           activateLED();
-          speak("Oui ? J'écoute votre commande.");
         } else if (commandMode) {
           traiterCommande(transcript);
         }
       };
 
       recognition.onerror = (e) => {
-        log('Erreur de reconnaissance vocale : ' + e.error);
-      };
-
-      recognition.onstart = () => {
-        listening = true;
-        log('🎤 Reconnaissance vocale démarrée');
-      };
-
-      recognition.onend = () => {
-        listening = false;
-        log('🎤 Reconnaissance vocale stoppée, redémarrage...');
-        setTimeout(() => recognition.start(), 600); // Redémarre automatiquement
+        console.error('Erreur de reconnaissance vocale :', e.error);
       };
 
       recognition.start();
     } else {
-      log('La reconnaissance vocale n\'est pas supportée par ce navigateur.');
+      console.warn('La reconnaissance vocale n\'est pas supportée par ce navigateur.');
     }
-
-    // --- Bonus : bouton test vocal
-    const btnTest = document.createElement('button');
-    btnTest.textContent = 'Test vocal (dire: "Hey Meta ...")';
-    btnTest.style = 'position:fixed;bottom:70px;left:20px;z-index:10000;font-size:1rem;padding:8px 12px;';
-    btnTest.onclick = () => speak("Dites: Hey Meta puis votre commande.");
-    document.body.appendChild(btnTest);
-
-    // --- Info utilisateur
-    log('Dites "Hey Meta" puis une commande, ou appuyez sur la touche "m".<br>');
-    log('Commandes disponibles :<br>' + Object.keys(commandes).map(c => '- ' + c).join('<br>'));
   </script>
 </div>
-</body>
 </html>
+
 
 
 
