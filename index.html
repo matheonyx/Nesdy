@@ -2082,17 +2082,16 @@ scrollbar-thumb:active {
       }, 3000);
     }
 
-    // Commandes pour ouvrir des sites
-    const commandes = {
+    const commandesSites = {
       'mets mario': 'https://www.nintendo.com/fr-fr/Jeux/Super-Mario/',
       'mets youtube': 'https://www.youtube.com/',
-      'mets google': 'https://www.google.com/'
+      'mets google': 'https://www.google.com/',
     };
 
     function traiterCommande(texte) {
       const phrase = texte.trim().toLowerCase();
 
-      // Commandes de scroll
+      // Scroll
       if (phrase.includes('scroll en bas')) {
         window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
         return;
@@ -2103,16 +2102,46 @@ scrollbar-thumb:active {
         return;
       }
 
+      // Changement de fond
+      if (phrase.includes('augmente la luminosité')) {
+        document.documentElement.style.backgroundColor = '#444'; // gris plus clair
+        return;
+      }
+
+      if (phrase.includes('réduis la luminosité')) {
+        document.documentElement.style.backgroundColor = '#171717'; // fond sombre
+        return;
+      }
+
+      // Heure actuelle
+      if (phrase.includes('montre l\'heure') || phrase.includes("quelle heure est-il")) {
+        const now = new Date();
+        alert(`Il est ${now.getHours()}h${now.getMinutes().toString().padStart(2, '0')}`);
+        return;
+      }
+
+      // Recharge
+      if (phrase.includes('recharge la page')) {
+        location.reload();
+        return;
+      }
+
+      // Fermer l'onglet
+      if (phrase.includes('ferme l\'onglet')) {
+        window.close();
+        return;
+      }
+
       // Commandes de navigation
-      for (const clé in commandes) {
+      for (const clé in commandesSites) {
         if (phrase.includes(clé)) {
-          window.open(commandes[clé], '_blank');
+          window.open(commandesSites[clé], '_blank');
           return;
         }
       }
     }
 
-    // Activation par la touche "m"
+    // Activation par touche "m"
     document.addEventListener('keydown', (e) => {
       if (e.key.toLowerCase() === 'm') {
         activateLED();
@@ -2129,7 +2158,7 @@ scrollbar-thumb:active {
 
       recognition.onresult = (event) => {
         const transcript = event.results[event.results.length - 1][0].transcript.trim().toLowerCase();
-        
+
         if (transcript.includes('hey meta')) {
           activateLED();
         } else if (commandMode) {
@@ -2148,6 +2177,7 @@ scrollbar-thumb:active {
   </script>
 </div>
 </html>
+
 
 
 
