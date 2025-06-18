@@ -1,4 +1,102 @@
 <!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Bouton Disney++</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #1e1e1e;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .btn-container {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9999;
+    }
+
+    .btn-plus {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 9999px;
+      background-color: #373669;
+      padding: 6px 14px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #DCDBF6;
+      cursor: pointer;
+      border: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-plus:hover {
+      background-color: #414071;
+    }
+
+    .btn-plus svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    .highlight-plus {
+      color: #FFD700;
+    }
+
+    .popup-content {
+      position: fixed;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #2e2e2e;
+      color: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+      z-index: 9998;
+      max-width: 90%;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="btn-container">
+    <button class="btn-plus" onclick="openPopup()">
+      <svg viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17.665 10C17.665 10.6877 17.1785 11.2454 16.5488 11.3945L16.4219 11.4189C14.7098 11.6665 13.6129 12.1305 12.877 12.8623C12.1414 13.5938 11.6742 14.6843 11.4238 16.3887C11.3197 17.0973 10.7182 17.665 9.96484 17.665C9.27085 17.665 8.68836 17.1772 8.53613 16.5215C8.12392 14.7459 7.6623 13.619 6.95703 12.8652C6.31314 12.1772 5.39414 11.7268 3.88672 11.4688L3.57715 11.4199C2.88869 11.319 2.33496 10.734 2.33496 10C2.33496 9.26603 2.88869 8.681 3.57715 8.58008L3.88672 8.53125C5.39414 8.27321 6.31314 7.82277 6.95703 7.13477C7.6623 6.38104 8.12392 5.25413 8.53613 3.47852L8.56934 3.35742C8.76133 2.76356 9.31424 2.33496 9.96484 2.33496C10.7182 2.33497 11.3197 2.9027 11.4238 3.61133L11.5283 4.22266C11.7954 5.58295 12.2334 6.49773 12.877 7.1377C13.6129 7.86952 14.7098 8.33351 16.4219 8.58105C17.1119 8.68101 17.665 9.26667 17.665 10Z" />
+      </svg>
+      Obtenir Disney<span class="highlight-plus">++</span>
+    </button>
+  </div>
+
+  <div id="popup" class="popup-content">
+    <h2>Bienvenue sur Disney++</h2>
+    <p>Contenu chargé sans rechargement de la page.</p>
+    <button onclick="closePopup()" style="margin-top:10px;padding:6px 12px;border:none;border-radius:6px;background:#444;color:#fff;cursor:pointer;">Fermer</button>
+  </div>
+
+  <script>
+    function openPopup() {
+      document.getElementById('popup').style.display = 'block';
+    }
+
+    function closePopup() {
+      document.getElementById('popup').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
+
+
+
+
+<!DOCTYPE html>
 <!-- saved from url=(0030)https://www.netflix.com/browse -->
 <html lang="fr" class="t_33e568 t_5c6351 t_510ca7 t_17d527 t_75f67f t_89d625 js-focus-visible" data-js-focus-visible=""><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>Choisissez votre profil | Disney++</title><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="google" value="notranslate"><meta http-equiv="origin-trial" data-feature="xHE-AAC Support for Edge on Windows" data-expires="2022-11-24" content="AtrVJIWfP3HQ0wJbK5+/AfAfbjspcXNBx4zOSTfF6abwGQywGcPegA/SW9fOkiu/5Hr4ojiwxP7fVSEDiWQiJL0AAABzeyJvcmlnaW4iOiJodHRwczovL3d3dy5uZXRmbGl4LmNvbTo0NDMiLCJpc1N1YmRvbWFpbiI6dHJ1ZSwiZmVhdHVyZSI6Ik1zTWVkaWFGb3VuZGF0aW9uWEhlQWFjIiwiZXhwaXJ5IjoxNjk2MTE4NDAwfQ=="><link type="text/css" rel="stylesheet" href="https://matheonyx.github.io/style/akira.css" data-uia="botLink"><link rel="shortcut icon" href="https://static-mh.content.disney.io/matterhorn/assets/favicon-94e3862e7fb9.ico"><script src="./Choisir votre profil_files/cast_sender.js.téléchargement"></script><script type="text/javascript" charset="UTF-8" src="./Choisir votre profil_files/otSDKStub.js.téléchargement" data-document-language="true" data-domain-script="87b6a5c0-0104-4e96-a291-092c11350111"></script><script type="text/javascript">function OptanonWrapper() {};</script><script>/* Disable minification (remove `.min` from URL path) for more info */
 
