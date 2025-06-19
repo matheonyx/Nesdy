@@ -2053,20 +2053,8 @@ scrollbar-thumb:active {
       height: 100%;
       border: 8px solid transparent;
       opacity: 0;
-      box-shadow: 
-        0 0 30px 15px rgba(90, 146, 214, 0.7),
-        0 0 50px 25px rgba(123, 109, 203, 0.6),
-        0 0 70px 35px rgba(160, 93, 181, 0.5),
-        0 0 90px 45px rgba(193, 87, 161, 0.4),
-        0 0 110px 55px rgba(219, 95, 120, 0.3),
-        0 0 130px 65px rgba(229, 112, 80, 0.2),
-        0 0 150px 75px rgba(234, 119, 51, 0.1);
-      animation: appleGlowAnimation 2.5s ease-out;
       pointer-events: none;
       z-index: 9999;
-    }
-
-    .led.active {
       animation: appleGlowAnimation 2.5s ease-out;
     }
 
@@ -2094,148 +2082,158 @@ scrollbar-thumb:active {
 </head>
 <body>
   <div id="app">
-    <div class="led" id="led"></div>
+    <!-- LED container here -->
+  </div>
 
-    <script>
-      const led = document.getElementById('led');
-      let commandMode = false;
-      let commandTimer;
+  <script>
+    const app = document.getElementById('app');
+    let commandMode = false;
+    let commandTimer;
 
-      function activateLED() {
-        // Redémarre l'animation
-        led.classList.remove('active');
-        void led.offsetWidth; // Force le reflow pour redémarrer l'animation
-        led.classList.add('active');
+    function createLEDAnimation() {
+      const led = document.createElement('div');
+      led.className = 'led';
+      app.appendChild(led);
 
-        commandMode = true;
-        clearTimeout(commandTimer);
-        commandTimer = setTimeout(() => {
-          commandMode = false;
-        }, 6000);
-      }
+      // Supprimer l'élément après la durée de l'animation (2.5s)
+      setTimeout(() => {
+        app.removeChild(led);
+      }, 2600);
+    }
 
-      const filmsDispo = {
-        "avatar": "/film/avatar",
-        "inception": "/film/inception",
-        "spider-man": "/film/spider-man",
-        "le seigneur des anneaux": "/film/le-seigneur-des-anneaux",
-        "interstellar": "/film/interstellar",
-        "oppenheimer": "/film/oppenheimer",
-        "matrix": "/film/matrix",
-        "dragons 1": "https://filemoon.to/e/bzxpk9pbol1x/",
-        "dragons 2": "https://matheonyx.github.io/Nesdy/dragons%202",
-        "dragons 3": "https://filemoon-t8c715ke.com/e/2hjfjo51vog7/"
-      };
+    function activateLED() {
+      createLEDAnimation();
+      commandMode = true;
+      clearTimeout(commandTimer);
+      commandTimer = setTimeout(() => {
+        commandMode = false;
+      }, 6000);
+    }
 
-      function traiterCommande(phrase) {
-        const p = phrase.toLowerCase().trim();
+    // Reconnaissance vocale et commandes (inchangées)
+    const filmsDispo = {
+      "avatar": "/film/avatar",
+      "inception": "/film/inception",
+      "spider-man": "/film/spider-man",
+      "le seigneur des anneaux": "/film/le-seigneur-des-anneaux",
+      "interstellar": "/film/interstellar",
+      "oppenheimer": "/film/oppenheimer",
+      "matrix": "/film/matrix",
+      "dragons 1": "https://filemoon.to/e/bzxpk9pbol1x/",
+      "dragons 2": "https://matheonyx.github.io/Nesdy/dragons%202",
+      "dragons 3": "https://filemoon-t8c715ke.com/e/2hjfjo51vog7/"
+    };
 
-        if (p.startsWith("mets ")) {
-          const titre = p.replace("mets", "").trim();
-          for (let nom in filmsDispo) {
-            if (titre.includes(nom)) {
-              window.location.href = filmsDispo[nom];
-              return;
-            }
-          }
-        }
+    function traiterCommande(phrase) {
+      const p = phrase.toLowerCase().trim();
 
-        if (p.startsWith("recherche ")) {
-          const terme = p.replace("recherche", "").trim();
-          if (terme) {
-            window.location.href = `/search?q=${encodeURIComponent(terme)}`;
+      if (p.startsWith("mets ")) {
+        const titre = p.replace("mets", "").trim();
+        for (let nom in filmsDispo) {
+          if (titre.includes(nom)) {
+            window.location.href = filmsDispo[nom];
             return;
           }
         }
+      }
 
-        if (p.includes("film action")) {
-          window.location.href = '/films?genre=action';
-          return;
-        }
-        if (p.includes("lance comédie")) {
-          window.location.href = '/films?genre=comédie';
-          return;
-        }
-        if (p.includes("lance séries") || p.includes("lance série")) {
-          window.location.href = '/series';
-          return;
-        }
-
-        if (p.includes("film aléatoire")) {
-          window.location.href = '/random';
-          return;
-        }
-
-        if (p.includes("scroll en bas")) {
-          window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
-          return;
-        }
-        if (p.includes("scroll en haut")) {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-          return;
-        }
-
-        if (p.includes("augmente la luminosité")) {
-          document.documentElement.style.backgroundColor = '#444';
-          return;
-        }
-        if (p.includes("réduis la luminosité")) {
-          document.documentElement.style.backgroundColor = '#121212';
-          return;
-        }
-
-        if (p.includes("montre l'heure") || p.includes("quelle heure")) {
-          const now = new Date();
-          alert(`Il est ${now.getHours()}h${now.getMinutes().toString().padStart(2, '0')}`);
-          return;
-        }
-
-        if (p.includes("recharge la page")) {
-          location.reload();
-          return;
-        }
-
-        if (p.includes("ferme l'onglet")) {
-          window.close();
+      if (p.startsWith("recherche ")) {
+        const terme = p.replace("recherche", "").trim();
+        if (terme) {
+          window.location.href = `/search?q=${encodeURIComponent(terme)}`;
           return;
         }
       }
 
-      document.addEventListener('keydown', (e) => {
-        if (e.key.toLowerCase() === 'm') {
+      if (p.includes("film action")) {
+        window.location.href = '/films?genre=action';
+        return;
+      }
+      if (p.includes("lance comédie")) {
+        window.location.href = '/films?genre=comédie';
+        return;
+      }
+      if (p.includes("lance séries") || p.includes("lance série")) {
+        window.location.href = '/series';
+        return;
+      }
+
+      if (p.includes("film aléatoire")) {
+        window.location.href = '/random';
+        return;
+      }
+
+      if (p.includes("scroll en bas")) {
+        window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+        return;
+      }
+      if (p.includes("scroll en haut")) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+
+      if (p.includes("augmente la luminosité")) {
+        document.documentElement.style.backgroundColor = '#444';
+        return;
+      }
+      if (p.includes("réduis la luminosité")) {
+        document.documentElement.style.backgroundColor = '#121212';
+        return;
+      }
+
+      if (p.includes("montre l'heure") || p.includes("quelle heure")) {
+        const now = new Date();
+        alert(`Il est ${now.getHours()}h${now.getMinutes().toString().padStart(2, '0')}`);
+        return;
+      }
+
+      if (p.includes("recharge la page")) {
+        location.reload();
+        return;
+      }
+
+      if (p.includes("ferme l'onglet")) {
+        window.close();
+        return;
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key.toLowerCase() === 'm') {
+        activateLED();
+      }
+    });
+
+    // Reconnaissance vocale
+    window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (window.SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = false;
+      recognition.lang = 'fr-FR';
+
+      recognition.onresult = (event) => {
+        const phrase = event.results[event.results.length - 1][0].transcript.trim().toLowerCase();
+
+        if (phrase.includes('hey meta')) {
           activateLED();
+        } else if (commandMode) {
+          traiterCommande(phrase);
         }
-      });
+      };
 
-      window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (window.SpeechRecognition) {
-        const recognition = new SpeechRecognition();
-        recognition.continuous = true;
-        recognition.interimResults = false;
-        recognition.lang = 'fr-FR';
+      recognition.onerror = (e) => {
+        console.error('Erreur vocale :', e.error);
+      };
 
-        recognition.onresult = (event) => {
-          const phrase = event.results[event.results.length - 1][0].transcript.trim().toLowerCase();
-
-          if (phrase.includes('hey meta')) {
-            activateLED();
-          } else if (commandMode) {
-            traiterCommande(phrase);
-          }
-        };
-
-        recognition.onerror = (e) => {
-          console.error('Erreur vocale :', e.error);
-        };
-
-        recognition.start();
-      } else {
-        console.warn('Reconnaissance vocale non supportée.');
-      }
-    </script>
-  </div>
+      recognition.start();
+    } else {
+      console.warn('Reconnaissance vocale non supportée.');
+    }
+  </script>
 </body>
 </html>
+
 
 
 
