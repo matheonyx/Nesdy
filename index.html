@@ -2062,7 +2062,36 @@ scrollbar-thumb:active {
 
     .led.active {
       opacity: 1;
-      box-shadow: 0 0 8px 4px rgba(255,255,255,0.8);
+      box-shadow: 
+        0 0 30px 15px rgba(90, 146, 214, 0.7), /* #5A92D6 - Bleu */
+        0 0 50px 25px rgba(123, 109, 203, 0.6), /* #7B6DCB - Violet bleu */
+        0 0 70px 35px rgba(160, 93, 181, 0.5), /* #A05DB5 - Violet */
+        0 0 90px 45px rgba(193, 87, 161, 0.4), /* #C157A1 - Rose-violet */
+        0 0 110px 55px rgba(219, 95, 120, 0.3), /* #DB5F78 - Rose-rouge */
+        0 0 130px 65px rgba(229, 112, 80, 0.2), /* #E57050 - Orange-rouge */
+        0 0 150px 75px rgba(234, 119, 51, 0.1); /* #EA7733 - Orange */
+      animation: appleGlowAnimation 2.5s ease-out forwards;
+    }
+
+    @keyframes appleGlowAnimation {
+      0% {
+        opacity: 0;
+        transform: scale(0.95);
+        filter: blur(20px);
+      }
+      20% {
+        opacity: 1;
+        filter: blur(10px);
+      }
+      60% {
+        opacity: 0.9;
+        filter: blur(5px);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(1.05);
+        filter: blur(15px);
+      }
     }
   </style>
 </head>
@@ -2205,7 +2234,6 @@ scrollbar-thumb:active {
   </script>
 </div>
 </html>
-
 
 
 
