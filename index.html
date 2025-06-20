@@ -2134,7 +2134,6 @@ scrollbar-thumb:active {
       "spider-man": "audios/spiderman.mp3",
       "interstellar": "audios/interstellar.mp3",
       "oppenheimer": "audios/oppenheimer.mp3"
-      // Tu peux ajouter d'autres fichiers audio ici
     };
 
     function traiterCommande(phrase) {
@@ -2158,12 +2157,15 @@ scrollbar-thumb:active {
         }
       }
 
-      if (p.startsWith("parle moi de ")) {
-        const titre = p.replace("parle moi de", "").trim();
+      if (p.startsWith("parle moi de ") || p.startsWith("parle-moi de ")) {
+        const titre = p.replace(/parle moi de|parle-moi de/, "").trim();
         for (let nom in resumesAudio) {
           if (titre.includes(nom)) {
             audioResume.src = resumesAudio[nom];
-            audioResume.play();
+            audioResume.play().catch((e) => {
+              console.error("Erreur lors de la lecture de l'audio :", e);
+              alert("Erreur lors de la lecture de l'audio pour ce film.");
+            });
             return;
           }
         }
@@ -2192,7 +2194,7 @@ scrollbar-thumb:active {
       }
 
       if (p.includes("watch party")) {
-        window.location.href = '/watch-party/create'; // À adapter
+        window.location.href = '/watch-party/create';
         return;
       }
 
@@ -2225,6 +2227,7 @@ scrollbar-thumb:active {
       if (p.includes("recharge la page")) {
         location.reload();
         return;
+      Jonah;
       }
 
       if (p.includes("ferme l'onglet")) {
@@ -2269,7 +2272,6 @@ scrollbar-thumb:active {
   </script>
 </body>
 </html>
-
 
 
 
