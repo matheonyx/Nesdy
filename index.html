@@ -2069,11 +2069,11 @@ scrollbar-thumb:active {
         box-shadow: 
           0 0 30px 15px rgba(90, 146, 214, 0.7),
           0 0 50px 25px rgba(123, 109, 203, 0.6),
-          0 0 70px 35px rgba(160, 93, 181, 0.5),
-          0 0 90px 45px rgba(193, 87, 161, 0.4),
-          0 0 110px 55px rgba(219, 95, 120, 0.3),
-          0 0 130px 65px rgba(229, 112, 80, 0.2),
-          0 0 150px 75px rgba(234, 119, 51, 0.1);
+          0 0 70px 35px rgba(160, 59, 181, 0.5),
+          0 0 90px 45px rgba(193, 59, 161, 0.4),
+          0 0 110px 55px rgba(219, 165, 120, 0.3),
+          0 0 130px 65px rgba(229, 132, 80, 0.2),
+          0 0 150px 75px rgba(234, 139, 51, 0.1);
       }
       20% {
         opacity: 1;
@@ -2136,13 +2136,13 @@ scrollbar-thumb:active {
       "oppenheimer": "https://matheonyx.github.io/Nesdy/OPPENHEIMER.mp3",
       "avatar": "https://matheonyx.github.io/Nesdy/avatar.mp3",
       "bonjour": "https://matheonyx.github.io/Nesdy/bonjour.mp3",
-      "ca va et toi": "https://matheonyx.github.io/Nesdy/ca-va-et-toi.mp3" // URL temporaire, à remplacer
+      "ca va et toi": "https://matheonyx.github.io/Nesdy/ca-va-et-toi.mp3"
     };
 
     function traiterCommande(phrase) {
       const p = phrase.toLowerCase().trim();
 
-      // Gestion des commandes spécifiques comme "bonjour" ou "ça va et toi"
+      // Gestion des commandes directes comme "bonjour" ou "ça va et toi"
       if (p === "bonjour" || p === "ça va et toi") {
         const titre = p;
         if (resumesAudio[titre]) {
@@ -2163,6 +2163,7 @@ scrollbar-thumb:active {
           if (titre.includes(nom)) {
             window.location.href = filmsDispo[nom];
             return;
+          }
         }
       }
 
@@ -2172,6 +2173,8 @@ scrollbar-thumb:active {
           window.location.href = `/search?q=${encodeURIComponent(terme)}`;
           return;
         }
+      }
+
       if (p.startsWith("parle moi de ") || p.startsWith("parle-moi de ") || p.startsWith("parle-moi d'")) {
         const titre = p.replace(/parle moi de|parle-moi de|parle-moi d'/, "").trim();
         for (let nom in resumesAudio) {
@@ -2267,6 +2270,7 @@ scrollbar-thumb:active {
 
       recognition.onresult = (event) => {
         const phrase = event.results[event.results.length - 1][0].transcript.trim().toLowerCase();
+        console.log("Phrase reconnue :", phrase); // Ajout pour débogage
         if (phrase.includes('hey meta')) {
           activateLED();
         } else if (commandMode) {
