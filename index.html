@@ -2157,8 +2157,8 @@ scrollbar-thumb:active {
         }
       }
 
-      if (p.startsWith("parle moi de ") || p.startsWith("parle-moi de ")) {
-        const titre = p.replace(/parle moi de|parle-moi de/, "").trim();
+      if (p.startsWith("parle moi de ") || p.startsWith("parle-moi de ") || p.startsWith("parle-moi d'")) {
+        const titre = p.replace(/parle moi de|parle-moi de|parle-moi d'/, "").trim();
         for (let nom in resumesAudio) {
           if (titre.includes(nom)) {
             audioResume.src = resumesAudio[nom];
@@ -2227,7 +2227,6 @@ scrollbar-thumb:active {
       if (p.includes("recharge la page")) {
         location.reload();
         return;
-      Jonah;
       }
 
       if (p.includes("ferme l'onglet")) {
@@ -2253,7 +2252,6 @@ scrollbar-thumb:active {
 
       recognition.onresult = (event) => {
         const phrase = event.results[event.results.length - 1][0].transcript.trim().toLowerCase();
-
         if (phrase.includes('hey meta')) {
           activateLED();
         } else if (commandMode) {
