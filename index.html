@@ -2135,11 +2135,27 @@ scrollbar-thumb:active {
       "interstellar": "https://matheonyx.github.io/Nesdy/interstellar.mp3",
       "oppenheimer": "https://matheonyx.github.io/Nesdy/OPPENHEIMER.mp3",
       "avatar": "https://matheonyx.github.io/Nesdy/avatar.mp3",
-      "bonjour": "https://matheonyx.github.io/Nesdy/bonjour.mp3"
+      "bonjour": "https://matheonyx.github.io/Nesdy/bonjour.mp3",
+      "ca va et toi": "https://matheonyx.github.io/Nesdy/ca-va-et-toi.mp3" // URL temporaire, à remplacer
     };
 
     function traiterCommande(phrase) {
       const p = phrase.toLowerCase().trim();
+
+      // Gestion des commandes spécifiques comme "bonjour" ou "ça va et toi"
+      if (p === "bonjour" || p === "ça va et toi") {
+        const titre = p;
+        if (resumesAudio[titre]) {
+          audioResume.src = resumesAudio[titre];
+          audioResume.play().catch((e) => {
+            console.error("Erreur lors de la lecture de l'audio :", e);
+            alert("Erreur lors de la lecture de l'audio.");
+          });
+          return;
+        }
+        alert("Je n'ai pas encore d'audio pour cette commande.");
+        return;
+      }
 
       if (p.startsWith("mets ")) {
         const titre = p.replace("mets", "").trim();
@@ -2147,7 +2163,6 @@ scrollbar-thumb:active {
           if (titre.includes(nom)) {
             window.location.href = filmsDispo[nom];
             return;
-          }
         }
       }
 
@@ -2157,8 +2172,6 @@ scrollbar-thumb:active {
           window.location.href = `/search?q=${encodeURIComponent(terme)}`;
           return;
         }
-      }
-
       if (p.startsWith("parle moi de ") || p.startsWith("parle-moi de ") || p.startsWith("parle-moi d'")) {
         const titre = p.replace(/parle moi de|parle-moi de|parle-moi d'/, "").trim();
         for (let nom in resumesAudio) {
