@@ -2055,10 +2055,12 @@ scrollbar-thumb:active {
       opacity: 0;
       pointer-events: none;
       z-index: 9999;
+      transition: opacity 0.1s;
     }
 
     .led.active {
-      animation: appleGlowAnimation 2.5s ease-out;
+      animation: appleGlowAnimation 2.5s ease-out forwards;
+      opacity: 1;
     }
 
     @keyframes appleGlowAnimation {
@@ -2102,16 +2104,19 @@ scrollbar-thumb:active {
     const audioResume = document.getElementById('audioResume');
     let commandMode = false;
     let commandTimer;
+    let recognition;
 
     function activateLED() {
+      console.log('Activating LED animation');
       led.classList.remove('active');
-      void led.offsetWidth;
+      void led.offsetWidth; // Force reflow
       led.classList.add('active');
 
       commandMode = true;
       clearTimeout(commandTimer);
       commandTimer = setTimeout(() => {
         commandMode = false;
+        console.log('Command mode deactivated');
       }, 6000);
     }
 
@@ -2158,8 +2163,8 @@ scrollbar-thumb:active {
 
     function traiterCommande(phrase) {
       const p = normalizePhrase(phrase);
+      console.log('Processing command:', p);
 
-      // Gestion des commandes directes
       const greetings = ["bonjour", "salut", "hello", "coucou", "bonsoir"];
       const howAreYou = ["ca va et toi", "ca va", "cava et toi", "cava", "ca va bien", "comment vas tu", "comment va tu"];
       const whoAreYou = ["qui es tu", "qui es-tu", "qui es tu ?", "qui es-tu ?", "t es qui", "t'es qui", "c est qui", "c'est qui"];
@@ -2320,7 +2325,7 @@ scrollbar-thumb:active {
         return;
       }
 
-      if (p.includes "réduis la luminosité")) {
+      if (p.includes("réduis la luminosité")) {
         document.documentElement.style.backgroundColor = '#121212';
         return;
       }
@@ -2344,9 +2349,63 @@ scrollbar-thumb:active {
       alert("Commande non reconnue : " + p);
     }
 
+    // Initialize Speech Recognition
+    function initSpeechRecognition() {
+      window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (window.SpeechRecognition) {
+        recognition = new window.SpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = false;
+        recognition.lang = 'fr-FR';
+
+        recognition.onstart = () => {
+          console.log('Speech recognition started');
+        };
+
+        recognition.onresult = (event) => {
+          const phrase = event.results[event.results.length - 1][0].transcript.trim().toLowerCase();
+          console.log("Phrase reconnue :", phrase);
+          if (phrase.includes('hey meta')) {
+            activateLED();
+          } else if (commandMode) {
+            traiterCommande(phrase);
+          }
+        };
+
+        recognition.onerror = (e) => {
+          console.error('Erreur vocale :', e.error);
+          if (e.error === 'no-speech' || e.error === 'audio-capture') {
+            console.log('Restarting speech recognition...');
+            recognition.stop();
+            setTimeout(() => {
+              recognition.start();
+            }, 1000);
+          }
+        };
+
+        recognition.onend = () => {
+          console.log('Speech recognition ended, restarting...');
+          setTimeout(() => {
+            recognition.start();
+          }, 500);
+        };
+
+        try {
+          recognition.start();
+        } catch (e) {
+          console.error('Erreur lors du démarrage de la reconnaissance vocale:', e);
+          alert('Impossible de démarrer la reconnaissance vocale. Vérifiez les permissions du microphone.');
+        }
+      } else {
+        console.warn('Reconnaissance vocale non supportée par ce navigateur.');
+        alert('La reconnaissance vocale n\'est pas supportée par votre navigateur. Essayez avec Chrome ou Edge.');
+      }
+    }
+
     // Activate AI with 'm' key
     document.addEventListener('keydown', (e) => {
       if (e.key.toLowerCase() === 'm') {
+        console.log('M key pressed');
         activateLED();
       }
     });
@@ -2354,34 +2413,15 @@ scrollbar-thumb:active {
     // Activate AI with double-click
     document.addEventListener('dblclick', (e) => {
       e.preventDefault();
+      console.log('Double-click detected');
       activateLED();
     });
 
-    window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (window.SpeechRecognition) {
-      const recognition = new SpeechRecognition();
-      recognition.continuous = true;
-      recognition.interimResults = false;
-      recognition.lang = 'fr-FR';
-
-      recognition.onresult = (event) => {
-        const phrase = event.results[event.results.length - 1][0].transcript.trim().toLowerCase();
-        console.log("Phrase reconnue :", phrase);
-        if (phrase.includes('hey meta')) {
-          activateLED();
-        } else if (commandMode) {
-          traiterCommande(phrase);
-        }
-      };
-
-      recognition.onerror = (e) => {
-        console.error('Erreur vocale :', e.error);
-      };
-
-      recognition.start();
-    } else {
-      console.warn('Reconnaissance vocale non supportée.');
-    }
+    // Initialize speech recognition on page load
+    window.addEventListener('load', () => {
+      console.log('Initializing speech recognition...');
+      initSpeechRecognition();
+    });
   </script>
 </body>
 </html>
