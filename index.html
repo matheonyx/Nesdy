@@ -2288,10 +2288,17 @@ scrollbar-thumb:active {
       alert("Commande non reconnue : " + p);
     }
 
+    // Activate AI with 'm' key
     document.addEventListener('keydown', (e) => {
       if (e.key.toLowerCase() === 'm') {
         activateLED();
       }
+    });
+
+    // Activate AI with double-click
+    document.addEventListener('dblclick', (e) => {
+      e.preventDefault(); // Prevent any default behavior
+      activateLED();
     });
 
     window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
