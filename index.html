@@ -2136,11 +2136,12 @@ scrollbar-thumb:active {
       "spider-man": "https://matheonyx.github.io/Nesdy/spider-man.mp3",
       "interstellar": "https://matheonyx.github.io/Nesdy/interstellar.mp3",
       "oppenheimer": "https://matheonyx.github.io/Nesdy/OPPENHEIMER.mp3",
-      "avatar": "https://matheonyx.github.io/Nesdy/avatar.mp3"
+      "avatar": "https://matheonyx.github.io/Nesdy/avatar.mp3",
+      "qui es tu": "https://matheonyx.github.io/Nesdy/qui-es-tu.mp3",
+      "stan lee": "https://matheonyx.github.io/Nesdy/stan-lee.mp3"
     };
 
     function normalizePhrase(phrase) {
-      // Normalize common variations and accents
       return phrase.toLowerCase().trim()
         .replace(/ç/g, 'c')
         .replace(/à/g, 'a')
@@ -2158,9 +2159,24 @@ scrollbar-thumb:active {
     function traiterCommande(phrase) {
       const p = normalizePhrase(phrase);
 
-      // Gestion des commandes directes comme "bonjour", "salut", "ça va et toi", etc.
+      // Gestion des commandes directes
       const greetings = ["bonjour", "salut", "hello", "coucou", "bonsoir"];
       const howAreYou = ["ca va et toi", "ca va", "cava et toi", "cava", "ca va bien", "comment vas tu", "comment va tu"];
+      const whoAreYou = ["qui es tu", "qui es-tu", "qui es tu ?", "qui es-tu ?", "t es qui", "t'es qui", "c est qui", "c'est qui"];
+      const stanLee = ["stan lee est mort", "est ce que stan lee est mort", "stan lee est-il mort", "stan lee est mort ?", "stan lee est-il mort ?"];
+      const filmCategories = {
+        "drole": "/films?genre=comédie",
+        "comique": "/films?genre=comédie",
+        "comedie": "/films?genre=comédie",
+        "horreur": "/films?genre=horreur",
+        "peur": "/films?genre=horreur",
+        "action": "/films?genre=action",
+        "aventure": "/films?genre=aventure",
+        "science fiction": "/films?genre=science-fiction",
+        "sci fi": "/films?genre=science-fiction",
+        "romance": "/films?genre=romance",
+        "drame": "/films?genre=drame"
+      };
 
       if (greetings.some(g => p === g)) {
         const titre = "bonjour";
@@ -2190,6 +2206,34 @@ scrollbar-thumb:active {
         return;
       }
 
+      if (whoAreYou.some(w => p === w)) {
+        const titre = "qui es tu";
+        if (resumesAudio[titre]) {
+          audioResume.src = resumesAudio[titre];
+          audioResume.play().catch((e) => {
+            console.error("Erreur lors de la lecture de l'audio :", e);
+            alert("Erreur lors de la lecture de l'audio.");
+          });
+          return;
+        }
+        alert("Je n'ai pas encore d'audio pour cette commande.");
+        return;
+      }
+
+      if (stanLee.some(s => p === s)) {
+        const titre = "stan lee";
+        if (resumesAudio[titre]) {
+          audioResume.src = resumesAudio[titre];
+          audioResume.play().catch((e) => {
+            console.error("Erreur lors de la lecture de l'audio :", e);
+            alert("Erreur lors de la lecture de l'audio.");
+          });
+          return;
+        }
+        alert("Je n'ai pas encore d'audio pour cette commande.");
+        return;
+      }
+
       if (p.startsWith("mets ")) {
         const titre = normalizePhrase(p.replace("mets", "").trim());
         for (let nom in filmsDispo) {
@@ -2198,6 +2242,18 @@ scrollbar-thumb:active {
             return;
           }
         }
+      }
+
+      if (p.startsWith("je veux un film") || p.startsWith("je veux un film de") || p.startsWith("je veux un film d'")) {
+        const terme = normalizePhrase(p.replace(/je veux un film|je veux un film de|je veux un film d'/, "").trim());
+        for (let category in filmCategories) {
+          if (terme.includes(category)) {
+            window.location.href = filmCategories[category];
+            return;
+          }
+        }
+        alert("Catégorie non reconnue : " + terme);
+        return;
       }
 
       if (p.startsWith("recherche ")) {
@@ -2264,7 +2320,7 @@ scrollbar-thumb:active {
         return;
       }
 
-      if (p.includes("réduis la luminosité")) {
+      if (p.includes "réduis la luminosité")) {
         document.documentElement.style.backgroundColor = '#121212';
         return;
       }
@@ -2297,7 +2353,7 @@ scrollbar-thumb:active {
 
     // Activate AI with double-click
     document.addEventListener('dblclick', (e) => {
-      e.preventDefault(); // Prevent any default behavior
+      e.preventDefault();
       activateLED();
     });
 
@@ -2310,7 +2366,7 @@ scrollbar-thumb:active {
 
       recognition.onresult = (event) => {
         const phrase = event.results[event.results.length - 1][0].transcript.trim().toLowerCase();
-        console.log("Phrase reconnue :", phrase); // Ajout pour débogage
+        console.log("Phrase reconnue :", phrase);
         if (phrase.includes('hey meta')) {
           activateLED();
         } else if (commandMode) {
@@ -2329,7 +2385,6 @@ scrollbar-thumb:active {
   </script>
 </body>
 </html>
-
 
 
 
