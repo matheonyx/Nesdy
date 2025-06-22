@@ -2129,22 +2129,55 @@ scrollbar-thumb:active {
     };
 
     const resumesAudio = {
+      "bonjour": "https://matheonyx.github.io/Nesdy/bonjour.mp3",
+      "ca va et toi": "https://matheonyx.github.io/Nesdy/ca-va-bien.mp3",
       "avengers": "https://matheonyx.github.io/Nesdy/avengers-1.mp3",
       "inception": "audios/inception.mp3",
       "spider-man": "https://matheonyx.github.io/Nesdy/spider-man.mp3",
       "interstellar": "https://matheonyx.github.io/Nesdy/interstellar.mp3",
       "oppenheimer": "https://matheonyx.github.io/Nesdy/OPPENHEIMER.mp3",
-      "avatar": "https://matheonyx.github.io/Nesdy/avatar.mp3",
-      "bonjour": "https://matheonyx.github.io/Nesdy/bonjour.mp3",
-      "ca va et toi": "https://matheonyx.github.io/Nesdy/ca-va-bien.mp3"
+      "avatar": "https://matheonyx.github.io/Nesdy/avatar.mp3"
     };
 
-    function traiterCommande(phrase) {
-      const p = phrase.toLowerCase().trim();
+    function normalizePhrase(phrase) {
+      // Normalize common variations and accents
+      return phrase.toLowerCase().trim()
+        .replace(/ç/g, 'c')
+        .replace(/à/g, 'a')
+        .replace(/â/g, 'a')
+        .replace(/é/g, 'e')
+        .replace(/è/g, 'e')
+        .replace(/ê/g, 'e')
+        .replace(/î/g, 'i')
+        .replace(/ô/g, 'o')
+        .replace(/ù/g, 'u')
+        .replace(/û/g, 'u')
+        .replace(/\s+/g, ' ');
+    }
 
-      // Gestion des commandes directes comme "bonjour" ou "ça va et toi"
-      if (p === "bonjour" || p === "ça va et toi") {
-        const titre = p;
+    function traiterCommande(phrase) {
+      const p = normalizePhrase(phrase);
+
+      // Gestion des commandes directes comme "bonjour", "salut", "ça va et toi", etc.
+      const greetings = ["bonjour", "salut", "hello", "coucou", "bonsoir"];
+      const howAreYou = ["ca va et toi", "ca va", "cava et toi", "cava", "ca va bien", "comment vas tu", "comment va tu"];
+
+      if (greetings.some(g => p === g)) {
+        const titre = "bonjour";
+        if (resumesAudio[titre]) {
+          audioResume.src = resumesAudio[titre];
+          audioResume.play().catch((e) => {
+            console.error("Erreur lors de la lecture de l'audio :", e);
+            alert("Erreur lors de la lecture de l'audio.");
+          });
+          return;
+        }
+        alert("Je n'ai pas encore d'audio pour cette commande.");
+        return;
+      }
+
+      if (howAreYou.some(h => p === h)) {
+        const titre = "ca va et toi";
         if (resumesAudio[titre]) {
           audioResume.src = resumesAudio[titre];
           audioResume.play().catch((e) => {
@@ -2158,7 +2191,7 @@ scrollbar-thumb:active {
       }
 
       if (p.startsWith("mets ")) {
-        const titre = p.replace("mets", "").trim();
+        const titre = normalizePhrase(p.replace("mets", "").trim());
         for (let nom in filmsDispo) {
           if (titre.includes(nom)) {
             window.location.href = filmsDispo[nom];
@@ -2176,7 +2209,7 @@ scrollbar-thumb:active {
       }
 
       if (p.startsWith("parle moi de ") || p.startsWith("parle-moi de ") || p.startsWith("parle-moi d'")) {
-        const titre = p.replace(/parle moi de|parle-moi de|parle-moi d'/, "").trim();
+        const titre = normalizePhrase(p.replace(/parle moi de|parle-moi de|parle-moi d'/, "").trim());
         for (let nom in resumesAudio) {
           if (titre.includes(nom)) {
             audioResume.src = resumesAudio[nom];
