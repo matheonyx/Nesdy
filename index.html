@@ -2034,7 +2034,7 @@ scrollbar-thumb:active {
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Hey Meta - Streaming IA</title>
+  <title>Hey Bloo - Streaming IA</title>
   <style>
     html {
       margin: 0;
@@ -2129,12 +2129,12 @@ scrollbar-thumb:active {
       "oppenheimer": "/film/oppenheimer",
       "matrix": "/film/matrix",
       "dragons 1": "https://filemoon.to/e/bzxpk9pbol1x/",
-      "dragons 2": "https://matheonyx.github.io/Nesdy/dragons%202",
-      "dragons 3": "https://filemoon-t8c715ke.com/e/2hjfjo51vog7/"
+      "dragons 2": "/Nesdy/dragons%202",
+      "dragons 3": "https://filemoon.to/e/2hjfjo51vog7/"
     };
 
     const resumesAudio = {
-      "bonjour": "https://matheonyx.github.io/Nesdy/bonjour.mp3",
+      "bonjour": "/Nesdy/bonjour.mp3",
       "ca va et toi": "https://matheonyx.github.io/Nesdy/ca-va-bien.mp3",
       "avengers": "https://matheonyx.github.io/Nesdy/avengers-1.mp3",
       "inception": "audios/inception.mp3",
@@ -2143,7 +2143,18 @@ scrollbar-thumb:active {
       "oppenheimer": "https://matheonyx.github.io/Nesdy/OPPENHEIMER.mp3",
       "avatar": "https://matheonyx.github.io/Nesdy/avatar.mp3",
       "qui es tu": "https://matheonyx.github.io/Nesdy/qui-es-tu.mp3",
-      "stan lee": "https://matheonyx.github.io/Nesdy/stan.mp3"
+      "stan lee": "https://matheonyx.github.io/Nesdy/stan.mp3",
+      "drole": "https://matheonyx.github.io/Nesdy/comedie.mp3",
+      "comique": "https://matheonyx.github.io/Nesdy/comedie.mp3",
+      "comedie": "https://matheonyx.github.io/Nesdy/comedie.mp3",
+      "horreur": "https://matheonyx.github.io/Nesdy/horreur.mp3",
+      "peur": "https://matheonyx.github.io/Nesdy/horreur.mp3",
+      "action": "https://matheonyx.github.io/Nesdy/action.mp3",
+      "aventure": "https://matheonyx.github.io/Nesdy/aventure.mp3",
+      "science fiction": "https://matheonyx.github.io/Nesdy/science-fiction.mp3",
+      "sci fi": "https://matheonyx.github.io/Nesdy/science-fiction.mp3",
+      "romance": "https://matheonyx.github.io/Nesdy/romance.mp3",
+      "drame": "https://matheonyx.github.io/Nesdy/drame.mp3"
     };
 
     function normalizePhrase(phrase) {
@@ -2170,17 +2181,17 @@ scrollbar-thumb:active {
       const whoAreYou = ["qui es tu", "qui es-tu", "qui es tu ?", "qui es-tu ?", "t es qui", "t'es qui", "c est qui", "c'est qui"];
       const stanLee = ["stan lee est mort", "est ce que stan lee est mort", "stan lee est-il mort", "stan lee est mort ?", "stan lee est-il mort ?"];
       const filmCategories = {
-        "drole": "/films?genre=comédie",
-        "comique": "/films?genre=comédie",
-        "comedie": "/films?genre=comédie",
-        "horreur": "/films?genre=horreur",
-        "peur": "/films?genre=horreur",
-        "action": "/films?genre=action",
-        "aventure": "/films?genre=aventure",
-        "science fiction": "/films?genre=science-fiction",
-        "sci fi": "/films?genre=science-fiction",
-        "romance": "/films?genre=romance",
-        "drame": "/films?genre=drame"
+        "drole": "comedie",
+        "comique": "comedie",
+        "comedie": "comedie",
+        "horreur": "horreur",
+        "peur": "horreur",
+        "action": "action",
+        "aventure": "aventure",
+        "science fiction": "science fiction",
+        "sci fi": "science fiction",
+        "romance": "romance",
+        "drame": "drame"
       };
 
       if (greetings.some(g => p === g)) {
@@ -2253,7 +2264,16 @@ scrollbar-thumb:active {
         const terme = normalizePhrase(p.replace(/je veux un film|je veux un film de|je veux un film d'/, "").trim());
         for (let category in filmCategories) {
           if (terme.includes(category)) {
-            window.location.href = filmCategories[category];
+            const audioKey = filmCategories[category];
+            if (resumesAudio[audioKey]) {
+              audioResume.src = resumesAudio[audioKey];
+              audioResume.play().catch((e) => {
+                console.error("Erreur lors de la lecture de l'audio :", e);
+                alert("Erreur lors de la lecture de l'audio.");
+              });
+              return;
+            }
+            alert("Je n'ai pas encore d'audio pour cette catégorie.");
             return;
           }
         }
@@ -2286,12 +2306,28 @@ scrollbar-thumb:active {
       }
 
       if (p.includes("film action")) {
-        window.location.href = '/films?genre=action';
+        if (resumesAudio["action"]) {
+          audioResume.src = resumesAudio["action"];
+          audioResume.play().catch((e) => {
+            console.error("Erreur lors de la lecture de l'audio :", e);
+            alert("Erreur lors de la lecture de l'audio.");
+          });
+          return;
+        }
+        alert("Je n'ai pas encore d'audio pour cette catégorie.");
         return;
       }
 
       if (p.includes("lance comédie")) {
-        window.location.href = '/films?genre=comédie';
+        if (resumesAudio["comedie"]) {
+          audioResume.src = resumesAudio["comedie"];
+          audioResume.play().catch((e) => {
+            console.error("Erreur lors de la lecture de l'audio :", e);
+            alert("Erreur lors de la lecture de l'audio.");
+          });
+          return;
+        }
+        alert("Je n'ai pas encore d'audio pour cette catégorie.");
         return;
       }
 
@@ -2365,7 +2401,7 @@ scrollbar-thumb:active {
         recognition.onresult = (event) => {
           const phrase = event.results[event.results.length - 1][0].transcript.trim().toLowerCase();
           console.log("Phrase reconnue :", phrase);
-          if (phrase.includes('hey meta')) {
+          if (phrase.includes('hey bloo')) {
             activateLED();
           } else if (commandMode) {
             traiterCommande(phrase);
