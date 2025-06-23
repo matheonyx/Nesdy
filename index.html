@@ -2121,7 +2121,7 @@ scrollbar-thumb:active {
     }
 
     function playHeyBlooAudio() {
-      // Play "bonjour-bloo.mp3" when "Hey Bloo" is detected
+      // Play "bonjour-bloo.mp3" when a variation of "Hey Bloo" is detected
       audioResume.src = "https://matheonyx.github.io/Nesdy/bonjour-bloo.mp3";
       audioResume.play().catch((e) => {
         console.error("Erreur lors de la lecture de l'audio :", e);
@@ -2411,7 +2411,8 @@ scrollbar-thumb:active {
         recognition.onresult = (event) => {
           const phrase = event.results[event.results.length - 1][0].transcript.trim().toLowerCase();
           console.log("Phrase reconnue :", phrase);
-          if (phrase.includes('hey bloo')) {
+          // Match variations like "hey bloo", "i blue", "hey blue", "i bloo", etc.
+          if (/^(hey|hi|i|aye)\s*(bloo|blue|blu|blow)$/.test(phrase)) {
             activateLED();
             playHeyBlooAudio();
           } else if (commandMode) {
