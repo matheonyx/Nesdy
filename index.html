@@ -2118,7 +2118,9 @@ scrollbar-thumb:active {
         commandMode = false;
         console.log('Command mode deactivated');
       }, 6000);
+    }
 
+    function playHeyBlooAudio() {
       // Play "bonjour-bloo.mp3" when "Hey Bloo" is detected
       audioResume.src = "https://matheonyx.github.io/Nesdy/bonjour-bloo.mp3";
       audioResume.play().catch((e) => {
@@ -2411,6 +2413,7 @@ scrollbar-thumb:active {
           console.log("Phrase reconnue :", phrase);
           if (phrase.includes('hey bloo')) {
             activateLED();
+            playHeyBlooAudio();
           } else if (commandMode) {
             traiterCommande(phrase);
           }
