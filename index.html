@@ -2158,6 +2158,7 @@ scrollbar-thumb:active {
       "avatar": "https://matheonyx.github.io/Nesdy/avatar.mp3",
       "qui es tu": "https://matheonyx.github.io/Nesdy/qui-es-tu.mp3",
       "stan lee": "https://matheonyx.github.io/Nesdy/stan.mp3",
+      "tu fais quoi": "https://matheonyx.github.io/Nesdy/tu-fais-quoi.mp3",
       "drole": "https://matheonyx.github.io/Nesdy/comedie.mp3",
       "comique": "https://matheonyx.github.io/Nesdy/comedie.mp3",
       "comedie": "https://matheonyx.github.io/Nesdy/comedie.mp3",
@@ -2193,6 +2194,7 @@ scrollbar-thumb:active {
       const greetings = ["bonjour", "salut", "hello", "coucou", "bonsoir"];
       const howAreYou = ["ca va et toi", "ca va", "cava et toi", "cava", "ca va bien", "comment vas tu", "comment va tu"];
       const whoAreYou = ["qui es tu", "qui es-tu", "qui es tu ?", "qui es-tu ?", "t es qui", "t'es qui", "c est qui", "c'est qui"];
+      const whatAreYouDoing = ["tu fais quoi", "que fais tu", "que fais-tu", "tu fais koi", "qu'est-ce que tu fais", "kess tu fais", "ques tu fais"];
       const stanLee = ["stan lee est mort", "est ce que stan lee est mort", "stan lee est-il mort", "stan lee est mort ?", "stan lee est-il mort ?"];
       const filmCategories = {
         "drole": "comedie",
@@ -2239,6 +2241,20 @@ scrollbar-thumb:active {
 
       if (whoAreYou.some(w => p === w)) {
         const titre = "qui es tu";
+        if (resumesAudio[titre]) {
+          audioResume.src = resumesAudio[titre];
+          audioResume.play().catch((e) => {
+            console.error("Erreur lors de la lecture de l'audio :", e);
+            alert("Erreur lors de la lecture de l'audio.");
+          });
+          return;
+        }
+        alert("Je n'ai pas encore d'audio pour cette commande.");
+        return;
+      }
+
+      if (whatAreYouDoing.some(w => p === w)) {
+        const titre = "tu fais quoi";
         if (resumesAudio[titre]) {
           audioResume.src = resumesAudio[titre];
           audioResume.play().catch((e) => {
