@@ -1,0 +1,1949 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>OnyX</title>
+
+    <style>
+            /* CSS Reset */
+            * {
+              margin: 0;
+              padding: 0;
+              box-sizing: border-box;
+            }
+
+            body {
+              font-family: Arial, sans-serif;
+              display: flex;
+              justify-content: center;
+              align-items: flex-start;
+              min-height: 1000vh;
+              background: #;
+              color: white;
+              margin: 0;
+            }
+
+            /* Container to center the content */
+            .container {
+              max-width: 400px;
+              width: 90%;
+              padding: 20px;
+              position: relative;
+            }
+
+            /* Header styling */
+            .header {
+              font-size: 1.8em;
+              font-weight: bold;
+              position: absolute;
+              top: 40px;
+              left: 20px;
+              color: white;
+            }
+
+            /* Plus icon */
+            .plus-icon {
+              position: absolute;
+              top: 40px;
+              right: 20px;
+              font-size: 1.8em;
+              cursor: pointer;
+              color: white;
+            }
+
+            /* Subtitle and timer styling */
+            .subheader {
+              font-size: 1em;
+              position: absolute;
+              top: 90px;
+              left: 20px;
+              color: rgba(255, 255, 255, 0.8);
+            }
+
+            .timer {
+              font-size: 1.2em;
+              font-weight: bold;
+              position: absolute;
+              top: 55px;
+              right: 20px;
+              color: rgba(255, 255, 255, 0.8);
+            }
+
+            /* Image-based ticket replaced by the boarding pass */
+            .boarding-pass {
+              position: relative;
+              width: 0px;
+              height: 200px;
+              background-color: #1c1c1e;
+              color: #ddd;
+              border-radius: 0px;
+              box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
+              overflow: hidden;
+              display: flex;
+              justify-content: space-between;
+              padding: 0px;
+              margin-top: 160px; /* Positioned below header */
+            }
+
+
+
+            /* Background gradient */
+            body::before {
+              content: "";
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background: linear-gradient(
+                135deg,
+                rgba(30, 30, 30, 0.9),
+                rgba(0, 0, 0, 0)
+              );
+              z-index: -1;
+            }
+
+            .flight-number img {
+              width: 16px;
+              height: 16px;
+              margin-right: 5px;
+            }
+
+            .code {
+              font-size: 36px;
+              color: #fff;
+              font-weight: bold;
+            }
+
+            .location {
+              font-size: 12px;
+              color: #888;
+              margin-top: 4px;
+            }
+
+            .time {
+              font-size: 18px;
+              color: #fff;
+              margin-top: 8px;
+            }
+
+            .date {
+              font-size: 12px;
+              color: #888;
+              margin-top: 4px;
+            }
+
+            /* Details arrow */
+            .details {
+              text-align: center;
+              margin-top: 20px;
+              font-size: 0.9em;
+              color: #888;
+              cursor: pointer;
+            }
+
+            /* Responsive adjustments */
+            @media (min-width: 768px) {
+        .container {
+          max-width: 500px;
+        }
+      }
+
+
+              /* From Uiverse.io by GigioBagigi0 */
+              .card {
+                display: flex;
+                width: 220px;
+                height: 50px;
+                background-color: whitesmoke;
+                border-radius: 115px;
+                padding-inline: 15px;
+                position: fixed; /* Fixe l'élément à l'écran */
+                bottom: 10px; /* Décale l'élément à 10px du bas de la fenêtre */
+                left: 50%; /* Centrer l'élément horizontalement */
+                transform: translateX(
+                  -50%
+                ); /* Ajuste pour que l'élément soit parfaitement centré */
+                justify-content: space-around;
+                z-index: 1000; /* S'assure que l'élément sera au-dessus d'autres contenus */
+              }
+
+
+              .social-icons > a {
+                --var: -0%;
+                position: absolute;
+                bottom: var(--var);
+                width: max-content;
+                transition: all 0.7s;
+                opacity: 0;
+                padding-inline: 7px;
+                padding-block: 3px;
+                background-color: crimson;
+                border-radius: 7px;
+              }
+
+              .social-icons > a::after {
+                content: "";
+                position: absolute;
+                border-bottom: 10px solid crimson;
+                border-left: 7px solid transparent;
+                border-right: 7px solid transparent;
+                bottom: 100%;
+                left: 50%;
+                transform: translate(-50%);
+              }
+
+              .social-icons:hover > a,
+              .social-icons:hover > p {
+                --var: -65%;
+                opacity: 1;
+              }
+
+              .social-icons:hover {
+                z-index: 15;
+              }
+
+              .card:hover > .social-icons:not(:hover) {
+                filter: blur(3px);
+                transform: scale(0.8);
+              }
+
+              .card svg {
+                height: 30px;
+              }
+
+              /* Conteneur de la carte d'embarquement */
+              .container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+                padding: 20px;
+              }
+
+
+            }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Plus icon at the top right -->
+      <div class="plus-icon"></div>
+
+      <!-- Header section aligned to the top-left -->
+      <div class="header">Bienvenue</div>
+
+      <!-- Subtitle and timer aligned as in the image -->
+      <div class="subheader"></div>
+      <div id="timer" class="timer">22:05 h</div>
+
+      <script>
+        function updateTimer() {
+          const timerElement = document.getElementById("timer");
+          const now = new Date();
+          const hours = now.getHours().toString().padStart(2, "0");
+          const minutes = now.getMinutes().toString().padStart(2, "0");
+          timerElement.textContent = `${hours}:${minutes} h`;
+        }
+
+        // Update the timer every minute
+        setInterval(updateTimer, 60000);
+
+        // Initialize the timer immediately
+        updateTimer();
+      </script>
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Blockbusters 2025 – Les Incontournables</title>
+  <!-- Import de la police Roboto -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-bg: #1e1e1e;
+      --secondary-bg: rgba(30, 30, 30, 0.95);
+      --accent: #ff4081;
+      --text-color: #ffffff;
+      --hover-bg: rgba(255, 255, 255, 0.1);
+      --border-color: rgba(255, 255, 255, 0.15);
+    }
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background: #121212;
+      color: var(--text-color);
+    }
+    /* Bouton cloche */
+    .button {
+      width: 50px;
+      height: 50px;
+      position: absolute;
+      top: 110px;
+      left: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--primary-bg);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.1s;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      border: none;
+    }
+    .bell {
+      width: 20px;
+    }
+    .bell path {
+      fill: var(--text-color);
+    }
+    .button:hover {
+      background-color: #333;
+    }
+    .button:hover .bell {
+      animation: bellRing 0.9s both;
+    }
+    @keyframes bellRing {
+      0%, 100% { transform-origin: top; }
+      15% { transform: rotateZ(10deg); }
+      30% { transform: rotateZ(-10deg); }
+      45% { transform: rotateZ(5deg); }
+      60% { transform: rotateZ(-5deg); }
+      75% { transform: rotateZ(2deg); }
+    }
+    .button:active {
+      transform: scale(0.8);
+    }
+    /* Menu des films */
+    .menu {
+      position: absolute;
+      top: 170px;
+      left: 10px;
+      z-index: 9999;
+      width: 350px;
+      background: var(--secondary-bg);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      pointer-events: none;
+    }
+    .menu.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .menu ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      max-height: 400px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .menu ul li {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      margin-bottom: 15px;
+      background: transparent;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      transition: background 0.3s, border-color 0.3s, transform 0.3s;
+    }
+    .menu ul li:hover {
+      background: var(--hover-bg);
+      border-color: var(--accent);
+      transform: scale(1.02);
+    }
+    .menu ul li:last-child {
+      margin-bottom: 0;
+    }
+    .film-poster {
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+      margin-right: 15px;
+      object-fit: cover;
+      border: 2px solid var(--border-color);
+      transition: border-color 0.3s;
+    }
+    .menu ul li:hover .film-poster {
+      border-color: var(--accent);
+    }
+    .film-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .film-info strong {
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+    .film-info small {
+      font-size: 13px;
+      color: #aaa;
+    }
+    /* Custom scrollbar pour Webkit */
+    .menu ul::-webkit-scrollbar {
+      width: 6px;
+    }
+    .menu ul::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .menu ul::-webkit-scrollbar-thumb {
+      background-color: var(--accent);
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Bouton cloche -->
+  <button class="button" id="bellButton">
+    <svg viewBox="0 0 448 512" class="bell">
+      <path d="M224 0c-17.7 0-32 14.3-32 32V49.9C119.5 61.4 64 124.2 64 200v33.4c0 45.4-15.5 89.5-43.8 124.9L5.3 377c-5.8 7.2-6.9 17.1-2.9 25.4S14.8 416 24 416H424c9.2 0 17.6-5.3 21.6-13.6s2.9-18.2-2.9-25.4l-14.9-18.6C399.5 322.9 384 278.8 384 233.4V200c0-75.8-55.5-138.6-128-150.1V32c0-17.7-14.3-32-32-32zm0 96h8c57.4 0 104 46.6 104 104v33.4c0 47.9 13.9 94.6 39.7 134.6H72.3C98.1 328 112 281.3 112 233.4V200c0-57.4 46.6-104 104-104h8zm64 352H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7 33.3-6.7 45.3-18.7 18.7-28.3 18.7-45.3z"></path>
+    </svg>
+  </button>
+  
+  <!-- Menu défilant des blockbusters 2025 -->
+  <div class="menu" id="movieMenu">
+    <ul>
+      <li>
+        <img src="https://cdn.glitch.global/dec50b52-1fc2-417a-80a4-dfe25959cc90/Design%20sans%20titre%20(1).png?v=1739739417401" alt="Jurassic World: Rebirth" class="film-poster">
+        <div class="film-info">
+          <strong>Jurassic World: Rebirth</strong>
+          <small>03/03/2025</small>
+        </div>
+      </li>
+      <li>
+        <img src="https://via.placeholder.com/60?text=FF" alt="Les 4 Fantastiques" class="film-poster">
+        <div class="film-info">
+          <strong>Les 4 Fantastiques</strong>
+          <small>10/04/2025</small>
+        </div>
+      </li>
+      <li>
+        <img src="https://via.placeholder.com/60?text=AKD" alt="Avengers: The Kang Dynasty" class="film-poster">
+        <div class="film-info">
+          <strong>Avengers: The Kang Dynasty</strong>
+          <small>02/05/2025</small>
+        </div>
+      </li>
+      <li>
+        <img src="https://via.placeholder.com/60?text=MI8" alt="Mission: Impossible 8" class="film-poster">
+        <div class="film-info">
+          <strong>Mission: Impossible 8</strong>
+          <small>07/07/2025</small>
+        </div>
+      </li>
+      <li>
+        <img src="https://via.placeholder.com/60?text=BLADE" alt="Blade" class="film-poster">
+        <div class="film-info">
+          <strong>Blade</strong>
+          <small>03/11/2025</small>
+        </div>
+      </li>
+      <li>
+        <img src="https://via.placeholder.com/60?text=A3" alt="Avatar 3" class="film-poster">
+        <div class="film-info">
+          <strong>Avatar 3</strong>
+          <small>18/12/2025</small>
+        </div>
+      </li>
+    </ul>
+  </div>
+  
+  <script>
+    const bellButton = document.getElementById('bellButton');
+    const movieMenu = document.getElementById('movieMenu');
+    
+    bellButton.addEventListener('click', function(e) {
+      e.stopPropagation();
+      movieMenu.classList.toggle('show');
+    });
+    
+    document.addEventListener('click', function(e) {
+      if (!bellButton.contains(e.target) && !movieMenu.contains(e.target)) {
+        movieMenu.classList.remove('show');
+      }
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Paiement - Votre Commande</title>
+    <style>
+      /* Global styles */
+      body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #121212;
+        color: #fff;
+      }
+      
+      /* =======================
+         Switch (bouton d'action)
+         ======================= */
+      #checkbox {
+        display: none;
+      }
+      .switch {
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 12px 24px;
+        background: #fff; /* fond blanc */
+        border-radius: 50px;
+        z-index: 10000;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #000; /* écriture noire */
+        font-size: 1em;
+        font-weight: 600;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        transition: background 0.3s ease, box-shadow 0.3s ease;
+        white-space: nowrap; /* évite le retour à la ligne */
+      }
+      .switch svg path {
+        fill: #000;
+      }
+      #checkbox:checked + .switch {
+        background: #fff;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        color: #000;
+      }
+      
+      /* =======================
+         Modal - Conteneurs
+         ======================= */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(30, 30, 30, 0.95);
+        border-radius: 20px;
+        padding: 30px;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        z-index: 10000;
+        animation: modalAppear 0.3s ease-out forwards;
+      }
+      
+      @keyframes modalAppear {
+        from {
+          opacity: 0;
+          transform: translate(-50%, -55%) scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1);
+        }
+      }
+      
+      /* (Les styles des autres boutons/modaux restent inchangés) */
+      
+      /* =======================
+         Snack Option (inchangé)
+         ======================= */
+      .snackOption {
+        background: linear-gradient(145deg, #6a11cb, #2575fc);
+        border: none;
+        color: #fff;
+        font-weight: bold;
+        font-size: 18px;
+        border-radius: 10px;
+        padding: 12px;
+        margin: 8px 0;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+        transition: transform 0.3s ease, background 0.3s ease;
+      }
+      .snackOption:hover {
+        transform: scale(1.03);
+        background: linear-gradient(145deg, #7b1fa2, #d81b60);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Bouton switch en bas de page -->
+    <input type="checkbox" id="checkbox" />
+    <label for="checkbox" class="switch">
+      RÉSERVE TON BILLET
+      <svg class="slider" viewBox="0 0 512 512" height="1em" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V256c0 17.7 14.3 32 32 32s32-14.3 32-32V32zM143.5 120.6c13.6-11.3 15.4-31.5 4.1-45.1s-31.5-15.4-45.1-4.1C49.7 115.4 16 181.8 16 256c0 132.5 107.5 240 240 240s240-107.5 240-240c0-74.2-33.8-140.6-86.6-184.6c-13.6-11.3-33.8-9.4-45.1 4.1s-9.4 33.8 4.1 45.1c38.9 32.3 63.5 81 63.5 135.4c0 97.2-78.8 176-176 176s-176-78.8-176-176c0-54.4 24.7-103.1 63.5-135.4z"
+        ></path>
+      </svg>
+    </label>
+
+    <!-- Menu d'action -->
+    <div id="actionMenu" class="modal">
+      <div class="menuHeader">
+        <h2>Que souhaitez-vous faire ?</h2>
+        <button id="closeActionMenu">✖</button>
+      </div>
+      <div class="menuContent">
+        <button class="validateBtn" id="actionPayBtn">
+          Payer
+          <svg class="btnIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:20px; height:20px;">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </button>
+        <button class="snackBtn" id="actionSnackBtn">
+          Sélectionner un en-cas
+          <svg class="btnIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:20px; height:20px;">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal Paiement – Nouveau menu de méthode de paiement -->
+    <div id="paymentMenu" class="modal">
+      <div class="w-[300px] p-2 aspect-square rounded-lg shadow flex flex-col items-center justify-center gap-2 bg-slate-50">
+        <p class="capitalize font-semibold self-start">Payment method</p>
+        <p class="text-[10px] self-start text-wrap text-gray-500 pb-1">
+          This component is made by using
+          <span class="font-bold underline">`:has() pseudo-class`</span>
+        </p>
+        <label
+          class="inline-flex justify-between w-full items-center z-10 rounded-lg p-2 border border-transparent has-[:checked]:border-indigo-500 has-[:checked]:text-indigo-900 has-[:checked]:bg-indigo-50 has-[:checked]:font-bold hover:bg-slate-200 transition-all cursor-pointer has-[:checked]:transition-all has-[:checked]:duration-500 duration-500 relative [&amp;_p]:has-[:checked]:translate-y-0 [&amp;_p]:has-[:checked]:transition-transform [&amp;_p]:has-[:checked]:duration-500 [&amp;_p]:has-[:checked]:opacity-100 overflow-hidden"
+        >
+          <div class="inline-flex items-center justify-center gap-2 relative z-10">
+            <svg
+              fill="currentColor"
+              viewBox="0 0 32 32"
+              height="32"
+              width="32"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M32 13.333l-4.177 9.333h-1.292l1.552-3.266-2.75-6.068h1.359l1.99 4.651h0.026l1.927-4.651zM14.646 16.219v3.781h-1.313v-9.333h3.474c0.828-0.021 1.63 0.266 2.25 0.807 0.615 0.505 0.953 1.219 0.943 1.974 0.010 0.766-0.339 1.5-0.943 1.979-0.604 0.531-1.354 0.792-2.25 0.792zM14.641 11.818v3.255h2.198c0.484 0.016 0.958-0.161 1.297-0.479 0.339-0.302 0.526-0.714 0.526-1.141 0-0.432-0.188-0.844-0.526-1.141-0.349-0.333-0.818-0.51-1.297-0.495zM22.63 13.333c0.833 0 1.495 0.234 1.979 0.698s0.724 1.099 0.724 1.906v3.859h-1.083v-0.87h-0.047c-0.469 0.714-1.089 1.073-1.865 1.073-0.667 0-1.219-0.203-1.667-0.615-0.438-0.385-0.682-0.948-0.672-1.531 0-0.646 0.234-1.161 0.708-1.547 0.469-0.38 1.099-0.573 1.885-0.573 0.672 0 1.224 0.13 1.656 0.385v-0.271c0.005-0.396-0.167-0.776-0.464-1.042-0.297-0.276-0.688-0.432-1.094-0.427-0.63 0-1.13 0.276-1.5 0.828l-0.995-0.646c0.547-0.818 1.359-1.229 2.432-1.229zM21.167 17.88c-0.005 0.302 0.135 0.583 0.375 0.766 0.25 0.203 0.563 0.313 0.88 0.307 0.474 0 0.932-0.198 1.271-0.547 0.359-0.333 0.563-0.802 0.563-1.292-0.354-0.292-0.844-0.438-1.474-0.438-0.464 0-0.844 0.115-1.151 0.344-0.307 0.234-0.464 0.516-0.464 0.859zM5.443 10.667c1.344-0.016 2.646 0.479 3.641 1.391l-1.552 1.521c-0.568-0.526-1.318-0.813-2.089-0.797-1.385 0.005-2.609 0.891-3.057 2.198-0.229 0.661-0.229 1.38 0 2.042 0.448 1.307 1.672 2.193 3.057 2.198 0.734 0 1.365-0.182 1.854-0.505 0.568-0.375 0.964-0.958 1.083-1.625h-2.938v-2.052h5.13c0.063 0.359 0.094 0.719 0.094 1.083 0 1.625-0.594 3-1.62 3.927-0.901 0.813-2.135 1.286-3.604 1.286-2.047 0.010-3.922-1.125-4.865-2.938-0.771-1.505-0.771-3.286 0-4.792 0.943-1.813 2.818-2.948 4.859-2.938z"
+              ></path>
+            </svg>
+            <p
+              class="font-semibold absolute inset-0 w-full whitespace-nowrap translate-y-[110%] translate-x-full top-1 left-2 transition-all duration-700 opacity-0"
+            >
+              Google Pay
+            </p>
+          </div>
+          <input
+            class="checked:text-indigo-500 checked:ring-0 checked:ring-current focus:ring-0 focus:ring-current"
+            value="google"
+            name="payment"
+            type="radio"
+          />
+        </label>
+        <label
+          class="inline-flex justify-between w-full items-center rounded-lg p-2 border border-transparent has-[:checked]:border-indigo-500 has-[:checked]:text-indigo-900 has-[:checked]:bg-indigo-50 has-[:checked]:font-bold hover:bg-slate-200 transition-all cursor-pointer has-[:checked]:transition-all has-[:checked]:duration-500 duration-500 relative [&amp;_p]:has-[:checked]:translate-y-0 [&amp;_p]:has-[:checked]:transition-transform [&amp;_p]:has-[:checked]:duration-500 [&amp;_p]:has-[:checked]:opacity-100 overflow-hidden"
+        >
+          <div class="inline-flex items-center justify-center gap-2 relative">
+            <svg
+              fill="currentColor"
+              viewBox="0 0 640 512"
+              height="32"
+              width="32"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M116.9 158.5c-7.5 8.9-19.5 15.9-31.5 14.9-1.5-12 4.4-24.8 11.3-32.6 7.5-9.1 20.6-15.6 31.3-16.1 1.2 12.4-3.7 24.7-11.1 33.8m10.9 17.2c-17.4-1-32.3 9.9-40.5 9.9-8.4 0-21-9.4-34.8-9.1-17.9.3-34.5 10.4-43.6 26.5-18.8 32.3-4.9 80 13.3 106.3 8.9 13 19.5 27.3 33.5 26.8 13.3-.5 18.5-8.6 34.5-8.6 16.1 0 20.8 8.6 34.8 8.4 14.5-.3 23.6-13 32.5-26 10.1-14.8 14.3-29.1 14.5-29.9-.3-.3-28-10.9-28.3-42.9-.3-26.8 21.9-39.5 22.9-40.3-12.5-18.6-32-20.6-38.8-21.1m100.4-36.2v194.9h30.3v-66.6h41.9c38.3 0 65.1-26.3 65.1-64.3s-26.4-64-64.1-64h-73.2zm30.3 25.5h34.9c26.3 0 41.3 14 41.3 38.6s-15 38.8-41.4 38.8h-34.8V165zm162.2 170.9c19 0 36.6-9.6 44.6-24.9h.6v23.4h28v-97c0-28.1-22.5-46.3-57.1-46.3-32.1 0-55.9 18.4-56.8 43.6h27.3c2.3-12 13.4-19.9 28.6-19.9 18.5 0 28.9 8.6 28.9 24.5v10.8l-37.8 2.3c-35.1 2.1-54.1 16.5-54.1 41.5.1 25.2 19.7 42 47.8 42zm8.2-23.1c-16.1 0-26.4-7.8-26.4-19.6 0-12.3 9.9-19.4 28.8-20.5l33.6-2.1v11c0 18.2-15.5 31.2-36 31.2zm102.5 74.6c29.5 0 43.4-11.3 55.5-45.4L640 193h-30.8l-35.6 115.1h-.6L537.4 193h-31.6L557 334.9l-2.8 8.6c-4.6 14.6-12.1 20.3-25.5 20.3-2.4 0-7-.3-8.9-.5v23.4c1.8.4 9.3.7 11.6.7z"
+              ></path>
+            </svg>
+            <p
+              class="font-semibold absolute inset-0 w-full whitespace-nowrap -translate-y-[110%] translate-x-full top-1 left-2 transition-all duration-700 opacity-0"
+            >
+              Apple Pay
+            </p>
+          </div>
+          <input
+            class="checked:text-indigo-500 checked:ring-0 checked:ring-current focus:ring-0 focus:ring-current"
+            value="apple"
+            name="payment"
+            type="radio"
+          />
+        </label>
+        <label
+          class="inline-flex justify-between w-full items-center rounded-lg p-2 border border-transparent has-[:checked]:border-indigo-500 has-[:checked]:text-indigo-900 has-[:checked]:bg-indigo-50 has-[:checked]:font-bold hover:bg-slate-200 transition-all cursor-pointer has-[:checked]:transition-all has-[:checked]:duration-500 duration-500 relative [&amp;_p]:has-[:checked]:translate-y-0 [&amp;_p]:has-[:checked]:transition-transform [&amp;_p]:has-[:checked]:duration-500 [&amp;_p]:has-[:checked]:opacity-100 overflow-hidden"
+        >
+          <div class="inline-flex items-center justify-center gap-2 relative">
+            <svg
+              fill="currentColor"
+              height="32"
+              width="32"
+              viewBox="0 0 576 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M186.3 258.2c0 12.2-9.7 21.5-22 21.5-9.2 0-16-5.2-16-15 0-12.2 9.5-22 21.7-22 9.3 0 16.3 5.7 16.3 15.5zM80.5 209.7h-4.7c-1.5 0-3 1-3.2 2.7l-4.3 26.7 8.2-.3c11 0 19.5-1.5 21.5-14.2 2.3-13.4-6.2-14.9-17.5-14.9zm284 0H360c-1.8 0-3 1-3.2 2.7l-4.2 26.7 8-.3c13 0 22-3 22-18-.1-10.6-9.6-11.1-18.1-11.1zM576 80v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V80c0-26.5 21.5-48 48-48h480c26.5 0 48 21.5 48 48zM128.3 215.4c0-21-16.2-28-34.7-28h-40c-2.5 0-5 2-5.2 4.7L32 294.2c-.3 2 1.2 4 3.2 4h19c2.7 0 5.2-2.9 5.5-5.7l4.5-26.6c1-7.2 13.2-4.7 18-4.7 28.6 0 46.1-17 46.1-45.8zm84.2 8.8h-19c-3.8 0-4 5.5-4.2 8.2-5.8-8.5-14.2-10-23.7-10-24.5 0-43.2 21.5-43.2 45.2 0 19.5 12.2 32.2 31.7 32.2 9 0 20.2-4.9 26.5-11.9-.5 1.5-1 4.7-1 6.2 0 2.3 1 4 3.2 4H200c2.7 0 5-2.9 5.5-5.7l10.2-64.3c.3-1.9-1.2-3.9-3.2-3.9zm40.5 97.9l63.7-92.6c.5-.5.5-1 .5-1.7 0-1.7-1.5-3.5-3.2-3.5h-19.2c-1.7 0-3.5 1-4.5 2.5l-26.5 39-11-37.5c-.8-2.2-3-4-5.5-4h-18.7c-1.7 0-3.2 1.8-3.2 3.5 0 1.2 19.5 56.8 21.2 62.1-2.7 3.8-20.5 28.6-20.5 31.6 0 1.8 1.5 3.2 3.2 3.2h19.2c1.8-.1 3.5-1.1 4.5-2.6zm159.3-106.7c0-21-16.2-28-34.7-28h-39.7c-2.7 0-5.2 2-5.5 4.7l-16.2 102c-.2 2 1.3 4 3.2 4h20.5c2 0 3.5-1.5 4-3.2l4.5-29c1-7.2 13.2-4.7 18-4.7 28.4 0 45.9-17 45.9-45.8zm84.2 8.8h-19c-3.8 0-4 5.5-4.3 8.2-5.5-8.5-14-10-23.7-10-24.5 0-43.2 21.5-43.2 45.2 0 19.5 12.2 32.2 31.7 32.2 9.3 0 20.5-4.9 26.5-11.9-.3 1.5-1 4.7-1 6.2 0 2.3 1 4 3.2 4H484c2.7 0 5-2.9 5.5-5.7l10.2-64.3c.3-1.9-1.2-3.9-3.2-3.9zm47.5-33.3c0-2-1.5-3.5-3.2-3.5h-18.5c-1.5 0-3 1.2-3.2 2.7l-16.2 104-.3.5c0 1.8 1.5 3.5 3.5 3.5h16.5c2.5 0 5-2.9 5.2-5.7L544 191.2v-.3zm-90 51.8c-12.2 0-21.7 9.7-21.7 22 0 9.7 7 15 16.2 15 12 0 21.7-9.2 21.7-21.5.1-9.8-6.9-15.5-16.2-15.5z"
+              ></path>
+            </svg>
+            <p
+              class="font-semibold absolute inset-0 w-full whitespace-nowrap translate-y-[110%] translate-x-full top-1 left-2 transition-all duration-700 opacity-0"
+            >
+              Credit Card
+            </p>
+          </div>
+          <input
+            class="checked:text-indigo-500 checked:ring-0 checked:ring-current focus:ring-0 focus:ring-current"
+            value="visa"
+            name="payment"
+            type="radio"
+          />
+        </label>
+      </div>
+    </div>
+
+    <!-- Modal Snack -->
+    <div id="snackMenu" class="modal">
+      <div class="menuHeader">
+        <h2>Choisir un Snack</h2>
+        <button id="closeSnackMenu">✖</button>
+      </div>
+      <div class="menuContent">
+        <div class="snackOptions">
+          <button class="snackOption" data-snack="popcorn" data-price="3.50">
+            <div class="itemInfo">
+              <div class="icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  style="width:24px; height:24px;"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                </svg>
+              </div>
+              <span class="label">Popcorn (3,50€)</span>
+            </div>
+          </button>
+          <button class="snackOption" data-snack="nachos" data-price="4.00">
+            <div class="itemInfo">
+              <div class="icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  style="width:24px; height:24px;"
+                >
+                  <rect x="4" y="4" width="16" height="16"></rect>
+                </svg>
+              </div>
+              <span class="label">Nachos (4,00€)</span>
+            </div>
+          </button>
+          <button class="snackOption" data-snack="hotdog" data-price="5.00">
+            <div class="itemInfo">
+              <div class="icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  style="width:24px; height:24px;"
+                >
+                  <path d="M4 12h16"></path>
+                </svg>
+              </div>
+              <span class="label">Hot Dog (5,00€)</span>
+            </div>
+          </button>
+          <button class="snackOption" data-snack="candy" data-price="2.50">
+            <div class="itemInfo">
+              <div class="icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  style="width:24px; height:24px;"
+                >
+                  <path d="M12 2a10 10 0 1 0 10 10"></path>
+                </svg>
+              </div>
+              <span class="label">Bonbon (2,50€)</span>
+            </div>
+          </button>
+        </div>
+        <button class="backBtn" id="backToPaymentMenu">
+          Retour
+        </button>
+      </div>
+    </div>
+
+    <script>
+      /* Gestion du menu d'action via le switch */
+      const checkbox = document.getElementById("checkbox");
+      checkbox.addEventListener("change", function () {
+        if (this.checked) {
+          document.getElementById("actionMenu").style.display = "block";
+        }
+      });
+      document.getElementById("closeActionMenu").addEventListener("click", function () {
+        document.getElementById("actionMenu").style.display = "none";
+        checkbox.checked = false;
+      });
+      document.getElementById("actionPayBtn").addEventListener("click", function () {
+        document.getElementById("actionMenu").style.display = "none";
+        checkbox.checked = false;
+        document.getElementById("paymentMenu").style.display = "block";
+      });
+      document.getElementById("actionSnackBtn").addEventListener("click", function () {
+        document.getElementById("actionMenu").style.display = "none";
+        checkbox.checked = false;
+        document.getElementById("snackMenu").style.display = "block";
+      });
+      
+      /* Gestion du menu Snack */
+      function closeSnackMenu() {
+        document.getElementById("snackMenu").style.display = "none";
+        document.getElementById("paymentMenu").style.display = "block";
+      }
+      document.getElementById("backToPaymentMenu").addEventListener("click", closeSnackMenu);
+      document.getElementById("closeSnackMenu").addEventListener("click", closeSnackMenu);
+      
+      /* Mise à jour du total et gestion des snacks (code inchangé) */
+      function updateTotal() {
+        let total = 0;
+        // Prix fixe de la place de cinéma (10€)
+        total += 10;
+        // Ajouter le total des snacks
+        const snackItems = document.querySelectorAll("#snackSummary .summaryItem");
+        snackItems.forEach(function (item) {
+          const quantity = parseFloat(item.querySelector(".quantity").textContent);
+          const unitPrice = parseFloat(item.querySelector(".unitPrice").getAttribute("data-price"));
+          total += quantity * unitPrice;
+        });
+        // Mise à jour (si nécessaire)
+        // document.getElementById("totalAmount").textContent = total.toFixed(2) + "€";
+      }
+      
+      /* Ajout d'un snack au récapitulatif */
+      const snackOptions = document.querySelectorAll(".snackOption");
+      snackOptions.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          const snackId = this.getAttribute("data-snack");
+          const snackLabelFull = this.querySelector(".label").textContent;
+          const snackLabel = snackLabelFull.split(" (")[0];
+          const snackPrice = parseFloat(this.getAttribute("data-price"));
+          let existingItem = document.querySelector(
+            '#snackSummary .summaryItem[data-snack="' + snackId + '"]'
+          );
+          if (existingItem) {
+            let quantityElem = existingItem.querySelector(".quantity");
+            let currentQty = parseInt(quantityElem.textContent);
+            quantityElem.textContent = currentQty + 1;
+          } else {
+            let summaryItem = document.createElement("div");
+            summaryItem.classList.add("summaryItem");
+            summaryItem.setAttribute("data-snack", snackId);
+            summaryItem.innerHTML = `
+              <div class="itemInfo">
+                <div class="icon">
+                  ${this.querySelector(".icon").innerHTML}
+                </div>
+                <span class="label">${snackLabel}</span>
+              </div>
+              <div class="itemPrice">
+                <span class="quantity">1</span> x <span class="unitPrice" data-price="${snackPrice}">${snackPrice.toFixed(2)}€</span>
+              </div>
+            `;
+            document.getElementById("snackSummary").appendChild(summaryItem);
+          }
+          updateTotal();
+        });
+      });
+      
+      // Initialisation
+      updateTotal();
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <style>
+        .patate {
+          width: 280px;
+          height: 150px;
+          background: #141414;
+          border-radius: 15px;
+          box-shadow: rgb(0, 0, 0, 0.7) 5px 10px 50px,
+            rgb(0, 0, 0, 0.7) -5px 0px 250px;
+          display: flex;
+          color: white;
+          justify-content: center;
+          position: absolute; /* Positionnement absolu pour plus de contrôle */
+          top: 480px; /* Ajuste la position verticale */
+          left: 50px; /* Ajuste la position horizontale */
+          flex-direction: column;
+          cursor: pointer;
+          transition: all 0.3s ease-in-out;
+          overflow: hidden;
+        }
+
+        .patate:hover {
+          box-shadow: rgb(0, 0, 0) 5px 10px 50px, rgb(0, 0, 0) -5px 0px 250px;
+        }
+
+        .time-text {
+          font-size: 50px;
+          margin-top: 0px;
+          margin-left: 15px;
+          font-weight: 600;
+          font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+            sans-serif;
+        }
+
+        .time-sub-text {
+          font-size: 15px;
+          margin-left: 5px;
+        }
+
+        .day-text {
+          font-size: 18px;
+          margin-top: 0px;
+          margin-left: 15px;
+          font-weight: 500;
+          font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+            sans-serif;
+        }
+
+        .moon {
+          font-size: 20px;
+          position: absolute;
+          right: 15px;
+          top: 15px;
+          transition: all 0.3s ease-in-out;
+        }
+
+        .patate:hover > .moon {
+          font-size: 23px;
+        }
+      </style>
+
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Disney+ UI</title>
+      <style>
+        body {
+          margin: 0;
+          padding: 0;
+          font-family: Arial, sans-serif;
+          color: #fff;
+          overflow-x: hidden;
+          position: relative; /* Nécessaire pour que ::before fonctionne correctement */
+        }
+
+        body::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(
+            135deg,
+            rgba(10, 10, 10, 0.95),
+            rgba(20, 20, 20, 0.85) 40%,
+            rgba(15, 15, 15, 0.75) 70%,
+            rgba(0, 0, 0, 0.5) 100%
+          );
+          z-index: -1;
+        }
+
+        .hero-section {
+          z-index: 9999;
+          position: relative;
+          width: 95%;
+          height: 65vh;
+          margin: 20px auto;
+          border-radius: 20px;
+          overflow: hidden;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          transition: opacity 0.5s ease;
+          bottom: 250px;
+          background: rgba(0, 0, 0, 0.5); /* Ajout d'un fond semi-transparent */
+        }
+
+        .hero-section.hidden {
+          opacity: 0;
+          visibility: hidden;
+        }
+
+        .hero-section img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .hero-content {
+          position: absolute;
+          bottom: 10px;
+          left: 50%;
+          transform: translateX(-50%);
+          text-align: center;
+          width: 100%;
+          color: #fff;
+          padding: 0 20px;
+        }
+
+        .hero-logo {
+          max-width: 60%;
+          margin-bottom: 15px;
+        }
+
+        .hero-subtitle {
+          font-size: 0.9rem;
+          color: rgba(255, 255, 255, 0.8);
+          margin-bottom: 20px;
+        }
+
+        .button-container {
+          display: flex;
+          justify-content: center;
+          gap: 15px;
+          margin-top: 10px;
+        }
+
+        .playstore-button {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          background-color: #fff;
+          color: #000;
+          border: none;
+          border-radius: 25px;
+          padding: 10px 20px;
+          text-decoration: none;
+          font-size: 1rem;
+          font-weight: bold;
+          cursor: pointer;
+          transition: all 0.3s ease-in-out;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .playstore-button:hover {
+          transform: scale(1.1);
+          background-color: #e0e0e0;
+        }
+
+        .playstore-button svg {
+          margin-right: 10px;
+        }
+
+        /* Conteneur global pour éviter le décalage horizontal */
+        body,
+        html {
+          margin: 0;
+          padding: 0;
+          overflow-x: hidden; /* Empêche le site de se décaler à droite */
+        }
+
+        :root {
+          --carousel-top: -150px;
+        }
+
+        .video-container {
+          position: relative;
+          width: 60%; /* Réduction de la taille */
+          height: 30vh; /* Réduction de la hauteur */
+          margin: 20px auto;
+          border-radius: 20px;
+          overflow: hidden;
+          display: block;
+          transform: translateY(-500px);
+          transition: transform 0.3s ease-in-out; /* Animation fluide */
+        }
+
+        .video-container video {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 20px;
+        }
+
+        .sound-button {
+          position: absolute;
+          bottom: 10px;
+          right: 10px;
+          background-color: rgba(39, 39, 39, 0.8);
+          border: none;
+          border-radius: 50%;
+          width: 50px;
+          height: 50px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          z-index: 20;
+          transition: transform 0.3s ease;
+        }
+
+        .sound-button:hover {
+          transform: scale(1.1);
+        }
+
+        .sound-button svg {
+          width: 24px;
+          height: 24px;
+          fill: #fff;
+        }
+      </style>
+
+      <!-- Début du code à insérer -->
+
+<!-- Bouton d'analyse avec l'icône SVG -->
+<div class="analyze">
+  <a href="javascript:void(0);" onclick="openThemeSelector()">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      height="36"
+      width="36"
+    >
+      <rect height="24" width="24"></rect>
+      <path
+        stroke-linecap="round"
+        stroke-width="1.5"
+        stroke="white"
+        d="M19.25 9.25V5.25C19.25 4.42157 18.5784 3.75 17.75 3.75H6.25C5.42157 3.75 4.75 4.42157 4.75 5.25V18.75C4.75 19.5784 5.42157 20.25 6.25 20.25H12.25"
+        class="board"
+      ></path>
+      <path
+        d="M9.18748 11.5066C9.12305 11.3324 8.87677 11.3324 8.81234 11.5066L8.49165 12.3732C8.47139 12.428 8.42823 12.4711 8.37348 12.4914L7.50681 12.8121C7.33269 12.8765 7.33269 13.1228 7.50681 13.1872L8.37348 13.5079C8.42823 13.5282 8.47139 13.5714 8.49165 13.6261L8.81234 14.4928C8.87677 14.6669 9.12305 14.6669 9.18748 14.4928L9.50818 13.6261C9.52844 13.5714 9.5716 13.5282 9.62634 13.5079L10.493 13.1872C10.6671 13.1228 10.6671 12.8765 10.493 12.8121L9.62634 12.4914C9.5716 12.4711 9.52844 12.428 9.50818 12.3732L9.18748 11.5066Z"
+        class="star-2"
+      ></path>
+      <path
+        d="M11.7345 6.63394C11.654 6.41629 11.3461 6.41629 11.2656 6.63394L10.8647 7.71728C10.8394 7.78571 10.7855 7.83966 10.717 7.86498L9.6337 8.26585C9.41605 8.34639 9.41605 8.65424 9.6337 8.73478L10.717 9.13565C10.7855 9.16097 10.8394 9.21493 10.8647 9.28335L11.2656 10.3667C11.3461 10.5843 11.654 10.5843 11.7345 10.3667L12.1354 9.28335C12.1607 9.21493 12.2147 9.16097 12.2831 9.13565L13.3664 8.73478C13.5841 8.65424 13.5841 8.34639 13.3664 8.26585L12.2831 7.86498C12.2147 7.83966 12.1607 7.78571 12.1354 7.71728L11.7345 6.63394Z"
+        class="star-1"
+      ></path>
+      <path
+        class="stick"
+        stroke-linejoin="round"
+        stroke-width="1.5"
+        stroke="white"
+        d="M17 14L21.2929 18.2929C21.6834 18.6834 21.6834 19.3166 21.2929 19.7071L20.7071 20.2929C20.3166 20.6834 19.6834 20.6834 19.2929 20.2929L15 16M17 14L15.7071 12.7071C15.3166 12.3166 14.6834 12.3166 14.2929 12.7071L13.7071 13.2929C13.3166 13.6834 13.3166 14.3166 13.7071 14.7071L15 16M17 14L15 16"
+      ></path>
+    </svg>
+  </a>
+</div>
+
+<!-- Ripple loader (initialement caché) -->
+<div class="ld-ripple" id="loader" style="display: none;">
+  <div></div>
+  <div></div>
+</div>
+
+<!-- Styles pour le bouton et le loader -->
+<style>
+  .analyze {
+    position: relative;
+    top: 100px; /* Ajuste la position verticale si nécessaire */
+    left: 45%;
+    transform: translateX(-50%);
+    z-index: 9999;
+  }
+  
+  .analyze svg {
+    display: block;
+    margin: 0 auto;
+  }
+  
+  /* Loader centré sur l'écran */
+  .ld-ripple {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    z-index: 10000;
+  }
+  
+  .ld-ripple div {
+    position: absolute;
+    border: 4px solid #fff;
+    opacity: 1;
+    border-radius: 50%;
+    animation: ld-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+  }
+  
+  .ld-ripple div:nth-child(2) {
+    animation-delay: -0.5s;
+  }
+  
+  @keyframes ld-ripple {
+    0% {
+      top: 36px;
+      left: 36px;
+      width: 0;
+      height: 0;
+      opacity: 0;
+    }
+    4.9% {
+      top: 36px;
+      left: 36px;
+      width: 0;
+      height: 0;
+      opacity: 0;
+    }
+    5% {
+      top: 36px;
+      left: 36px;
+      width: 0;
+      height: 0;
+      opacity: 1;
+    }
+    100% {
+      top: 0px;
+      left: 0px;
+      width: 72px;
+      height: 72px;
+      opacity: 0;
+    }
+  }
+</style>
+
+<!-- Script JavaScript -->
+<script>
+  function openThemeSelector() {
+    // Afficher le loader
+    document.getElementById('loader').style.display = 'block';
+    // Attendre 1 seconde avant de rediriger (ajustez le délai si besoin)
+    setTimeout(function() {
+      window.location.href = "newpage.html"; // Remplacez "newpage.html" par l'URL de destination
+    }, 1000);
+  }
+</script>
+<!-- Fin du code à insérer -->
+
+      
+      
+
+      <style>
+        /* Utilisation de SF Pro Display */
+        @font-face {
+          font-family: "SF Pro Display";
+          src: url("path/to/SF-Pro-Display-Regular.otf") format("opentype");
+          font-weight: normal;
+          font-style: normal;
+        }
+
+        body {
+          font-family: "SF Pro Display", sans-serif;
+        }
+
+      
+
+        @keyframes slideUp {
+          0% {
+            bottom: -50px; /* Position initiale en dehors de l'écran */
+            opacity: 0; /* Invisible au départ */
+          }
+          100% {
+            bottom: 20px; /* Position finale, ici 20px plus haut */
+            opacity: 1; /* Complètement visible */
+          }
+        }
+
+        .theme-popup {
+          background: #1a1a1a;
+          color: white;
+          border-radius: 25px;
+          padding: 40px;
+          width: 95%;
+          max-width: 600px;
+          text-align: center;
+        }
+
+        .theme-popup h3 {
+          margin-bottom: 25px;
+          font-size: 26px;
+          font-weight: 500;
+          color: #fff;
+        }
+
+        .theme-options-container {
+          overflow-x: auto;
+          display: flex;
+          padding: 10px;
+        }
+
+        .theme-options {
+          display: flex;
+          gap: 30px;
+        }
+
+        .theme-option {
+          flex: 0 0 auto;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          cursor: pointer;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .theme-option img {
+          width: 130px;
+          height: 130px;
+          border-radius: 50%;
+          margin-bottom: 10px;
+        }
+
+        .theme-option p {
+          font-size: 16px;
+          color: #fff;
+          margin: 0;
+        }
+
+        /* Effet hover */
+        .theme-option:hover {
+          transform: scale(1.1); /* Légère mise à l'échelle */
+          box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3); /* Ombre douce */
+        }
+
+        .theme-categories {
+          display: flex;
+          justify-content: space-around;
+          border-top: 1px solid #333;
+          padding-top: 15px;
+          margin-top: 15px;
+        }
+
+        .theme-categories button {
+          background-color: #444;
+          border: none;
+          color: #fff;
+          font-size: 16px;
+          padding: 10px 15px;
+          border-radius: 10px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+          font-family: "SF Pro Display", sans-serif;
+        }
+
+        .theme-categories button:hover {
+          background-color: #666;
+        }
+
+        .loading {
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          font-size: 20px;
+          color: white;
+          background: rgba(0, 0, 0, 0.8);
+          padding: 20px 35px;
+          border-radius: 5px;
+          z-index: 10000;
+        }
+      </style>
+
+      <!-- Hero Section -->
+      <div class="hero-section hidden" id="hero">
+        <img
+          src="https://image.tmdb.org/t/p/original/AlV4ZAvMAj2qLGTZLM2luNDWcLq.jpg"
+          alt="Hero Background"
+        />
+        <div class="hero-content">
+          <img
+            class="hero-logo"
+            src="https://lumiere-a.akamaihd.net/v1/images/l_vaiana_white_r_7009d5f7.png"
+            alt="Hero Logo"
+          />
+          <div class="hero-subtitle">NEW • Sci-Fi • 2022 • 13 Episodes</div>
+          <div class="button-container">
+            <a class="playstore-button" href="#">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="24"
+                height="24"
+                fill="currentColor"
+              >
+                <path d="M8 5v14l11-7z"></path>
+              </svg>
+              <span>Play</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      
+      
+      <!-- Popup de sélection de thème -->
+      <div id="themeSelector" style="display: none">
+        <div class="theme-popup">
+          <h3>Quelle est votre humeur ?</h3>
+          <div class="theme-options-container">
+            <div class="theme-options">
+              <!-- Images visibles au départ (3 images) -->
+              <div class="theme-option" onclick="selectTheme('gingerbread')">
+                <img
+                  src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/AF4D5A22F8B21B7D8F1485855639A11121F0E010A32687D875B79D15458A2B71/scale?width=300&amp;aspectRatio=1.00&amp;format=png"
+                  alt=""
+                />
+                <p></p>
+              </div>
+              <div class="theme-option" onclick="selectTheme('dark')">
+                <img
+                  src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/AF9163C6F4A14A5219FAE0FB739836279297C40097A54BB8C15590C457F67ABA/scale?width=300&amp;aspectRatio=1.00&amp;format=png"
+                  alt=""
+                />
+                <p></p>
+              </div>
+              <div class="theme-option" onclick="selectTheme('autumn')">
+                <img
+                  src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/5CD0FD450E067C69C54A6FAEDFCDC7A44B93225672BC644981A61E6E2C78A163/scale?width=300&amp;aspectRatio=1.00&amp;format=png"
+                  alt=""
+                />
+                <p></p>
+              </div>
+            </div>
+          </div>
+          <div class="theme-categories">
+            <button onclick="loadCategory('princess')">Happy</button>
+            <button onclick="loadCategory('hero')">Angry</button>
+            <button onclick="loadCategory('villain')">Sassy</button>
+            <button onclick="loadCategory('buddy')">WTF</button>
+          </div>
+        </div>
+      </div>
+
+     
+
+      
+      
+      <style>
+        /* Utilisation de SF Pro Display */
+        @font-face {
+          font-family: "SF Pro Display";
+          src: url("path/to/SF-Pro-Display-Regular.otf") format("opentype");
+          font-weight: normal;
+          font-style: normal;
+        }
+
+        body {
+          font-family: "SF Pro Display", sans-serif;
+        }
+
+        .theme-categories button:hover {
+          background-color: #666;
+        }
+
+        .loading {
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          font-size: 20px;
+          color: white;
+          background: rgba(0, 0, 0, 0.8);
+          padding: 20px 35px;
+          border-radius: 5px;
+          z-index: 10000;
+        }
+      </style>
+
+      <!-- Video Section -->
+      <div class="video-container" id="video" style="display: block">
+        <video
+          src="https://cdn.glitch.global/dec50b52-1fc2-417a-80a4-dfe25959cc90/Snapinsta.app_video_AQMK1fcu8ygc2hYDWgcjiODxKZ5-ih8QJW79AEYbIUjupciGyuOsBM76J94sznCSS7jcVgVPoE4bvtPpXBS596gJowaP3lIyPvVmK0o.mp4?v=1735064217110"
+          autoplay=""
+          muted=""
+          loop=""
+        ></video>
+        <button class="sound-button" id="soundToggle">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 75 75"
+            version="1.0"
+          >
+            <path
+              d="M39,14 L22,29 H6 V48 H22 L39,63 Z"
+              fill="#fff"
+              stroke="#fff"
+              stroke-width="5"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
+        </button>
+      </div>
+
+      <script>
+        // Wait for 2 seconds, then hide hero and show video
+        setTimeout(() => {
+          const heroSection = document.getElementById("hero");
+          const videoSection = document.getElementById("video");
+
+          // Hide hero section
+          heroSection.classList.add("hidden");
+
+          // Show video section
+          videoSection.style.display = "block";
+        }, 10000);
+
+        const video = document.querySelector("video");
+        const soundToggle = document.getElementById("soundToggle");
+
+        soundToggle.addEventListener("click", () => {
+          if (video.muted) {
+            video.muted = false;
+            soundToggle.innerHTML =
+              '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 75 75" version="1.0"><path d="M39,14 L22,29 H6 V48 H22 L39,63 Z" fill="#fff" stroke="#fff" stroke-width="5" stroke-linejoin="round" /><path d="M48,28 A20,20 0 0,1 48,47" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" /></svg>';
+          } else {
+            video.muted = true;
+            soundToggle.innerHTML =
+              '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 75 75" version="1.0"><path d="M39,14 L22,29 H6 V48 H22 L39,63 Z" fill="#fff" stroke="#fff" stroke-width="5" stroke-linejoin="round" /><path d="M49,26 L69,50 M69,26 L49,50" fill="#fff" stroke="#fff" stroke-width="5" stroke-linecap="round" /></svg>';
+          }
+        });
+      </script>
+    </div>
+  </body>
+</html>
+
+
+
+<style>
+  /* Conteneur principal */
+  .kris-overlay {
+    opacity: 0;
+    transform: translateY(50px); /* Démarre plus bas */
+    transition: opacity 1s ease, transform 1s ease;
+    position: relative; /* Assure que la section reste à sa place d'origine */
+    width: 100%;
+    max-width: 1000px;
+    padding: 10px;
+    z-index: 9999;
+    margin: auto;
+    left: 0; /* S'assurer qu'il reste centré sans décalage */
+  }
+
+  /* Sur PC : bien positionné */
+  @media (min-width: 769px) {
+    .kris-overlay {
+      position: absolute;
+      bottom: 7000px; /* Position d'origine */
+      left: 20px; /* Aligné à gauche */
+      transform: none;
+    }
+  }
+
+  /* Sur mobile : bien en bas */
+  @media (max-width: 768px) {
+    .kris-overlay {
+      position: absolute;
+      bottom: 6950px; /* Position d'origine */
+      left: 5%;
+      transform: translateX(-50%);
+    }
+  }
+
+  /* Titre */
+  .kris-title {
+    color: #fff;
+    font-family: Arial, sans-serif;
+    font-size: 22px;
+    text-align: left;
+    margin-bottom: 20px; /* Ajout d'espace sous le titre */
+  }
+
+  /* Grille pour PC */
+  .kris-grid {
+    display: grid;
+    grid-gap: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Agrandissement des affiches */
+    justify-content: center;
+  }
+
+  /* Carrousel mobile */
+  .kris-slider {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 15px;
+    padding-bottom: 10px;
+  }
+
+  .kris-slider::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Affiches */
+  .kris-card {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 8px;
+    flex: 0 0 auto;
+    scroll-snap-align: center;
+    width: 180px; /* Taille uniforme */
+    height: 300px; /* Assurer que toutes les cartes ont la même hauteur */
+  }
+
+  /* Image */
+  .kris-card img {
+    width: 100%; /* Assurer que les images remplissent le conteneur */
+    height: 100%; /* Assurer que les images ont la même hauteur */
+    object-fit: cover; /* Couvre toute la zone sans déformation */
+    display: block;
+    transition: transform 0.3s ease;
+    border-radius: 8px;
+  }
+
+  /* Nom du film */
+  .kris-title-movie {
+    text-align: center;
+    color: white;
+    font-size: 16px; /* Taille du texte augmentée */
+    font-family: Arial, sans-serif; /* Style Arial */
+    margin-top: 8px;
+    word-wrap: break-word;
+    max-width: 100%;
+  }
+
+  /* Empêcher que le texte dépasse */
+  .kris-title-movie span {
+    display: block;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  /* Effet hover */
+  .kris-card::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 2px solid #fff;
+    opacity: 0;
+    transition: top 0.3s ease, opacity 0.3s ease;
+  }
+
+  .kris-card:hover::after,
+  .kris-card:focus::after,
+  .kris-card:active::after {
+    top: 0;
+    opacity: 1;
+  }
+
+  /* Effet zoom */
+  .kris-card:hover img,
+  .kris-card:focus img,
+  .kris-card:active img {
+    transform: scale(1.05);
+  }
+
+  /* Mobile : activer le carrousel */
+  @media (max-width: 768px) {
+    .kris-grid {
+      display: none;
+    }
+    .kris-slider {
+      display: flex;
+    }
+  }
+
+  /* PC : désactiver le carrousel */
+  @media (min-width: 769px) {
+    .kris-slider {
+      display: none;
+    }
+    .kris-grid {
+      display: grid;
+    }
+  }
+
+  /* Ajouter une transition d'opacité pour l'apparition */
+  .kris-overlay {
+    opacity: 0;
+    transform: translateY(50px); /* Démarre plus bas */
+    transition: opacity 1s ease, transform 1s ease;
+  }
+
+  /* Quand l'élément devient visible, appliquer l'animation d'apparition */
+  .kris-overlay.visible {
+    opacity: 1;
+    transform: translateY(0); /* Remontée à sa position normale */
+  }
+</style>
+
+<div class="kris-overlay">
+  <h2 class="kris-title">Autres Affiches</h2>
+
+  <!-- Grille PC -->
+  <div class="kris-grid">
+    <div class="kris-card">
+      <img src="https://all.web.img.acsta.net/r_750_x/img/92/55/9255d9aeb17004f6a622cc47e573777e.jpg" alt="Affiche 1">
+      <p class="kris-title-movie"><span>Film 1</span></p>
+    </div>
+    <div class="kris-card">
+      <img src="https://all.web.img.acsta.net/r_750_x/img/3d/88/3d888f3f864049f77bc99b83f246312d.jpg" alt="Affiche 2">
+      <p class="kris-title-movie"><span>Film 2</span></p>
+    </div>
+    <div class="kris-card">
+      <img src="affiche3.jpg" alt="Affiche 3">
+      <p class="kris-title-movie"><span>Film 3</span></p>
+    </div>
+    <div class="kris-card">
+      <img src="affiche4.jpg" alt="Affiche 4">
+      <p class="kris-title-movie"><span>Film 4</span></p>
+    </div>
+  </div>
+
+  <!-- Carrousel Mobile -->
+  <div class="kris-slider">
+    <div class="kris-card">
+      <img src="https://all.web.img.acsta.net/r_750_x/img/92/55/9255d9aeb17004f6a622cc47e573777e.jpg" alt="Affiche 1">
+      <p class="kris-title-movie"><span>Captain America: Brave New World</span></p>
+    </div>
+    <div class="kris-card">
+      <img src="https://all.web.img.acsta.net/r_750_x/img/3d/88/3d888f3f864049f77bc99b83f246312d.jpg" alt="Affiche 2">
+      <p class="kris-title-movie"><span>Paddington au Pérou</span></p>
+    </div>
+    <div class="kris-card">
+      <img src="https://all.web.img.acsta.net/r_750_x/img/9b/12/9b122c9169a57f55832a7c919c414af7.jpg" alt="Affiche 3">
+      <p class="kris-title-movie"><span>Vol à haut risque</span></p>
+    </div>
+    <div class="kris-card">
+      <img src="affiche4.jpg" alt="Affiche 4">
+      <p class="kris-title-movie"><span>Film 4</span></p>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript pour appliquer l'effet d'apparition lors du scroll -->
+<script>
+  // Crée un observer pour détecter quand la section entre dans la vue
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Si la section est dans la vue, ajouter la classe 'visible'
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target); // Ne plus observer après l'activation
+      }
+    });
+  }, { threshold: 0.5 }); // Déclenche l'effet lorsque 50% de l'élément est visible
+
+  // Observer la section .kris-overlay
+  observer.observe(document.querySelector('.kris-overlay'));
+</script>
+
+
+
+<!-- Début du code à insérer -->
+<style>
+  /* Applique l'animation de glissement à la page entière */
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow-x: hidden; /* Empêche le défilement horizontal */
+  }
+
+  /* L'animation de glissement pour toute la page */
+  .page-content {
+    position: relative;
+    animation: slideIn 1s ease-out; /* Applique l'animation de glissement */
+  }
+
+  /* Définir l'animation "slideIn" pour que la page arrive de la gauche */
+  @keyframes slideIn {
+    from {
+      transform: translateX(-100%); /* Page commence hors de l'écran à gauche */
+    }
+    to {
+      transform: translateX(0); /* La page glisse vers sa position normale */
+    }
+  }
+</style>
+
+<!-- Conteneur pour le contenu de la page (toute la page) -->
+<div class="page-content">
+  <!-- Place ici tout ton contenu HTML, tout restera intact -->
+</div>
+
+<!-- JavaScript pour appliquer l'animation lorsque la page est chargée -->
+<script>
+  // L'animation commence à l'instant où la page est complètement chargée
+  window.onload = function() {
+    document.querySelector('.page-content').style.animation = 'slideIn 1s ease-out'; // Applique l'animation
+  };
+</script>
+<!-- Fin du code à insérer -->
+
+
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Informations - IMAX</title>
+  <style>
+    :root {
+      --hover-shadows: 16px 16px 33px #121212, -16px -16px 33px #303030;
+      --accent: fuchsia;
+    }
+    
+    /* Global Styles */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #121212;
+      color: #fff;
+      position: relative;
+      min-height: 2000px; /* Ajusté pour permettre le scroll */
+    }
+    
+    /* Section IMAX */
+    #imax-section {
+      position: absolute;
+      top: 1250px;            /* Positionné à 1250px du haut */
+      width: 100%;
+      text-align: center;
+      padding: 60px 20px;
+      box-sizing: border-box;
+      
+      /* Effet d'apparition initial */
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 1s ease-out, transform 1s ease-out;
+    }
+    
+    /* Lorsque la section est visible */
+    #imax-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    /* Style du titre et des textes */
+    #imax-section h1 {
+      font-size: 3em;
+      margin: 0 0 0.5em;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    #imax-section .imax-subtitle {
+      font-size: 1.8em;
+      margin: 0 0 0.5em;
+      color: #ccc;
+    }
+    #imax-section .imax-description {
+      font-size: 1.2em;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 1.5em auto;
+    }
+    
+    /* Responsive pour téléphones */
+    @media (max-width: 768px) {
+      #imax-section {
+        padding: 40px 10px;
+      }
+      #imax-section h1 {
+        font-size: 2.2em;
+      }
+      #imax-section .imax-subtitle {
+        font-size: 1.4em;
+      }
+      #imax-section .imax-description {
+        font-size: 1em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Autres contenus de la page ... -->
+  
+  <!-- Section IMAX -->
+  <div id="imax-section">
+    <h1>Vaiana 2</h1>
+    <p class="imax-subtitle">1 h 47 min</p>
+    <p class="imax-description">
+      Moana et Maui sont réunis trois ans plus tard pour un nouveau voyage aux côtés d'un équipage de marins improbables. Après avoir reçu un appel inattendu de ses ancêtres, Moana doit se rendre dans les mers lointaines de l'Océanie et dans des eaux dangereuses, perdues depuis longtemps, pour une aventure comme elle n'en a jamais connu.
+    </p>
+  </div>
+  
+  <script>
+    // L'effet d'apparition au scroll via Intersection Observer
+    document.addEventListener("DOMContentLoaded", function() {
+      var imaxSection = document.getElementById("imax-section");
+      
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+          if(entry.isIntersecting) {
+            imaxSection.classList.add("visible");
+            observer.unobserve(imaxSection);
+          }
+        });
+      }, { threshold: 0.1 });
+      
+      observer.observe(imaxSection);
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
