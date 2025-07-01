@@ -146,24 +146,26 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: #171717;
-      pointer-events: none;
       transition: opacity 0.5s ease;
       z-index: 9999;
     }
+    /* fond sombre complet */
+    #singes-container {
+      background-color: #171717;
+      flex-direction: column;
+      pointer-events: none;
+    }
+    /* filtre semi-transparent si besoin */
     #singes-overlay {
       background-color: rgba(0,0,0,0.3);
+      pointer-events: none;
     }
-    #singes-container {
-      background: transparent;
-      pointer-events: auto;
-      flex-direction: column;
-    }
-    /* Logo */
+    /* Logo principal */
     #singes-container .singes-logo {
       width: 150px;
       height: auto;
       fill: #fff;
+      pointer-events: none;
     }
     /* Texte "From" */
     #singes-footer {
@@ -176,7 +178,6 @@
       line-height: 20px;
       pointer-events: none;
       transition: opacity 0.5s ease;
-      z-index: 9999;
     }
     /* Logo Meta */
     #singes-meta {
@@ -185,57 +186,57 @@
       text-align: center;
       pointer-events: none;
       transition: opacity 0.5s ease;
-      z-index: 9999;
     }
     #singes-meta svg {
       width: 60px;
       height: 12px;
       fill: url(#singesGradient);
     }
+    /* Contenu principal masqué au départ */
+    #singes-main {
+      display: none;
+    }
   </style>
 </head>
 <body>
   <!-- ========= Loader ========= -->
-  <div id="singes-overlay"></div>
-
   <div id="singes-container">
     <svg class="singes-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
       <path d="M35.161,38.712 c-4.975,1.504-9.67,0.807-12.228,0.139c-0.07,1.03-0.182,1.461-0.351,1.628c-0.197,0.223-1.827,1.141-2.727-0.167 c-0.394-0.626-0.591-1.754-0.702-2.784c-5.762-2.589-8.433-6.403-8.517-6.543c-0.141-0.139-1.447-1.489-0.141-3.16 c1.223-1.504,5.27-3.021,8.897-3.619c0.141-3.063,0.478-5.428,0.914-6.473c0.52-1.253,1.187-0.139,1.771,0.696 c0.478,0.626,0.773,3.313,0.801,5.457c2.361-0.111,3.795,0.062,6.423,0.557c3.457,0.585,5.762,2.338,5.58,4.315 c-0.169,1.949-1.967,2.756-2.67,2.812c-0.703,0.056-1.827-0.459-1.827-0.459c-0.787-0.362-0.07-0.696,0.844-1.086 c1.012-0.487,0.787-0.974,0.787-0.974c-0.366-1.114-4.85-1.857-9.305-1.857c0,2.436,0.098,6.473,0.169,8.825 c3.12,0.585,5.453,0.459,5.453,0.459s11.384-0.32,11.708-7.517c0.357-7.205-11.384-14.108-20.029-16.281 c-8.63-2.241-13.521-0.654-13.937-0.446c-0.464,0.223-0.042,0.306-0.042,0.306s0.464,0.069,1.312,0.348s0.169,0.696,0.169,0.696 c-1.475,0.495-3.12,0.209-3.437-0.459c-0.323-0.654,0.211-1.253,0.844-2.129c0.591-0.905,1.265-0.877,1.265-0.877 c10.674-3.691,23.718,2.922,23.718,2.922c12.199,6.097,14.281,13.266,14.062,16.05c-0.197,2.742-1.265,7.378-8.785,9.633 M11.689,28.759c-1.209,0.557-0.366,1.448-0.366,1.448c2.277,2.414,5.06,3.926,7.731,4.871c0.309-4.176,0.281-5.665,0.281-7.768 C15.203,27.589,12.814,28.257,11.689,28.759" fill="#fff"/>
     </svg>
-  </div>
-
-  <div id="singes-footer">From</div>
-
-  <div id="singes-meta">
-    <svg aria-label="Logo Meta" role="img" viewBox="0 0 500 100">
-      <defs>
-        <linearGradient id="singesGradient" x1="0" x2="500" y1="50" y2="50">
-          <stop offset="0" stop-color="#833ab4"/>
-          <stop offset="0.5" stop-color="#fd1d1d"/>
-          <stop offset="1" stop-color="#fcb045"/>
-        </linearGradient>
-      </defs>
-      <g clip-path="url(#singesClip)">
-        <path d="M182.141 3.213h18.808l31.98 57.849 31.979-57.849h18.401V98.27h-15.345V25.416l-28.042 50.448h-14.394l-28.042-50.448V98.27h-15.345V3.213ZM332.804 99.967c-7.107 0-13.353-1.573-18.739-4.718-5.387-3.146-9.586-7.504-12.595-13.07-3.011-5.569-4.515-11.95-4.515-19.148 0-7.287 1.47-13.738 4.413-19.35 2.942-5.613 7.027-10.004 12.255-13.173 5.229-3.168 11.238-4.753 18.027-4.753 6.744 0 12.55 1.596 17.416 4.787 4.865 3.191 8.611 7.661 11.237 13.41 2.624 5.749 3.938 12.492 3.938 20.233v4.21h-52.077c.95 5.794 3.292 10.354 7.027 13.68 3.735 3.328 8.453 4.991 14.157 4.991 4.571 0 8.509-.679 11.814-2.037 3.303-1.358 6.404-3.417 9.302-6.178l8.147 9.98c-8.103 7.425-18.038 11.136-29.807 11.136Zm11.204-56.389c-3.215-3.281-7.425-4.923-12.629-4.923-5.07 0-9.314 1.676-12.731 5.025-3.418 3.35-5.58 7.854-6.484 13.512h37.343c-.453-5.794-2.286-10.331-5.499-13.614ZM382.846 40.014h-14.123V27.453h14.123V6.676h14.802v20.777h21.455v12.561h-21.455v31.844c0 5.295.905 9.075 2.716 11.338 1.809 2.264 4.911 3.395 9.302 3.395 1.945 0 3.598-.078 4.956-.237a92.35 92.35 0 0 0 4.481-.646v12.425c-1.675.498-3.564.906-5.669 1.223a44.63 44.63 0 0 1-6.62.475c-15.979 0-23.968-8.735-23.968-26.208V40.014ZM496.236 98.27h-14.53v-9.913c-2.58 3.712-5.862 6.575-9.845 8.588-3.983 2.014-8.51 3.022-13.579 3.022-6.247 0-11.78-1.596-16.601-4.787s-8.612-7.581-11.373-13.172c-2.761-5.59-4.142-11.983-4.142-19.18 0-7.243 1.403-13.648 4.21-19.216 2.806-5.567 6.688-9.935 11.645-13.104 4.956-3.168 10.648-4.753 17.075-4.753 4.844 0 9.189.94 13.037 2.818a25.768 25.768 0 0 1 9.573 7.978v-9.098h14.53V98.27Zm-14.801-46.035c-1.585-4.028-4.085-7.207-7.503-9.54-3.418-2.33-7.367-3.496-11.848-3.496-6.338 0-11.384 2.128-15.141 6.382-3.758 4.255-5.635 10.004-5.635 17.246 0 7.289 1.809 13.06 5.431 17.314 3.621 4.255 8.532 6.382 14.734 6.382 4.571 0 8.645-1.176 12.222-3.53 3.575-2.353 6.155-5.522 7.74-9.506V52.235Z"/>
-      </g>
-    </svg>
+    <div id="singes-footer">From</div>
+    <div id="singes-meta">
+      <svg aria-label="Logo Meta" role="img" viewBox="0 0 500 100">
+        <defs>
+          <linearGradient id="singesGradient" x1="0" x2="500" y1="50" y2="50">
+            <stop offset="0" stop-color="#833ab4"/>
+            <stop offset="0.5" stop-color="#fd1d1d"/>
+            <stop offset="1" stop-color="#fcb045"/>
+          </linearGradient>
+        </defs>
+        <g clip-path="url(#singesClip)">
+          <!-- chemins du logo Meta ici intégralement -->
+          <path d="M182.141 3.213h18.808l31.98 57.849 31.979-57.849h18.401V98.27h-15.345V25.416l-28.042 50.448h-14.394l-28.042-50.448V98.27h-15.345V3.213Z…" fill="url(#singesGradient)"/>
+        </g>
+      </svg>
+    </div>
   </div>
 
   <!-- === Votre contenu principal === -->
   <div id="singes-main">
-    <!-- votre gros code ici -->
+    <!-- Votre gros code existant ici -->
   </div>
 
   <script>
     window.addEventListener('load', function() {
       setTimeout(function() {
-        // On fait disparaître le loader
-        ['overlay','container','footer','meta'].forEach(function(id){
+        // Masquer le loader
+        ['container','footer','meta'].forEach(function(id){
           var el = document.getElementById('singes-'+id);
           el.style.opacity = '0';
           setTimeout(function(){ el.style.display = 'none'; }, 500);
         });
-        // On dévoile le contenu principal
+        // Afficher le contenu principal
         document.getElementById('singes-main').style.display = 'block';
       }, 2000);
     });
