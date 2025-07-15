@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dégradé Gris-Noir Obscurci</title>
+  <style>
+    :root {
+      --encore-spacing-tighter-4: 8px;
+      --text-base: #fff;
+      --encore-body-font-stack: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --encore-text-size-base: 16px;
+      --background-base: #121212;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #0f0f0f;
+      font-family: var(--encore-body-font-stack);
+      color: white;
+      overflow-x: hidden;
+      touch-action: pan-y;
+      position: relative;
+    }
+    .search-bar-container {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      z-index: 1200;
+    }
+    .home-and-search {
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+    .home-button {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      margin-right: 12px;
+      transition: background 0.2s ease;
+    }
+    .home-button:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    .home-button svg {
+      width: 24px;
+      height: 24px;
+      fill: #fff;
+    }
+    .search-bar {
+      width: calc(100% - 80px);
+      max-width: none;
+      height: 50px;
+      background: #1e1e1e;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      border-radius: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    .search-bar input {
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 16px;
+      outline: none;
+      padding-left: 8px;
+    }
+    .search-bar input::placeholder {
+      color: #bbb;
+    }
+    .search-bar .search-icon {
+      width: 20px;
+      height: 20px;
+      fill: #bbb;
+      margin-right: 12px;
+    }
+    .filter-container {
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      overflow-x: auto;
+      padding: 8px 0 8px 24px;
+      scrollbar-width: none;
+    }
+    .filter-container::-webkit-scrollbar {
+      display: none;
+    }
+    .filter-buttons {
+      display: flex;
+      gap: 8px;
+    }
+    .filter-button {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      border-radius: 16px;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+      transition: background 0.2s ease;
+    }
+    .filter-button.active {
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+    .filter-button:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+    .section {
+      position: fixed;
+      top: 80px;
+      left: 0;
+      width: 280px;
+      height: calc(100vh - 80px);
+      background-color: #121212;
+      padding: 16px;
+      overflow-y: auto;
+      transition: transform 0.3s ease;
+      z-index: 1000;
+      border-radius: 0 10px 10px 0;
+      user-select: none;
+      -webkit-user-select: none;
+      transform: translateX(-100%);
+    }
+    .section.active {
+      transform: translateX(0);
+    }
+    .section-header {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+    .library-title {
+      margin-inline-start: var(--encore-spacing-tighter-4);
+      color: var(--text-base);
+      font-size: var(--encore-text-size-base);
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .toggle-button {
+      cursor: pointer;
+      padding: 8px;
+      background: none;
+      border: none;
+      transition: background 0.2s ease;
+      margin-top: 8px;
+    }
+    .toggle-button:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+    }
+    .toggle-button svg {
+      width: 20px;
+      height: 20px;
+      fill: #fff;
+    }
+    .card {
+      background: #1e1e1e;
+      padding: 16px;
+      margin-bottom: 16px;
+      border-radius: 8px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    .card h2 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      letter-spacing: -0.2px;
+    }
+    .card p {
+      font-size: 14px;
+      color: #bbb;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+    .card button {
+      background: #fff;
+      color: #000;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 14px;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .card button:hover {
+      background: #e5e5e5;
+      transform: scale(1.05);
+    }
+    .trending-section {
+      position: relative;
+      top: 0;
+      left: 0;
+      width: 100%;
+      min-height: 100vh;
+      background: linear-gradient(to bottom, #1e1e1e 0%, #0a0a0a 40%, #0c0c0c 100%);
+      z-index: 900;
+      padding: 20px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-top: 120px;
+    }
+    .trending-title,
+    .popular-artists-title,
+    .popular-albums-title {
+      position: relative;
+      color: #fff;
+      font-family: var(--encore-body-font-stack);
+      font-weight: 700;
+      margin: 24px 0 16px;
+      user-select: none;
+      -webkit-user-select: none;
+      letter-spacing: -0.3px;
+      font-size: 22px;
+    }
+    .trending-content,
+    .popular-artists-content,
+    .popular-albums-content {
+      position: relative;
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      padding-bottom: 16px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .trending-content::-webkit-scrollbar,
+    .popular-artists-content::-webkit-scrollbar,
+    .popular-albums-content::-webkit-scrollbar {
+      display: none;
+    }
+    .trending-content .track-item,
+    .popular-artists-content .artist-item,
+    .popular-albums-content .album-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 140px;
+      flex-shrink: 0;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
+    }
+    .trending-content .track-item:hover,
+    .popular-artists-content .artist-item:hover,
+    .popular-albums-content .album-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    .trending-content img,
+    .popular-albums-content img {
+      max-width: 140px;
+      height: auto;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      object-fit: cover;
+      position: relative;
+    }
+    .popular-artists-content img {
+      max-width: 140px;
+      height: auto;
+      border-radius: 50%;
+      margin-bottom: 8px;
+      object-fit: cover;
+      position: relative;
+    }
+    .trending-content img::after,
+    .popular-albums-content img::after,
+    .popular-artists-content img::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), transparent);
+      border-radius: inherit;
+      z-index: 1;
+    }
+    .trending-content .track-title,
+    .popular-artists-content .artist-name,
+    .popular-albums-content .album-title {
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+      margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 140px;
+      z-index: 2;
+    }
+    .trending-content .track-artists,
+    .popular-artists-content .artist-role,
+    .popular-albums-content .album-artists {
+      color: #bbb;
+      font-size: 12px;
+      text-align: center;
+      margin: 4px 0 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 140px;
+      z-index: 2;
+    }
+    .audio-menu {
+      position: fixed;
+      bottom: -100%;
+      left: 0;
+      width: 100%;
+      background: #181818;
+      padding: 8px 12px;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.4);
+      z-index: 1300;
+      transition: bottom 0.3s ease;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+    }
+    .audio-menu.active {
+      bottom: 0;
+    }
+    .audio-menu .close-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      transition: transform 0.2s ease;
+    }
+    .audio-menu .close-btn:hover {
+      transform: rotate(90deg);
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+    }
+    .audio-menu .close-btn svg {
+      fill: #fff;
+      width: 16px;
+      height: 16px;
+    }
+    .audio-menu .left-section {
+      display: flex;
+      align-items: center;
+      flex: 1;
+      min-width: 0;
+      max-width: 40%;
+    }
+    .audio-menu img {
+      width: 40px;
+      height: 40px;
+      border-radius: 4px;
+      margin-right: 8px;
+      object-fit: cover;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+    .audio-menu .track-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-width: 0;
+      flex: 1;
+    }
+    .audio-menu .track-info .track-title {
+      font-size: 13px;
+      margin: 0;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 600;
+    }
+    .audio-menu .track-info .track-artists {
+      font-size: 11px;
+      color: #b3b3b3;
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .audio-menu .progress-container {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .audio-menu .progress-time {
+      font-size: 9px;
+      color: #b3b3b3;
+      min-width: 36px;
+    }
+    .audio-menu .progress {
+      flex: 1;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 1.5px;
+      position: relative;
+      cursor: pointer;
+    }
+    .audio-menu .progress-bar {
+      height: 100%;
+      background: #fff;
+      width: 0;
+      border-radius: 1.5px;
+      transition: width 0.1s linear;
+    }
+    .audio-menu .controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+      min-width: 120px;
+      margin-left: 4px;
+      margin-right: 8px;
+    }
+    .audio-menu .controls button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 50%;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+    .audio-menu .controls button:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+      transform: scale(1.08);
+    }
+    .audio-menu .controls button svg {
+      fill: #fff;
+      width: 18px;
+      height: 18px;
+    }
+    .audio-menu .controls button.play-pause svg {
+      width: 20px;
+      height: 20px;
+    }
+    @media (min-width: 769px) {
+      .section {
+        transform: translateX(0);
+        top: 80px;
+      }
+      .trending-section {
+        margin-left: 312px;
+        width: calc(100% - 312px);
+        padding-top: 120px;
+      }
+      .audio-menu {
+        height: 72px;
+        padding: 10px 20px;
+      }
+      .audio-menu img {
+        width: 48px;
+        height: 48px;
+      }
+      .audio-menu .track-info .track-title {
+        font-size: 14px;
+      }
+      .audio-menu .track-info .track-artists {
+        font-size: 12px;
+      }
+      .audio-menu .controls {
+        min-width: 140px;
+        gap: 8px;
+        margin-left: 4px;
+        margin-right: 8px;
+      }
+      .audio-menu .controls button svg {
+        width: 20px;
+        height: 20px;
+      }
+      .audio-menu .controls button.play-pause svg {
+        width: 24px;
+        height: 24px;
+      }
+      .audio-menu .progress-time {
+        font-size: 10px;
+      }
+      .audio-menu .left-section {
+        max-width: 50%;
+      }
+      .search-bar {
+        max-width: 350px;
+      }
+      .filter-container {
+        width: calc(100% - 312px);
+        padding-left: 32px;
+        justify-content: flex-start;
+      }
+      .filter-button {
+        padding: 6px 14px;
+        font-size: 14px;
+      }
+    }
+    @media (max-width: 768px) {
+      .section {
+        width: 80vw;
+        max-width: 300px;
+        padding: 20px;
+      }
+      .search-bar-container {
+        top: 16px;
+        left: 16px;
+        right: 16px;
+      }
+      .search-bar {
+        width: calc(100% - 80px);
+        max-width: none;
+        height: 60px;
+        padding: 0 12px;
+        display: flex;
+        align-items: center;
+      }
+      .search-bar input {
+        font-size: 22px;
+      }
+      .filter-container {
+        padding-left: 24px;
+      }
+      .filter-button {
+        padding: 6px 12px;
+        font-size: 13px;
+      }
+      .trending-section {
+        padding-top: 140px;
+      }
+      .trending-title,
+      .popular-artists-title,
+      .popular-albums-title {
+        font-size: 20px;
+        margin: 24px 0 16px;
+      }
+      .trending-content .track-item,
+      .popular-artists-content .artist-item,
+      .popular-albums-content .album-item {
+        min-width: 160px;
+      }
+      .trending-content img,
+      .popular-albums-content img,
+      .popular-artists-content img {
+        max-width: 160px;
+        margin-bottom: 16px;
+      }
+      .trending-content .track-title,
+      .popular-artists-content .artist-name,
+      .popular-albums-content .album-title {
+        font-size: 18px;
+        max-width: 160px;
+      }
+      .trending-content .track-artists,
+      .popular-artists-content .artist-role,
+      .popular-albums-content .album-artists {
+        font-size: 16px;
+        max-width: 160px;
+      }
+      .card {
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+      .card h2 {
+        font-size: 22px;
+      }
+      .card p {
+        font-size: 18px;
+      }
+      .card button {
+        padding: 12px 22px;
+        font-size: 18px;
+      }
+      .library-title {
+        font-size: 18px;
+      }
+      .audio-menu {
+        height: 60px;
+        padding: 6px 10px;
+      }
+      .audio-menu img {
+        width: 36px;
+        height: 36px;
+      }
+      .audio-menu .track-info .track-title {
+        font-size: 12px;
+        max-width: 110px;
+      }
+      .audio-menu .track-info .track-artists {
+        font-size: 10px;
+        max-width: 110px;
+      }
+      .audio-menu .controls {
+        gap: 5px;
+        min-width: 110px;
+        margin-left: 4px;
+        margin-right: 8px;
+      }
+      .audio-menu .controls button svg {
+        width: 16px;
+        height: 16px;
+      }
+      .audio-menu .controls button.play-pause svg {
+        width: 18px;
+        height: 18px;
+      }
+      .audio-menu .progress-time {
+        font-size: 9px;
+      }
+      .audio-menu .left-section {
+        max-width: 45%;
+      }
+    }
+    @media (max-width: 480px) {
+      .section {
+        width: 90vw;
+        padding: 16px;
+      }
+      .trending-section {
+        padding: 12px;
+        padding-top: 130px;
+      }
+      .search-bar-container {
+        top: 16px;
+        left: 16px;
+        right: 16px;
+      }
+      .search-bar {
+        width: calc(100% - 80px);
+        max-width: none;
+        height: 55px;
+        padding: 0 10px;
+        display: flex;
+        align-items: center;
+      }
+      .search-bar input {
+        font-size: 20px;
+      }
+      .filter-container {
+        padding-left: 20px;
+      }
+      .filter-button {
+        padding: 5px 10px;
+        font-size: 12px;
+      }
+      .trending-title,
+      .popular-artists-title,
+      .popular-albums-title {
+        font-size: 18px;
+        margin: 20px 0 12px;
+      }
+      .trending-content .track-item,
+      .popular-artists-content .artist-item,
+      .popular-albums-content .album-item {
+        min-width: 140px;
+      }
+      .trending-content img,
+      .popular-albums-content img,
+      .popular-artists-content img {
+        max-width: 140px;
+        margin-bottom: 14px;
+      }
+      .trending-content .track-title,
+      .popular-artists-content .artist-name,
+      .popular-albums-content .album-title {
+        font-size: 16px;
+        max-width: 140px;
+      }
+      .trending-content .track-artists,
+      .popular-artists-content .artist-role,
+      .popular-albums-content .album-artists {
+        font-size: 14px;
+        max-width: 140px;
+      }
+      .card {
+        padding: 16px;
+        margin-bottom: 16px;
+      }
+      .card h2 {
+        font-size: 20px;
+      }
+      .card p {
+        font-size: 16px;
+      }
+      .card button {
+        padding: 10px 18px;
+        font-size: 16px;
+      }
+      .audio-menu {
+        height: 56px;
+        padding: 6px 8px;
+      }
+      .audio-menu img {
+        width: 32px;
+        height: 32px;
+      }
+      .audio-menu .track-info .track-title {
+        font-size: 11px;
+        max-width: 100px;
+      }
+      .audio-menu .track-info .track-artists {
+        font-size: 9px;
+        max-width: 100px;
+      }
+      .audio-menu .controls {
+        gap: 4px;
+        min-width: 100px;
+        margin-left: 4px;
+        margin-right: 8px;
+      }
+      .audio-menu .controls button svg {
+        width: 14px;
+        height: 14px;
+      }
+      .audio-menu .controls button.play-pause svg {
+        width: 16px;
+        height: 16px;
+      }
+      .audio-menu .progress-time {
+        font-size: 8px;
+      }
+      .audio-menu .left-section {
+        max-width: 40%;
+      }
+    }
+    .hidden {
+      display: none;
+    }
+    .rotate-180 {
+      transform: rotate(180deg);
+    }
+    .trending-content,
+    .popular-artists-content,
+    .popular-albums-content {
+      position: relative;
+    }
+    .trending-content::before,
+    .popular-artists-content::before,
+    .popular-albums-content::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 20px;
+      height: 100%;
+      background: linear-gradient(to right, rgba(12, 12, 12, 1), rgba(12, 12, 12, 0));
+      pointer-events: none;
+      z-index: 2;
+    }
+    .trending-content::after,
+    .popular-artists-content::after,
+    .popular-albums-content::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 20px;
+      height: 100%;
+      background: linear-gradient(to left, rgba(12, 12, 12, 1), rgba(12, 12, 12, 0));
+      pointer-events: none;
+      z-index: 2;
+    }
+  </style>
+</head>
+<body>
+  <div class="search-bar-container">
+    <div class="home-and-search">
+      <button class="home-button">
+        <svg data-encore-id="icon" role="img" aria-hidden="true" class="e-91000-icon e-91000-baseline" viewBox="0 0 24 24">
+          <path d="M13.5 1.515a3 3 0 0 0-3 0L3 5.845a2 2 0 0 0-1 1.732V21a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-6h4v6a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V7.577a2 2 0 0 0-1-1.732z"></path>
+        </svg>
+      </button>
+      <div class="search-bar">
+        <svg class="search-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="#bbb"/>
+        </svg>
+        <input type="text" placeholder="Que souhaitez-vous écouter ou regarder ?" oninput="searchContent(this.value)">
+      </div>
+    </div>
+    <div class="filter-container">
+      <div class="filter-buttons" role="list" aria-label="Filtres de la page d'accueil">
+        <button class="filter-button active" role="checkbox" aria-checked="true" aria-label="Tout">Tout</button>
+        <button class="filter-button" role="checkbox" aria-checked="false" aria-label="Musique">Musique</button>
+        <button class="filter-button" role="checkbox" aria-checked="false" aria-label="Podcasts">Podcasts</button>
+        <button class="filter-button" role="checkbox" aria-checked="false" aria-label="Livres audio">Livres audio</button>
+      </div>
+    </div>
+  </div>
+  <div class="trending-section">
+    <div class="trending-title">Titres tendance</div>
+    <div class="trending-content">
+      <div class="track-item" onclick="playTrack(0, this)">
+        <img src="https://i.scdn.co/image/ab67616d0000b2738c3ef4b93cdfc38c008fd874" alt="Charger">
+        <div class="track-title">Charger</div>
+        <div class="track-artists">TRIANGLES DES BERMUDES</div>
+      </div>
+      <div class="track-item" onclick="playTrack(1, this)">
+        <img src="https://i.scdn.co/image/ab67616d0000b2735446164bb6862bb37594b5f6" alt="Soleil Bleu">
+        <div class="track-title">Soleil Bleu</div>
+        <div class="track-artists">Bleu Soleil et LUIZA</div>
+      </div>
+      <div class="track-item" onclick="playTrack(2, this)">
+        <img src="https://i.scdn.co/image/ab67616d0000b2737c04344b48e4742334549691" alt="L’Étoile Filante">
+        <div class="track-title">APPELLE TA COPINE</div>
+        <div class="track-artists">GIMS</div>
+      </div>
+      <div class="track-item" onclick="playTrack(3, this)">
+        <img src="https://i.scdn.co/image/ab67616d0000b2731ecd6877bf9fc8eaf5be76e6" alt="Nuit Éternelle">
+        <div class="track-title">FUNK UNIVERSO</div>
+        <div class="track-artists">Irokz</div>
+      </div>
+      <div class="track-item" onclick="playTrack(4, this)">
+        <img src="https://i.scdn.co/image/ab67616d0000b2739568fc14ab5f80eb1214388b" alt="Rêve d’Or">
+        <div class="track-title">AIR FORCE BLANCHE</div>
+        <div class="track-artists">GIMS,Jul</div>
+      </div>
+      <div class="track-item" onclick="playTrack(5, this)">
+        <img src="https://i.scdn.co/image/ab67616d0000b2737e81bf206d9ec5bbcab4d39d" alt="Danse avec Moi">
+        <div class="track-title">Δ. Dieu ne ment jamais </div>
+        <div class="track-artists">Damso</div>
+      </div>
+    </div>
+    <div class="popular-artists-title">Artistes populaires</div>
+    <div class="popular-artists-content">
+      <div class="artist-item">
+        <img src="https://i.scdn.co/image/ab6761610000e5eb77144f838397a467e807df65" alt="GIMS">
+        <div class="artist-name">GIMS</div>
+        <div class="artist-role">Artiste</div>
+      </div>
+      <div class="artist-item">
+        <img src="https://i.scdn.co/image/ab6761610000e5ebd8add7bfba9ab22753b5155e" alt="Black M">
+        <div class="artist-name">Black M</div>
+        <div class="artist-role">Artiste</div>
+      </div>
+      <div class="artist-item">
+        <img src="https://i.scdn.co/image/ab6761610000e5eb6296c04d12f719f7ea4fe566" alt="Werenoi">
+        <div class="artist-name">Werenoi</div>
+        <div class="artist-role">Artiste</div>
+      </div>
+      <div class="artist-item">
+        <img src="https://i.scdn.co/image/ab6761610000e5eb791b1ecfe6f3101115430fb5" alt="Ninho">
+        <div class="artist-name">Ninho</div>
+        <div class="artist-role">Artiste</div>
+      </div>
+      <div class="artist-item">
+        <img src="https://i.scdn.co/image/ab6761610000e5ebe5380469a579bd4fc105899f" alt="Sexion d'Assaut">
+        <div class="artist-name">Sexion d'Assaut</div>
+        <div class="artist-role">Artiste</div>
+      </div>
+    </div>
+    <div class="popular-albums-title">Albums et singles populaires</div>
+    <div class="popular-albums-content">
+      <div class="album-item">
+        <img src="https://i.scdn.co/image/ab67616d0000b2737e81bf206d9ec5bbcab4d39d" alt="IPSEITE">
+        <div class="album-title">IPSEITE</div>
+        <div class="album-artists">Damso</div>
+      </div>
+      <div class="album-item">
+        <img src="https://i.scdn.co/image/ab67616d0000b2739568fc14ab5f80eb1214388b" alt="LE DERNIER DU CODE">
+        <div class="album-title">LE DERNIER DU CODE</div>
+        <div class="album-artists">GIMS</div>
+      </div>
+      <div class="album-item">
+        <img src="https://i.scdn.co/image/ab67616d0000b273a4d73b6f37bb4b7f4f7a8056" alt="Carré">
+        <div class="album-title">Carré</div>
+        <div class="album-artists">Werenoi</div>
+      </div>
+      <div class="album-item">
+        <img src="https://i.scdn.co/image/ab67616d0000b273e1d2b368e4b2d9c5e91ad3d8" alt="Jefe">
+        <div class="album-title">Jefe</div>
+        <div class="album-artists">Ninho</div>
+      </div>
+      <div class="album-item">
+        <img src="https://i.scdn.co/image/ab67616d0000b273f1b43b9a8e8e1a3f7b5a9a6e" alt="Blackout">
+        <div class="album-title">Blackout</div>
+        <div class="album-artists">Black M</div>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-header">
+      <h1 class="library-title">Bibliothèque</h1>
+      <button class="toggle-button" onclick="toggleSection()">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" fill="white"/>
+        </svg>
+      </button>
+    </div>
+    <div class="card">
+      <h2>Créez votre première playlist</h2>
+      <p>C’est simple, nous allons vous aider</p>
+      <button>Créer une playlist</button>
+    </div>
+    <div class="card">
+      <h2>Cherchons quelques podcasts auxquels vous abonner</h2>
+      <p>Nous vous transmettrons des informations sur les nouveaux épisodes</p>
+      <button>Parcourir les podcasts</button>
+    </div>
+  </div>
+  <div class="audio-menu">
+    <button class="close-btn" onclick="closeMenu()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M18.3 5.7L5.7 18.3M5.7 5.7L18.3 18.3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <div class="left-section">
+      <img src="" alt="Album Art">
+      <div class="track-info">
+        <div class="track-title"></div>
+        <div class="track-artists"></div>
+      </div>
+    </div>
+    <div class="controls">
+      <button type="button" role="switch" aria-checked="false" aria-label="Sauvegarder dans Bibliothèque" data-testid="add-button">
+        <svg data-encore-id="icon" role="img" aria-hidden="true" class="e-91000-icon e-91000-baseline" viewBox="0 0 24 24">
+          <path d="M5.21 1.57a6.76 6.76 0 0 1 6.708 1.545.124.124 0 0 0 .165 0 6.74 6.74 0 0 1 5.715-1.78l.004.001a6.8 6.8 0 0 1 5.571 5.376v.003a6.69 6.69 0 0 1-1.49 5.655l-7.954 9.48a2.518 2.518 0 0 1-3.857 0L2.12 12.37A6.68 6.68 0 0 1 .627 6.714 6.76 6.76 0 0 1 5.21 1.57m3.12 1.803a4.757 4.757 0 0 0-5.74 3.725l-.001.002a4.68 4.68 0 0 0 1.049 3.969l.009.01 7.958 9.485a.518.518 0 0 0 .79 0l7.968-9.495a4.69 4.69 0 0 0 1.049-3.965 4.8 4.8 0 0 0-3.931-3.794 4.74 4.74 0 0 0-4.023 1.256l-.008.008a2.123 2.123 0 0 1-2.9 0l-.007-.007a4.76 4.76 0 0 0-2.214-1.194z"></path>
+        </svg>
+      </button>
+      <button onclick="previousTrack()" aria-label="Previous Track">
+        <svg data-encore-id="icon" role="img" aria-hidden="true" viewBox="0 0 24 24">
+          <path d="M15.957 3.764a.7.7 0 0 1 1.05.606v15.576a.7.7 0 0 1-1.05.606l-13.49-7.788a.7.7 0 0 1 0-1.212l13.49-7.788z"/>
+        </svg>
+      </button>
+      <button class="play-pause" data-test-id="play-pause-button" onclick="togglePlayPause()">
+        <svg data-encore-id="icon" role="img" aria-hidden="true" class="e-91000-icon e-91000-baseline" viewBox="0 0 24 24">
+          <path d="m7.05 3.606 13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606"/>
+        </svg>
+      </button>
+      <button onclick="nextTrack()" aria-label="Next Track">
+        <svg data-encore-id="icon" role="img" aria-hidden="true" viewBox="0 0 24 24">
+          <path d="M8.043 3.764a.7.7 0 0 0-1.05.606v15.576a.7.7 0 0 0 1.05.606l13.49-7.788a.7.7 0 0 0 0-1.212L8.043 3.764z"/>
+        </svg>
+      </button>
+    </div>
+    <div class="progress-container">
+      <span class="progress-time current-time">0:00</span>
+      <div class="progress" onclick="seek(event)">
+        <div class="progress-bar"></div>
+      </div>
+      <span class="progress-time duration">0:00</span>
+    </div>
+    <audio id="audio-player" src="" ontimeupdate="updateProgress()"></audio>
+  </div>
+  <script>
+    const section = document.querySelector('.section');
+    let startX = 0;
+    let isDragging = false;
+    let currentTrackIndex = -1;
+    const tracks = [
+      { title: "Doucement", artist: "TRIANGLE DES BERMUDES, MC YOSHI, Mauvais djo, Kokosvoice", src: "https://matheonyx.github.io/Nesdy/Triangle%20des%20bermudes%20-%20Charger%20(Clip%20officiel).mp3", image: "https://i.scdn.co/image/ab67616d00001e028c3ef4b93cdfc38c008fd874" },
+      { title: "Charger", artist: "TRIANGLES DES BERMUDES", src: "https://example.com/charger.mp3", image: "https://i.scdn.co/image/ab67616d0000b2738c3ef4b93cdfc38c008fd874" },
+      { title: "Soleil Bleu", artist: "Bleu Soleil et LUIZA", src: "https://example.com/soleilbleu.mp3", image: "https://i.scdn.co/image/ab67616d0000b2735446164bb6862bb37594b5f6" },
+      { title: "APPELLE TA COPINE", artist: "GIMS", src: "https://example.com/appelletacopine.mp3", image: "https://i.scdn.co/image/ab67616d0000b2737c04344b48e4742334549691" },
+      { title: "FUNK UNIVERSO", artist: "Irokz", src: "https://example.com/funkuniverso.mp3", image: "https://i.scdn.co/image/ab67616d0000b2731ecd6877bf9fc8eaf5be76e6" },
+      { title: "AIR FORCE BLANCHE", artist: "GIMS,Jul", src: "https://example.com/airforceblanche.mp3", image: "https://i.scdn.co/image/ab67616d0000b2739568fc14ab5f80eb1214388b" },
+      { title: "Δ. Dieu ne ment jamais", artist: "Damso", src: "https://example.com/dieunementjamais.mp3", image: "https://i.scdn.co/image/ab67616d0000b2737e81bf206d9ec5bbcab4d39d" }
+    ];
+    const audioPlayer = document.getElementById('audio-player');
+    const playPauseButton = document.querySelector('.play-pause');
+    const audioMenu = document.querySelector('.audio-menu');
+    const playPauseSvg = playPauseButton.querySelector('svg');
+    const progressBar = document.querySelector('.progress-bar');
+    const currentTimeDisplay = document.querySelector('.progress-time.current-time');
+    const durationDisplay = document.querySelector('.progress-time.duration');
+    const filterButtons = document.querySelectorAll('.filter-button');
+
+    function toggleSection() {
+      section.classList.toggle('active');
+    }
+
+    function handleDragStart(e) {
+      const clientX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
+      if (clientX < 50 && !section.classList.contains('active')) {
+        startX = clientX;
+        isDragging = true;
+      } else if (clientX > 50 && section.classList.contains('active')) {
+        startX = clientX;
+        isDragging = true;
+      }
+    }
+
+    function handleDragMove(e) {
+      if (!isDragging) return;
+      const clientX = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
+      const diffX = clientX - startX;
+
+      if (clientX < 50 && diffX > 100 && !section.classList.contains('active')) {
+        section.classList.add('active');
+        isDragging = false;
+      } else if (clientX > 50 && diffX < -100 && section.classList.contains('active')) {
+        section.classList.remove('active');
+        isDragging = false;
+      }
+    }
+
+    function handleDragEnd() {
+      isDragging = false;
+    }
+
+    function searchContent(query) {
+      const items = document.querySelectorAll('.track-item, .artist-item, .album-item');
+      query = query.toLowerCase();
+      items.forEach(item => {
+        const title = item.querySelector('.track-title, .artist-name, .album-title')?.textContent.toLowerCase();
+        if (title && title.includes(query)) {
+          item.classList.remove('hidden');
+        } else {
+          item.classList.add('hidden');
+        }
+      });
+    }
+
+    function formatTime(seconds) {
+      const minutes = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    function playTrack(index, element) {
+      currentTrackIndex = index;
+      const track = tracks[index];
+      audioPlayer.src = track.src;
+      document.querySelector('.audio-menu img').src = track.image;
+      document.querySelector('.audio-menu .track-title').textContent = track.title;
+      document.querySelector('.audio-menu .track-artists').textContent = track.artist;
+      audioMenu.classList.add('active');
+      audioPlayer.play().then(() => {
+        updatePlayPauseIcon('pause');
+        durationDisplay.textContent = formatTime(audioPlayer.duration || 0);
+      }).catch(error => console.log("Playback failed:", error));
+      progressBar.style.width = '0';
+    }
+
+    function closeMenu() {
+      audioMenu.classList.remove('active');
+      audioPlayer.pause();
+      updatePlayPauseIcon('play');
+    }
+
+    function togglePlayPause() {
+      if (audioPlayer.paused) {
+        audioPlayer.play().then(() => {
+          updatePlayPauseIcon('pause');
+        }).catch(error => console.log("Playback failed:", error));
+      } else {
+        audioPlayer.pause();
+        updatePlayPauseIcon('play');
+      }
+    }
+
+    function previousTrack() {
+      if (currentTrackIndex > 0) {
+        playTrack(currentTrackIndex - 1, document.querySelectorAll('.track-item')[currentTrackIndex - 1]);
+      }
+    }
+
+    function nextTrack() {
+      if (currentTrackIndex < tracks.length - 1) {
+        playTrack(currentTrackIndex + 1, document.querySelectorAll('.track-item')[currentTrackIndex + 1]);
+      }
+    }
+
+    function updatePlayPauseIcon(state = null) {
+      if (state === 'pause' || (!audioPlayer.paused && state !== 'play')) {
+        playPauseSvg.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" fill="#fff"/>';
+      } else {
+        playPauseSvg.innerHTML = '<path d="m7.05 3.606 13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606" fill="#fff"/>';
+      }
+    }
+
+    function updateProgress() {
+      if (audioPlayer.duration) {
+        const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+        progressBar.style.width = `${progress}%`;
+        currentTimeDisplay.textContent = formatTime(audioPlayer.currentTime);
+        durationDisplay.textContent = formatTime(audioPlayer.duration);
+      }
+    }
+
+    function seek(e) {
+      const progress = document.querySelector('.progress');
+      const rect = progress.getBoundingClientRect();
+      const pos = (e.clientX - rect.left) / rect.width;
+      audioPlayer.currentTime = pos * audioPlayer.duration;
+      updateProgress();
+    }
+
+    function toggleFilter(button) {
+      filterButtons.forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+      // Add filtering logic here if needed
+    }
+
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => toggleFilter(button));
+    });
+
+    document.addEventListener('touchstart', handleDragStart);
+    document.addEventListener('touchmove', handleDragMove);
+    document.addEventListener('touchend', handleDragEnd);
+    document.addEventListener('mousedown', handleDragStart);
+    document.addEventListener('mousemove', handleDragMove);
+    document.addEventListener('mouseup', handleDragEnd);
+
+    section.addEventListener('touchstart', (e) => {
+      e.stopPropagation();
+    });
+
+    audioPlayer.addEventListener('loadedmetadata', () => {
+      durationDisplay.textContent = formatTime(audioPlayer.duration || 0);
+    });
+  </script>
+</body>
+</html>
