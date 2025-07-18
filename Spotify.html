@@ -22,6 +22,21 @@
       touch-action: pan-y;
       position: relative;
     }
+    .play-effect {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 1250;
+      transition: opacity 0.3s ease;
+    }
+    .play-effect.active {
+      opacity: 1;
+    }
     .search-bar-container {
       position: fixed;
       top: 16px;
@@ -59,13 +74,13 @@
       fill: #fff;
     }
     .search-bar {
-      width: calc(100% - 80px);
-      max-width: none;
-      height: 50px;
+      width: calc(100% - 100px);
+      max-width: 300px;
+      height: 40px;
       background: #1e1e1e;
       display: flex;
       align-items: center;
-      padding: 0 16px;
+      padding: 0 12px;
       border-radius: 20px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
@@ -75,7 +90,7 @@
       background: transparent;
       border: none;
       color: #fff;
-      font-size: 16px;
+      font-size: 14px;
       outline: none;
       padding-left: 8px;
     }
@@ -83,18 +98,18 @@
       color: #bbb;
     }
     .search-bar .search-icon {
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       fill: #bbb;
-      margin-right: 12px;
+      margin-right: 8px;
     }
     .filter-container {
-      margin-top: 12px;
+      margin-top: 8px;
       display: flex;
       align-items: center;
       width: 100%;
       overflow-x: auto;
-      padding: 8px 0 8px 24px;
+      padding: 6px 0 6px 20px;
       scrollbar-width: none;
     }
     .filter-container::-webkit-scrollbar {
@@ -102,31 +117,58 @@
     }
     .filter-buttons {
       display: flex;
-      gap: 8px;
+      gap: 6px;
     }
     .filter-button {
       background: rgba(255, 255, 255, 0.1);
       border: none;
-      border-radius: 16px;
-      padding: 6px 12px;
+      border-radius: 14px;
+      padding: 5px 10px;
       cursor: pointer;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
       color: #fff;
       transition: background 0.2s ease;
     }
     .filter-button.active {
       background: rgba(255, 255, 255, 0.2);
-      color: #fff;
     }
     .filter-button:hover {
       background: rgba(255, 255, 255, 0.3);
+    }
+    .search-results {
+      margin-top: 90px;
+      width: 100%;
+      padding: 12px;
+      background: #121212;
+      z-index: 1100;
+      display: none;
+    }
+    .search-results.active {
+      display: block;
+    }
+    .search-results-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .search-results-content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      overflow-x: auto;
+      padding-bottom: 12px;
+      scrollbar-width: none;
+    }
+    .search-results-content::-webkit-scrollbar {
+      display: none;
     }
     .section {
       position: fixed;
       top: 80px;
       left: 0;
-      width: 280px;
+      width: 80vw;
+      max-width: 300px;
       height: calc(100vh - 80px);
       background-color: #121212;
       padding: 16px;
@@ -135,7 +177,6 @@
       z-index: 1000;
       border-radius: 0 10px 10px 0;
       user-select: none;
-      -webkit-user-select: none;
       transform: translateX(-100%);
     }
     .section.active {
@@ -145,7 +186,7 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
     .library-title {
       margin-inline-start: var(--encore-spacing-tighter-4);
@@ -153,58 +194,61 @@
       font-size: var(--encore-text-size-base);
       font-weight: 700;
       letter-spacing: -0.3px;
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
     }
-    .toggle-button {
-      cursor: pointer;
-      padding: 8px;
-      background: none;
-      border: none;
-      transition: background 0.2s ease;
-      margin-top: 8px;
-    }
-    .toggle-button:hover {
+    .library-button {
       background: rgba(255, 255, 255, 0.1);
+      border: none;
       border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.2s ease;
     }
-    .toggle-button svg {
+    .library-button:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    .library-button svg {
       width: 20px;
       height: 20px;
       fill: #fff;
     }
     .card {
       background: #1e1e1e;
-      padding: 16px;
-      margin-bottom: 16px;
+      padding: 12px;
+      margin-bottom: 12px;
       border-radius: 8px;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
     }
     .card:hover {
       transform: translateY(-2px);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
     .card h2 {
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 600;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       letter-spacing: -0.2px;
     }
     .card p {
-      font-size: 14px;
+      font-size: 12px;
       color: #bbb;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
       line-height: 1.4;
     }
     .card button {
       background: #fff;
       color: #000;
       border: none;
-      padding: 8px 16px;
-      border-radius: 20px;
+      padding: 6px 12px;
+      border-radius: 16px;
       cursor: pointer;
       font-weight: 700;
-      font-size: 14px;
+      font-size: 12px;
       transition: background 0.2s ease, transform 0.2s ease;
     }
     .card button:hover {
@@ -219,10 +263,11 @@
       min-height: 100vh;
       background: linear-gradient(to bottom, #1e1e1e 0%, #0a0a0a 40%, #0c0c0c 100%);
       z-index: 900;
-      padding: 20px;
+      padding: 16px;
       overflow-y: auto;
       overflow-x: hidden;
-      padding-top: 120px;
+      padding-top: 100px;
+      padding-bottom: 80px; /* Added to prevent content from being hidden under audio menu */
     }
     .trending-title,
     .popular-artists-title,
@@ -231,20 +276,18 @@
       color: #fff;
       font-family: var(--encore-body-font-stack);
       font-weight: 700;
-      margin: 24px 0 16px;
-      user-select: none;
-      -webkit-user-select: none;
+      margin: 20px 0 12px;
       letter-spacing: -0.3px;
-      font-size: 22px;
+      font-size: 20px;
     }
     .trending-content,
     .popular-artists-content,
     .popular-albums-content {
       position: relative;
       display: flex;
-      gap: 20px;
+      gap: 16px;
       overflow-x: auto;
-      padding-bottom: 16px;
+      padding-bottom: 12px;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
     }
@@ -255,103 +298,112 @@
     }
     .trending-content .track-item,
     .popular-artists-content .artist-item,
-    .popular-albums-content .album-item {
+    .popular-albums-content .album-item,
+    .search-results-content .track-item,
+    .search-results-content .artist-item,
+    .search-results-content .album-item {
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-width: 140px;
+      min-width: 120px;
       flex-shrink: 0;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
       cursor: pointer;
     }
     .trending-content .track-item:hover,
     .popular-artists-content .artist-item:hover,
-    .popular-albums-content .album-item:hover {
+    .popular-albums-content .album-item:hover,
+    .search-results-content .track-item:hover,
+    .search-results-content .artist-item:hover,
+    .search-results-content .album-item:hover {
       transform: translateY(-2px);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
     .trending-content img,
-    .popular-albums-content img {
-      max-width: 140px;
+    .popular-albums-content img,
+    .search-results-content img {
+      max-width: 120px;
       height: auto;
       border-radius: 8px;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       object-fit: cover;
-      position: relative;
     }
     .popular-artists-content img {
-      max-width: 140px;
+      max-width: 120px;
       height: auto;
       border-radius: 50%;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       object-fit: cover;
-      position: relative;
-    }
-    .trending-content img::after,
-    .popular-albums-content img::after,
-    .popular-artists-content img::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), transparent);
-      border-radius: inherit;
-      z-index: 1;
     }
     .trending-content .track-title,
     .popular-artists-content .artist-name,
-    .popular-albums-content .album-title {
+    .popular-albums-content .album-title,
+    .search-results-content .track-title,
+    .search-results-content .artist-name,
+    .search-results-content .album-title {
       color: #fff;
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 600;
       text-align: center;
       margin: 0;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 140px;
-      z-index: 2;
+      max-width: 120px;
     }
     .trending-content .track-artists,
     .popular-artists-content .artist-role,
-    .popular-albums-content .album-artists {
+    .popular-albums-content .album-artists,
+    .search-results-content .track-artists,
+    .search-results-content .artist-role,
+    .search-results-content .album-artists {
       color: #bbb;
-      font-size: 12px;
+      font-size: 10px;
       text-align: center;
-      margin: 4px 0 0;
+      margin: 3px 0 0;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 140px;
-      z-index: 2;
+      max-width: 120px;
     }
     .audio-menu {
       position: fixed;
-      bottom: -100%;
+      bottom: 0;
       left: 0;
       width: 100%;
       background: #181818;
-      padding: 8px 12px;
+      padding: 6px 10px;
       box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.4);
       z-index: 1300;
-      transition: bottom 0.3s ease;
-      height: 64px;
+      height: 60px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       border-top: 1px solid rgba(255, 255, 255, 0.1);
       border-top-left-radius: 8px;
       border-top-right-radius: 8px;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(100%);
+      transition: opacity 0.3s ease, transform 0.3s ease;
     }
     .audio-menu.active {
-      bottom: 0;
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .audio-menu.fullscreen {
+      height: 100vh;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(to bottom, #1e1e1e 0%, #0a0a0a 100%);
     }
     .audio-menu .close-btn {
       position: absolute;
-      top: 8px;
-      right: 8px;
+      top: 6px;
+      right: 6px;
       background: none;
       border: none;
       cursor: pointer;
@@ -365,8 +417,8 @@
     }
     .audio-menu .close-btn svg {
       fill: #fff;
-      width: 16px;
-      height: 16px;
+      width: 14px;
+      height: 14px;
     }
     .audio-menu .left-section {
       display: flex;
@@ -375,13 +427,25 @@
       min-width: 0;
       max-width: 40%;
     }
+    .audio-menu.fullscreen .left-section {
+      flex-direction: column;
+      align-items: center;
+      max-width: 100%;
+      margin-bottom: 16px;
+    }
     .audio-menu img {
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
       border-radius: 4px;
-      margin-right: 8px;
+      margin-right: 6px;
       object-fit: cover;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+    .audio-menu.fullscreen img {
+      width: 180px;
+      height: 180px;
+      margin-right: 0;
+      margin-bottom: 12px;
     }
     .audio-menu .track-info {
       display: flex;
@@ -390,8 +454,12 @@
       min-width: 0;
       flex: 1;
     }
+    .audio-menu.fullscreen .track-info {
+      align-items: center;
+      text-align: center;
+    }
     .audio-menu .track-info .track-title {
-      font-size: 13px;
+      font-size: 12px;
       margin: 0;
       color: #fff;
       white-space: nowrap;
@@ -399,28 +467,48 @@
       text-overflow: ellipsis;
       font-weight: 600;
     }
+    .audio-menu.fullscreen .track-info .track-title {
+      font-size: 20px;
+      white-space: normal;
+      max-width: 80%;
+    }
     .audio-menu .track-info .track-artists {
-      font-size: 11px;
+      font-size: 10px;
       color: #b3b3b3;
       margin-top: 2px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
+    .audio-menu.fullscreen .track-info .track-artists {
+      font-size: 16px;
+      white-space: normal;
+      max-width: 80%;
+    }
     .audio-menu .progress-container {
       position: absolute;
       bottom: 0;
       left: 0;
       width: 100%;
-      padding: 0 12px;
+      padding: 0 10px;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
+    }
+    .audio-menu.fullscreen .progress-container {
+      position: static;
+      width: 80%;
+      padding: 0;
+      margin-top: 16px;
     }
     .audio-menu .progress-time {
-      font-size: 9px;
+      font-size: 8px;
       color: #b3b3b3;
-      min-width: 36px;
+      min-width: 32px;
+    }
+    .audio-menu.fullscreen .progress-time {
+      font-size: 10px;
+      min-width: 40px;
     }
     .audio-menu .progress {
       flex: 1;
@@ -429,6 +517,9 @@
       border-radius: 1.5px;
       position: relative;
       cursor: pointer;
+    }
+    .audio-menu.fullscreen .progress {
+      height: 5px;
     }
     .audio-menu .progress-bar {
       height: 100%;
@@ -440,11 +531,16 @@
     .audio-menu .controls {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       flex-shrink: 0;
-      min-width: 120px;
+      min-width: 100px;
       margin-left: 4px;
-      margin-right: 8px;
+      margin-right: 6px;
+    }
+    .audio-menu.fullscreen .controls {
+      min-width: 180px;
+      gap: 10px;
+      margin: 16px 0;
     }
     .audio-menu .controls button {
       background: none;
@@ -460,209 +556,198 @@
     }
     .audio-menu .controls button svg {
       fill: #fff;
+      width: 16px;
+      height: 16px;
+    }
+    .audio-menu.fullscreen .controls button svg {
+      width: 20px;
+      height: 20px;
+    }
+    .audio-menu .controls button.play-pause svg {
       width: 18px;
       height: 18px;
     }
-    .audio-menu .controls button.play-pause svg {
-      width: 20px;
-      height: 20px;
+    .audio-menu.fullscreen .controls button.play-pause svg {
+      width: 28px;
+      height: 28px;
+    }
+    .library-page {
+      display: none;
+      position: fixed;
+      top: 80px;
+      left: 0;
+      width: 100%;
+      height: calc(100vh - 80px);
+      background: #121212;
+      padding: 12px;
+      z-index: 1100;
+      overflow-y: auto;
+      padding-bottom: 80px; /* Added to prevent content from being hidden under audio menu */
+    }
+    .library-page.active {
+      display: block;
+    }
+    .library-page-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .library-page-content {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .library-track-item {
+      display: flex;
+      align-items: center;
+      background: #1e1e1e;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .library-track-item:hover {
+      background: #2a2a2a;
+    }
+    .library-track-item img {
+      width: 40px;
+      height: 40px;
+      border-radius: 4px;
+      margin-right: 10px;
+      object-fit: cover;
+    }
+    .library-track-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .library-track-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .library-track-artists {
+      font-size: 12px;
+      color: #bbb;
+      margin-top: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     @media (min-width: 769px) {
       .section {
         transform: translateX(0);
         top: 80px;
+        width: 280px;
       }
       .trending-section {
         margin-left: 312px;
         width: calc(100% - 312px);
-        padding-top: 120px;
+        padding-top: 100px;
+      }
+      .search-results {
+        margin-left: 312px;
+        width: calc(100% - 312px);
+      }
+      .library-page {
+        margin-left: 312px;
+        width: calc(100% - 312px);
       }
       .audio-menu {
-        height: 72px;
-        padding: 10px 20px;
+        height: 64px;
+        padding: 8px 16px;
+      }
+      .audio-menu.fullscreen {
+        padding: 32px;
       }
       .audio-menu img {
-        width: 48px;
-        height: 48px;
+        width: 40px;
+        height: 40px;
+      }
+      .audio-menu.fullscreen img {
+        width: 240px;
+        height: 240px;
       }
       .audio-menu .track-info .track-title {
-        font-size: 14px;
+        font-size: 13px;
+      }
+      .audio-menu.fullscreen .track-info .track-title {
+        font-size: 24px;
       }
       .audio-menu .track-info .track-artists {
-        font-size: 12px;
+        font-size: 11px;
+      }
+      .audio-menu.fullscreen .track-info .track-artists {
+        font-size: 18px;
       }
       .audio-menu .controls {
-        min-width: 140px;
-        gap: 8px;
-        margin-left: 4px;
-        margin-right: 8px;
+        min-width: 120px;
+        gap: 6px;
+      }
+      .audio-menu.fullscreen .controls {
+        min-width: 200px;
+        gap: 12px;
       }
       .audio-menu .controls button svg {
-        width: 20px;
-        height: 20px;
+        width: 18px;
+        height: 18px;
       }
-      .audio-menu .controls button.play-pause svg {
+      .audio-menu.fullscreen .controls button svg {
         width: 24px;
         height: 24px;
       }
+      .audio-menu .controls button.play-pause svg {
+        width: 20px;
+        height: 20px;
+      }
+      .audio-menu.fullscreen .controls button.play-pause svg {
+        width: 32px;
+        height: 32px;
+      }
       .audio-menu .progress-time {
-        font-size: 10px;
+        font-size: 9px;
+      }
+      .audio-menu.fullscreen .progress-time {
+        font-size: 12px;
       }
       .audio-menu .left-section {
         max-width: 50%;
       }
       .search-bar {
-        max-width: 350px;
+        max-width: 300px;
       }
       .filter-container {
         width: calc(100% - 312px);
-        padding-left: 32px;
+        padding-left: 28px;
         justify-content: flex-start;
       }
       .filter-button {
-        padding: 6px 14px;
-        font-size: 14px;
+        padding: 5px 12px;
+        font-size: 13px;
       }
     }
     @media (max-width: 768px) {
       .section {
         width: 80vw;
         max-width: 300px;
-        padding: 20px;
-      }
-      .search-bar-container {
-        top: 16px;
-        left: 16px;
-        right: 16px;
-      }
-      .search-bar {
-        width: calc(100% - 80px);
-        max-width: none;
-        height: 60px;
-        padding: 0 12px;
-        display: flex;
-        align-items: center;
-      }
-      .search-bar input {
-        font-size: 22px;
-      }
-      .filter-container {
-        padding-left: 24px;
-      }
-      .filter-button {
-        padding: 6px 12px;
-        font-size: 13px;
-      }
-      .trending-section {
-        padding-top: 140px;
-      }
-      .trending-title,
-      .popular-artists-title,
-      .popular-albums-title {
-        font-size: 20px;
-        margin: 24px 0 16px;
-      }
-      .trending-content .track-item,
-      .popular-artists-content .artist-item,
-      .popular-albums-content .album-item {
-        min-width: 160px;
-      }
-      .trending-content img,
-      .popular-albums-content img,
-      .popular-artists-content img {
-        max-width: 160px;
-        margin-bottom: 16px;
-      }
-      .trending-content .track-title,
-      .popular-artists-content .artist-name,
-      .popular-albums-content .album-title {
-        font-size: 18px;
-        max-width: 160px;
-      }
-      .trending-content .track-artists,
-      .popular-artists-content .artist-role,
-      .popular-albums-content .album-artists {
-        font-size: 16px;
-        max-width: 160px;
-      }
-      .card {
-        padding: 20px;
-        margin-bottom: 20px;
-      }
-      .card h2 {
-        font-size: 22px;
-      }
-      .card p {
-        font-size: 18px;
-      }
-      .card button {
-        padding: 12px 22px;
-        font-size: 18px;
-      }
-      .library-title {
-        font-size: 18px;
-      }
-      .audio-menu {
-        height: 60px;
-        padding: 6px 10px;
-      }
-      .audio-menu img {
-        width: 36px;
-        height: 36px;
-      }
-      .audio-menu .track-info .track-title {
-        font-size: 12px;
-        max-width: 110px;
-      }
-      .audio-menu .track-info .track-artists {
-        font-size: 10px;
-        max-width: 110px;
-      }
-      .audio-menu .controls {
-        gap: 5px;
-        min-width: 110px;
-        margin-left: 4px;
-        margin-right: 8px;
-      }
-      .audio-menu .controls button svg {
-        width: 16px;
-        height: 16px;
-      }
-      .audio-menu .controls button.play-pause svg {
-        width: 18px;
-        height: 18px;
-      }
-      .audio-menu .progress-time {
-        font-size: 9px;
-      }
-      .audio-menu .left-section {
-        max-width: 45%;
-      }
-    }
-    @media (max-width: 480px) {
-      .section {
-        width: 90vw;
         padding: 16px;
       }
-      .trending-section {
-        padding: 12px;
-        padding-top: 130px;
-      }
       .search-bar-container {
-        top: 16px;
-        left: 16px;
-        right: 16px;
+        top: 12px;
+        left: 12px;
+        right: 12px;
       }
       .search-bar {
-        width: calc(100% - 80px);
-        max-width: none;
-        height: 55px;
+        width: calc(100% - 100px);
+        max-width: 300px;
+        height: 50px;
         padding: 0 10px;
-        display: flex;
-        align-items: center;
       }
       .search-bar input {
-        font-size: 20px;
+        font-size: 16px;
       }
       .filter-container {
         padding-left: 20px;
@@ -671,32 +756,57 @@
         padding: 5px 10px;
         font-size: 12px;
       }
+      .search-results {
+        margin-top: 110px;
+      }
+      .trending-section {
+        padding-top: 110px;
+      }
+      .library-page {
+        margin-top: 110px;
+      }
       .trending-title,
       .popular-artists-title,
-      .popular-albums-title {
+      .popular-albums-title,
+      .search-results-title,
+      .library-page-title {
         font-size: 18px;
         margin: 20px 0 12px;
       }
       .trending-content .track-item,
       .popular-artists-content .artist-item,
-      .popular-albums-content .album-item {
+      .popular-albums-content .album-item,
+      .search-results-content .track-item,
+      .search-results-content .artist-item,
+      .search-results-content .album-item,
+      .library-page-content .library-track-item {
         min-width: 140px;
       }
       .trending-content img,
       .popular-albums-content img,
-      .popular-artists-content img {
+      .popular-artists-content img,
+      .search-results-content img,
+      .library-page-content img {
         max-width: 140px;
-        margin-bottom: 14px;
+        margin-bottom: 12px;
       }
       .trending-content .track-title,
       .popular-artists-content .artist-name,
-      .popular-albums-content .album-title {
+      .popular-albums-content .album-title,
+      .search-results-content .track-title,
+      .search-results-content .artist-name,
+      .search-results-content .album-title,
+      .library-page-content .library-track-title {
         font-size: 16px;
         max-width: 140px;
       }
       .trending-content .track-artists,
       .popular-artists-content .artist-role,
-      .popular-albums-content .album-artists {
+      .popular-albums-content .album-artists,
+      .search-results-content .track-artists,
+      .search-results-content .artist-role,
+      .search-results-content .album-artists,
+      .library-page-content .library-track-artists {
         font-size: 14px;
         max-width: 140px;
       }
@@ -705,47 +815,235 @@
         margin-bottom: 16px;
       }
       .card h2 {
-        font-size: 20px;
+        font-size: 16px;
       }
       .card p {
-        font-size: 16px;
+        font-size: 14px;
       }
       .card button {
-        padding: 10px 18px;
-        font-size: 16px;
+        padding: 8px 16px;
+        font-size: 14px;
       }
       .audio-menu {
         height: 56px;
         padding: 6px 8px;
       }
+      .audio-menu.fullscreen {
+        padding: 16px;
+      }
       .audio-menu img {
         width: 32px;
         height: 32px;
+      }
+      .audio-menu.fullscreen img {
+        width: 160px;
+        height: 160px;
       }
       .audio-menu .track-info .track-title {
         font-size: 11px;
         max-width: 100px;
       }
+      .audio-menu.fullscreen .track-info .track-title {
+        font-size: 18px;
+        max-width: 90%;
+      }
       .audio-menu .track-info .track-artists {
         font-size: 9px;
         max-width: 100px;
       }
+      .audio-menu.fullscreen .track-info .track-artists {
+        font-size: 14px;
+        max-width: 90%;
+      }
       .audio-menu .controls {
         gap: 4px;
-        min-width: 100px;
-        margin-left: 4px;
-        margin-right: 8px;
+        min-width: 90px;
+      }
+      .audio-menu.fullscreen .controls {
+        min-width: 160px;
+        gap: 8px;
       }
       .audio-menu .controls button svg {
         width: 14px;
         height: 14px;
       }
+      .audio-menu.fullscreen .controls button svg {
+        width: 18px;
+        height: 18px;
+      }
       .audio-menu .controls button.play-pause svg {
         width: 16px;
         height: 16px;
       }
+      .audio-menu.fullscreen .controls button.play-pause svg {
+        width: 24px;
+        height: 24px;
+      }
       .audio-menu .progress-time {
         font-size: 8px;
+      }
+      .audio-menu.fullscreen .progress-time {
+        font-size: 10px;
+      }
+      .audio-menu .left-section {
+        max-width: 45%;
+      }
+    }
+    @media (max-width: 480px) {
+      .section {
+        width: 90vw;
+        padding: 12px;
+      }
+      .trending-section {
+        padding: 10px;
+        padding-top: 100px;
+      }
+      .search-results {
+        margin-top: 100px;
+      }
+      .library-page {
+        margin-top: 100px;
+      }
+      .search-bar-container {
+        top: 10px;
+        left: 10px;
+        right: 10px;
+      }
+      .search-bar {
+        width: calc(100% - 100px);
+        max-width: 280px;
+        height: 45px;
+        padding: 0 8px;
+      }
+      .search-bar input {
+        font-size: 14px;
+      }
+      .filter-container {
+        padding-left: 16px;
+      }
+      .filter-button {
+        padding: 4px 8px;
+        font-size: 11px;
+      }
+      .trending-title,
+      .popular-artists-title,
+      .popular-albums-title,
+      .search-results-title,
+      .library-page-title {
+        font-size: 16px;
+        margin: 16px 0 10px;
+      }
+      .trending-content .track-item,
+      .popular-artists-content .artist-item,
+      .popular-albums-content .album-item,
+      .search-results-content .track-item,
+      .search-results-content .artist-item,
+      .search-results-content .album-item,
+      .library-page-content .library-track-item {
+        min-width: 120px;
+      }
+      .trending-content img,
+      .popular-albums-content img,
+      .popular-artists-content img,
+      .search-results-content img,
+      .library-page-content img {
+        max-width: 120px;
+        margin-bottom: 10px;
+      }
+      .trending-content .track-title,
+      .popular-artists-content .artist-name,
+      .popular-albums-content .album-title,
+      .search-results-content .track-title,
+      .search-results-content .artist-name,
+      .search-results-content .album-title,
+      .library-page-content .library-track-title {
+        font-size: 14px;
+        max-width: 120px;
+      }
+      .trending-content .track-artists,
+      .popular-artists-content .artist-role,
+      .popular-albums-content .album-artists,
+      .search-results-content .track-artists,
+      .search-results-content .artist-role,
+      .search-results-content .album-artists,
+      .library-page-content .library-track-artists {
+        font-size: 12px;
+        max-width: 120px;
+      }
+      .card {
+        padding: 12px;
+        margin-bottom: 12px;
+      }
+      .card h2 {
+        font-size: 14px;
+      }
+      .card p {
+        font-size: 12px;
+      }
+      .card button {
+        padding: 6px 12px;
+        font-size: 12px;
+      }
+      .audio-menu {
+        height: 52px;
+        padding: 5px 6px;
+      }
+      .audio-menu.fullscreen {
+        padding: 12px;
+      }
+      .audio-menu img {
+        width: 28px;
+        height: 28px;
+      }
+      .audio-menu.fullscreen img {
+        width: 140px;
+        height: 140px;
+      }
+      .audio-menu .track-info .track-title {
+        font-size: 10px;
+        max-width: 90px;
+      }
+      .audio-menu.fullscreen .track-info .track-title {
+        font-size: 16px;
+        max-width: 90%;
+      }
+      .audio-menu .track-info .track-artists {
+        font-size: 8px;
+        max-width: 90px;
+      }
+      .audio-menu.fullscreen .track-info .track-artists {
+        font-size: 12px;
+        max-width: 90%;
+      }
+      .audio-menu .controls {
+        gap: 3px;
+        min-width: 80px;
+      }
+      .audio-menu.fullscreen .controls {
+        min-width: 140px;
+        gap: 6px;
+      }
+      .audio-menu .controls button svg {
+        width: 12px;
+        height: 12px;
+      }
+      .audio-menu.fullscreen .controls button svg {
+        width: 16px;
+        height: 16px;
+      }
+      .audio-menu .controls button.play-pause svg {
+        width: 14px;
+        height: 14px;
+      }
+      .audio-menu.fullscreen .controls button.play-pause svg {
+        width: 20px;
+        height: 20px;
+      }
+      .audio-menu .progress-time {
+        font-size: 7px;
+      }
+      .audio-menu.fullscreen .progress-time {
+        font-size: 9px;
       }
       .audio-menu .left-section {
         max-width: 40%;
@@ -759,17 +1057,21 @@
     }
     .trending-content,
     .popular-artists-content,
-    .popular-albums-content {
+    .popular-albums-content,
+    .search-results-content,
+    .library-page-content {
       position: relative;
     }
     .trending-content::before,
     .popular-artists-content::before,
-    .popular-albums-content::before {
+    .popular-albums-content::before,
+    .search-results-content::before,
+    .library-page-content::before {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
-      width: 20px;
+      width: 16px;
       height: 100%;
       background: linear-gradient(to right, rgba(12, 12, 12, 1), rgba(12, 12, 12, 0));
       pointer-events: none;
@@ -777,12 +1079,14 @@
     }
     .trending-content::after,
     .popular-artists-content::after,
-    .popular-albums-content::after {
+    .popular-albums-content::after,
+    .search-results-content::after,
+    .library-page-content::after {
       content: '';
       position: absolute;
       top: 0;
       right: 0;
-      width: 20px;
+      width: 16px;
       height: 100%;
       background: linear-gradient(to left, rgba(12, 12, 12, 1), rgba(12, 12, 12, 0));
       pointer-events: none;
@@ -791,9 +1095,10 @@
   </style>
 </head>
 <body>
+  <div class="play-effect" id="play-effect"></div>
   <div class="search-bar-container">
     <div class="home-and-search">
-      <button class="home-button">
+      <button class="home-button" onclick="goHome()">
         <svg data-encore-id="icon" role="img" aria-hidden="true" class="e-91000-icon e-91000-baseline" viewBox="0 0 24 24">
           <path d="M13.5 1.515a3 3 0 0 0-3 0L3 5.845a2 2 0 0 0-1 1.732V21a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-6h4v6a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V7.577a2 2 0 0 0-1-1.732z"></path>
         </svg>
@@ -813,6 +1118,10 @@
         <button class="filter-button" role="checkbox" aria-checked="false" aria-label="Livres audio">Livres audio</button>
       </div>
     </div>
+  </div>
+  <div class="search-results" id="search-results">
+    <div class="search-results-title">Résultats de la recherche</div>
+    <div class="search-results-content"></div>
   </div>
   <div class="trending-section">
     <div class="trending-title">Titres tendance</div>
@@ -850,27 +1159,27 @@
     </div>
     <div class="popular-artists-title">Artistes populaires</div>
     <div class="popular-artists-content">
-      <div class="artist-item">
+      <div class="artist-item" onclick="viewArtist('GIMS')">
         <img src="https://i.scdn.co/image/ab6761610000e5eb77144f838397a467e807df65" alt="GIMS">
         <div class="artist-name">GIMS</div>
         <div class="artist-role">Artiste</div>
       </div>
-      <div class="artist-item">
+      <div class="artist-item" onclick="viewArtist('Black M')">
         <img src="https://i.scdn.co/image/ab6761610000e5ebd8add7bfba9ab22753b5155e" alt="Black M">
         <div class="artist-name">Black M</div>
         <div class="artist-role">Artiste</div>
       </div>
-      <div class="artist-item">
+      <div class="artist-item" onclick="viewArtist('Werenoi')">
         <img src="https://i.scdn.co/image/ab6761610000e5eb6296c04d12f719f7ea4fe566" alt="Werenoi">
         <div class="artist-name">Werenoi</div>
         <div class="artist-role">Artiste</div>
       </div>
-      <div class="artist-item">
+      <div class="artist-item" onclick="viewArtist('Ninho')">
         <img src="https://i.scdn.co/image/ab6761610000e5eb791b1ecfe6f3101115430fb5" alt="Ninho">
         <div class="artist-name">Ninho</div>
         <div class="artist-role">Artiste</div>
       </div>
-      <div class="artist-item">
+      <div class="artist-item" onclick="viewArtist('Sexion d\'Assaut')">
         <img src="https://i.scdn.co/image/ab6761610000e5ebe5380469a579bd4fc105899f" alt="Sexion d'Assaut">
         <div class="artist-name">Sexion d'Assaut</div>
         <div class="artist-role">Artiste</div>
@@ -878,27 +1187,27 @@
     </div>
     <div class="popular-albums-title">Albums et singles populaires</div>
     <div class="popular-albums-content">
-      <div class="album-item">
+      <div class="album-item" onclick="viewAlbum('IPSEITE')">
         <img src="https://i.scdn.co/image/ab67616d0000b2737e81bf206d9ec5bbcab4d39d" alt="IPSEITE">
         <div class="album-title">IPSEITE</div>
         <div class="album-artists">Damso</div>
       </div>
-      <div class="album-item">
+      <div class="album-item" onclick="viewAlbum('LE DERNIER DU CODE')">
         <img src="https://i.scdn.co/image/ab67616d0000b2739568fc14ab5f80eb1214388b" alt="LE DERNIER DU CODE">
         <div class="album-title">LE DERNIER DU CODE</div>
         <div class="album-artists">GIMS</div>
       </div>
-      <div class="album-item">
+      <div class="album-item" onclick="viewAlbum('Carré')">
         <img src="https://i.scdn.co/image/ab67616d0000b273a4d73b6f37bb4b7f4f7a8056" alt="Carré">
         <div class="album-title">Carré</div>
         <div class="album-artists">Werenoi</div>
       </div>
-      <div class="album-item">
+      <div class="album-item" onclick="viewAlbum('Jefe')">
         <img src="https://i.scdn.co/image/ab67616d0000b273e1d2b368e4b2d9c5e91ad3d8" alt="Jefe">
         <div class="album-title">Jefe</div>
         <div class="album-artists">Ninho</div>
       </div>
-      <div class="album-item">
+      <div class="album-item" onclick="viewAlbum('Blackout')">
         <img src="https://i.scdn.co/image/ab67616d0000b273f1b43b9a8e8e1a3f7b5a9a6e" alt="Blackout">
         <div class="album-title">Blackout</div>
         <div class="album-artists">Black M</div>
@@ -908,26 +1217,42 @@
   <div class="section">
     <div class="section-header">
       <h1 class="library-title">Bibliothèque</h1>
-      <button class="toggle-button" onclick="toggleSection()">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" fill="white"/>
+      <button class="library-button" onclick="showLibraryPage()">
+        <svg data-encore-id="icon" role="img" aria-hidden="true" class="e-91000-icon e-91000-baseline" viewBox="0 0 24 24">
+          <path d="M5.21 1.57a6.76 6.76 0 0 1 6.708 1.545.124.124 0 0 0 .165 0 6.74 6.74 0 0 1 5.715-1.78l.004.001a6.8 8 0 0 1 5.571 5.376v.003a6.69 6.69 0 0 1-1.49 5.655l-7.954 9.48a2.518 2.518 0 0 1-3.857 0L2.12 12.37A6.68 6.68 0 0 1 .627 6.714 6.76 6.76 0 0 1 5.21 1.57m3.12 1.803a4.757 4.757 0 0 0-5.74 3.725l-.001.002a4.68 4.68 0 0 0 1.049 3.969l.009.01 7.958 9.485a.518.518 0 0 0 .79 0l7.968-9.495a4.69 4.69 0 0 0 1.049-3.965 4.8 4.8 0 0 0-3.931-3.794 4.74 4.74 0 0 0-4.023 1.256l-.008.008a2.123 2.123 0 0 1-2.9 0l-.007-.007a4.76 4.76 0 0 0-2.214-1.194z"></path>
         </svg>
       </button>
     </div>
-    <div class="card">
-      <h2>Créez votre première playlist</h2>
-      <p>C’est simple, nous allons vous aider</p>
-      <button>Créer une playlist</button>
-    </div>
-    <div class="card">
-      <h2>Cherchons quelques podcasts auxquels vous abonner</h2>
-      <p>Nous vous transmettrons des informations sur les nouveaux épisodes</p>
-      <button>Parcourir les podcasts</button>
+    <div class="library-content">
+      <div class="card" onclick="playTrack(0, this)">
+        <img src="https://i.scdn.co/image/ab67616d0000b2738c3ef4b93cdfc38c008fd874" alt="Charger" style="width: 40px; height: 40px; border-radius: 4px; margin-bottom: 8px;">
+        <h2>Charger</h2>
+        <p>TRIANGLES DES BERMUDES</p>
+      </div>
+      <div class="card" onclick="playTrack(5, this)">
+        <img src="https://i.scdn.co/image/ab67616d0000b2737e81bf206d9ec5bbcab4d39d" alt="Δ. Dieu ne ment jamais" style="width: 40px; height: 40px; border-radius: 4px; margin-bottom: 8px;">
+        <h2>Δ. Dieu ne ment jamais</h2>
+        <p>Damso</p>
+      </div>
+      <div class="card" onclick="playTrack(2, this)">
+        <img src="https://i.scdn.co/image/ab67616d0000b2737c04344b48e4742334549691" alt="APPELLE TA COPINE" style="width: 40px; height: 40px; border-radius: 4px; margin-bottom: 8px;">
+        <h2>APPELLE TA COPINE</h2>
+        <p>GIMS</p>
+      </div>
+      <div class="card">
+        <h2>Mes favoris</h2>
+        <p>Vos morceaux préférés</p>
+        <button onclick="showLibraryPage()">Voir tout</button>
+      </div>
     </div>
   </div>
-  <div class="audio-menu">
+  <div class="library-page" id="library-page">
+    <div class="library-page-title">Ma Bibliothèque</div>
+    <div class="library-page-content"></div>
+  </div>
+  <div class="audio-menu" onclick="toggleFullscreenMenu(event)">
     <button class="close-btn" onclick="closeMenu()">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M18.3 5.7L5.7 18.3M5.7 5.7L18.3 18.3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </button>
@@ -941,7 +1266,7 @@
     <div class="controls">
       <button type="button" role="switch" aria-checked="false" aria-label="Sauvegarder dans Bibliothèque" data-testid="add-button">
         <svg data-encore-id="icon" role="img" aria-hidden="true" class="e-91000-icon e-91000-baseline" viewBox="0 0 24 24">
-          <path d="M5.21 1.57a6.76 6.76 0 0 1 6.708 1.545.124.124 0 0 0 .165 0 6.74 6.74 0 0 1 5.715-1.78l.004.001a6.8 6.8 0 0 1 5.571 5.376v.003a6.69 6.69 0 0 1-1.49 5.655l-7.954 9.48a2.518 2.518 0 0 1-3.857 0L2.12 12.37A6.68 6.68 0 0 1 .627 6.714 6.76 6.76 0 0 1 5.21 1.57m3.12 1.803a4.757 4.757 0 0 0-5.74 3.725l-.001.002a4.68 4.68 0 0 0 1.049 3.969l.009.01 7.958 9.485a.518.518 0 0 0 .79 0l7.968-9.495a4.69 4.69 0 0 0 1.049-3.965 4.8 4.8 0 0 0-3.931-3.794 4.74 4.74 0 0 0-4.023 1.256l-.008.008a2.123 2.123 0 0 1-2.9 0l-.007-.007a4.76 4.76 0 0 0-2.214-1.194z"></path>
+          <path d="M5.21 1.57a6.76 6.76 0 0 1 6.708 1.545.124.124 0 0 0 .165 0 6.74 6.74 0 0 1 5.715-1.78l.004.001a6.8 8 0 0 1 5.571 5.376v.003a6.69 6.69 0 0 1-1.49 5.655l-7.954 9.48a2.518 2.518 0 0 1-3.857 0L2.12 12.37A6.68 6.68 0 0 1 .627 6.714 6.76 6.76 0 0 1 5.21 1.57m3.12 1.803a4.757 4.757 0 0 0-5.74 3.725l-.001.002a4.68 4.68 0 0 0 1.049 3.969l.009.01 7.958 9.485a.518.518 0 0 0 .79 0l7.968-9.495a4.69 4.69 0 0 0 1.049-3.965 4.8 4.8 0 0 0-3.931-3.794 4.74 4.74 0 0 0-4.023 1.256l-.008.008a2.123 2.123 0 0 1-2.9 0l-.007-.007a4.76 4.76 0 0 0-2.214-1.194z"></path>
         </svg>
       </button>
       <button onclick="previousTrack()" aria-label="Previous Track">
@@ -967,7 +1292,7 @@
       </div>
       <span class="progress-time duration">0:00</span>
     </div>
-    <audio id="audio-player" src="" ontimeupdate="updateProgress()"></audio>
+    <audio id="audio-player" src="" ontimeupdate="updateProgress()" onended="playNextTrack()"></audio>
   </div>
   <script>
     const section = document.querySelector('.section');
@@ -978,10 +1303,24 @@
       { title: "Doucement", artist: "TRIANGLE DES BERMUDES, MC YOSHI, Mauvais djo, Kokosvoice", src: "https://matheonyx.github.io/Nesdy/Triangle%20des%20bermudes%20-%20Charger%20(Clip%20officiel).mp3", image: "https://i.scdn.co/image/ab67616d00001e028c3ef4b93cdfc38c008fd874" },
       { title: "Charger", artist: "TRIANGLES DES BERMUDES", src: "https://example.com/charger.mp3", image: "https://i.scdn.co/image/ab67616d0000b2738c3ef4b93cdfc38c008fd874" },
       { title: "Soleil Bleu", artist: "Bleu Soleil et LUIZA", src: "https://example.com/soleilbleu.mp3", image: "https://i.scdn.co/image/ab67616d0000b2735446164bb6862bb37594b5f6" },
-      { title: "APPELLE TA COPINE", artist: "GIMS", src: "https://example.com/appelletacopine.mp3", image: "https://i.scdn.co/image/ab67616d0000b2737c04344b48e4742334549691" },
-      { title: "FUNK UNIVERSO", artist: "Irokz", src: "https://example.com/funkuniverso.mp3", image: "https://i.scdn.co/image/ab67616d0000b2731ecd6877bf9fc8eaf5be76e6" },
-      { title: "AIR FORCE BLANCHE", artist: "GIMS,Jul", src: "https://example.com/airforceblanche.mp3", image: "https://i.scdn.co/image/ab67616d0000b2739568fc14ab5f80eb1214388b" },
+      { title: "APPELLE TA COPINE", artist: "GIMS", src: "https://matheonyx.github.io/Nesdy/GIMS%20-%20APPELLE%20TA%20COPINE%20(Clip%20officiel).mp3", image: "https://i.scdn.co/image/ab67616d0000b2737c04344b48e4742334549691" },
+      { title: "FUNK UNIVERSO", artist: "Irokz", src: "https://matheonyx.github.io/Nesdy/Irokz%20-%20FUNK%20UNIVERSO.mp3", image: "https://i.scdn.co/image/ab67616d0000b2731ecd6877bf9fc8eaf5be76e6" },
+      { title: "AIR FORCE BLANCHE", artist: "GIMS,Jul", src: "https://matheonyx.github.io/Nesdy/GIMS%20&%20Jul%20-%20AIR%20FORCE%20BLANCHE%20(Official%20Lyrics%20Vid%C3%A9o).mp3", image: "https://i.scdn.co/image/ab67616d0000b2739568fc14ab5f80eb1214388b" },
       { title: "Δ. Dieu ne ment jamais", artist: "Damso", src: "https://example.com/dieunementjamais.mp3", image: "https://i.scdn.co/image/ab67616d0000b2737e81bf206d9ec5bbcab4d39d" }
+    ];
+    const artists = [
+      { name: "GIMS", image: "https://i.scdn.co/image/ab6761610000e5eb77144f838397a467e807df65", role: "Artiste" },
+      { name: "Black M", image: "https://i.scdn.co/image/ab6761610000e5ebd8add7bfba9ab22753b5155e", role: "Artiste" },
+      { name: "Werenoi", image: "https://i.scdn.co/image/ab6761610000e5eb6296c04d12f719f7ea4fe566", role: "Artiste" },
+      { name: "Ninho", image: "https://i.scdn.co/image/ab6761610000e5eb791b1ecfe6f3101115430fb5", role: "Artiste" },
+      { name: "Sexion d'Assaut", image: "https://i.scdn.co/image/ab6761610000e5ebe5380469a579bd4fc105899f", role: "Artiste" }
+    ];
+    const albums = [
+      { title: "IPSEITE", artist: "Damso", image: "https://i.scdn.co/image/ab67616d0000b2737e81bf206d9ec5bbcab4d39d" },
+      { title: "LE DERNIER DU CODE", artist: "GIMS", image: "https://i.scdn.co/image/ab67616d0000b2739568fc14ab5f80eb1214388b" },
+      { title: "Carré", artist: "Werenoi", image: "https://i.scdn.co/image/ab67616d0000b273a4d73b6f37bb4b7f4f7a8056" },
+      { title: "Jefe", artist: "Ninho", image: "https://i.scdn.co/image/ab67616d0000b273e1d2b368e4b2d9c5e91ad3d8" },
+      { title: "Blackout", artist: "Black M", image: "https://i.scdn.co/image/ab67616d0000b273f1b43b9a8e8e1a3f7b5a9a6e" }
     ];
     const audioPlayer = document.getElementById('audio-player');
     const playPauseButton = document.querySelector('.play-pause');
@@ -991,20 +1330,26 @@
     const currentTimeDisplay = document.querySelector('.progress-time.current-time');
     const durationDisplay = document.querySelector('.progress-time.duration');
     const filterButtons = document.querySelectorAll('.filter-button');
+    const searchResults = document.getElementById('search-results');
+    const searchResultsContent = document.querySelector('.search-results-content');
+    const trendingSection = document.querySelector('.trending-section');
+    const libraryPage = document.getElementById('library-page');
+    const libraryPageContent = document.querySelector('.library-page-content');
+    const playEffect = document.getElementById('play-effect');
 
-    function toggleSection() {
-      section.classList.toggle('active');
+    function goHome() {
+      searchResults.classList.remove('active');
+      trendingSection.classList.remove('hidden');
+      libraryPage.classList.remove('active');
+      section.classList.remove('active');
+      document.querySelector('.search-bar input').value = '';
+      searchResultsContent.innerHTML = '';
     }
 
     function handleDragStart(e) {
       const clientX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
-      if (clientX < 50 && !section.classList.contains('active')) {
-        startX = clientX;
-        isDragging = true;
-      } else if (clientX > 50 && section.classList.contains('active')) {
-        startX = clientX;
-        isDragging = true;
-      }
+      startX = clientX;
+      isDragging = true;
     }
 
     function handleDragMove(e) {
@@ -1012,12 +1357,14 @@
       const clientX = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
       const diffX = clientX - startX;
 
-      if (clientX < 50 && diffX > 100 && !section.classList.contains('active')) {
-        section.classList.add('active');
-        isDragging = false;
-      } else if (clientX > 50 && diffX < -100 && section.classList.contains('active')) {
-        section.classList.remove('active');
-        isDragging = false;
+      if (window.innerWidth <= 768) {
+        if (diffX > 100 && !section.classList.contains('active')) {
+          section.classList.add('active');
+          isDragging = false;
+        } else if (diffX < -100 && section.classList.contains('active')) {
+          section.classList.remove('active');
+          isDragging = false;
+        }
       }
     }
 
@@ -1025,16 +1372,84 @@
       isDragging = false;
     }
 
+    function showLibraryPage() {
+      libraryPageContent.innerHTML = '';
+      tracks.forEach((track, index) => {
+        const trackItem = document.createElement('div');
+        trackItem.className = 'library-track-item';
+        trackItem.onclick = () => playTrack(index, trackItem);
+        trackItem.innerHTML = `
+          <img src="${track.image}" alt="${track.title}">
+          <div class="library-track-info">
+            <div class="library-track-title">${track.title}</div>
+            <div class="library-track-artists">${track.artist}</div>
+          </div>
+        `;
+        libraryPageContent.appendChild(trackItem);
+      });
+      libraryPage.classList.add('active');
+      trendingSection.classList.add('hidden');
+      searchResults.classList.remove('active');
+      section.classList.remove('active');
+    }
+
     function searchContent(query) {
-      const items = document.querySelectorAll('.track-item, .artist-item, .album-item');
-      query = query.toLowerCase();
-      items.forEach(item => {
-        const title = item.querySelector('.track-title, .artist-name, .album-title')?.textContent.toLowerCase();
-        if (title && title.includes(query)) {
-          item.classList.remove('hidden');
-        } else {
-          item.classList.add('hidden');
-        }
+      query = query.toLowerCase().trim();
+      searchResultsContent.innerHTML = '';
+      trendingSection.classList.toggle('hidden', query !== '');
+      searchResults.classList.toggle('active', query !== '');
+      libraryPage.classList.remove('active');
+
+      if (query === '') {
+        return;
+      }
+
+      const filteredTracks = tracks.filter(track => 
+        track.title.toLowerCase().includes(query) || 
+        track.artist.toLowerCase().includes(query)
+      );
+      const filteredArtists = artists.filter(artist => 
+        artist.name.toLowerCase().includes(query)
+      );
+      const filteredAlbums = albums.filter(album => 
+        album.title.toLowerCase().includes(query) || 
+        album.artist.toLowerCase().includes(query)
+      );
+
+      filteredTracks.forEach((track, index) => {
+        const trackItem = document.createElement('div');
+        trackItem.className = 'track-item';
+        trackItem.onclick = () => playTrack(index, trackItem);
+        trackItem.innerHTML = `
+          <img src="${track.image}" alt="${track.title}">
+          <div class="track-title">${track.title}</div>
+          <div class="track-artists">${track.artist}</div>
+        `;
+        searchResultsContent.appendChild(trackItem);
+      });
+
+      filteredArtists.forEach(artist => {
+        const artistItem = document.createElement('div');
+        artistItem.className = 'artist-item';
+        artistItem.onclick = () => viewArtist(artist.name);
+        artistItem.innerHTML = `
+          <img src="${artist.image}" alt="${artist.name}">
+          <div class="artist-name">${artist.name}</div>
+          <div class="artist-role">${artist.role}</div>
+        `;
+        searchResultsContent.appendChild(artistItem);
+      });
+
+      filteredAlbums.forEach(album => {
+        const albumItem = document.createElement('div');
+        albumItem.className = 'album-item';
+        albumItem.onclick = () => viewAlbum(album.title);
+        albumItem.innerHTML = `
+          <img src="${album.image}" alt="${album.title}">
+          <div class="album-title">${album.title}</div>
+          <div class="album-artists">${album.artist}</div>
+        `;
+        searchResultsContent.appendChild(albumItem);
       });
     }
 
@@ -1042,6 +1457,13 @@
       const minutes = Math.floor(seconds / 60);
       const secs = Math.floor(seconds % 60);
       return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    function triggerPlayEffect() {
+      playEffect.classList.add('active');
+      setTimeout(() => {
+        playEffect.classList.remove('active');
+      }, 300);
     }
 
     function playTrack(index, element) {
@@ -1052,6 +1474,8 @@
       document.querySelector('.audio-menu .track-title').textContent = track.title;
       document.querySelector('.audio-menu .track-artists').textContent = track.artist;
       audioMenu.classList.add('active');
+      audioMenu.classList.remove('fullscreen');
+      triggerPlayEffect();
       audioPlayer.play().then(() => {
         updatePlayPauseIcon('pause');
         durationDisplay.textContent = formatTime(audioPlayer.duration || 0);
@@ -1059,8 +1483,22 @@
       progressBar.style.width = '0';
     }
 
+    function playNextTrack() {
+      if (currentTrackIndex < tracks.length - 1) {
+        playTrack(currentTrackIndex + 1, document.querySelectorAll('.track-item, .library-track-item, .card')[currentTrackIndex + 1]);
+      } else {
+        playTrack(0, document.querySelectorAll('.track-item, .library-track-item, .card')[0]);
+      }
+    }
+
+    function toggleFullscreenMenu(event) {
+      if (event.target.closest('.close-btn, .controls, .progress-container')) return;
+      audioMenu.classList.toggle('fullscreen');
+    }
+
     function closeMenu() {
       audioMenu.classList.remove('active');
+      audioMenu.classList.remove('fullscreen');
       audioPlayer.pause();
       updatePlayPauseIcon('play');
     }
@@ -1069,6 +1507,7 @@
       if (audioPlayer.paused) {
         audioPlayer.play().then(() => {
           updatePlayPauseIcon('pause');
+          triggerPlayEffect();
         }).catch(error => console.log("Playback failed:", error));
       } else {
         audioPlayer.pause();
@@ -1078,13 +1517,15 @@
 
     function previousTrack() {
       if (currentTrackIndex > 0) {
-        playTrack(currentTrackIndex - 1, document.querySelectorAll('.track-item')[currentTrackIndex - 1]);
+        playTrack(currentTrackIndex - 1, document.querySelectorAll('.track-item, .library-track-item, .card')[currentTrackIndex - 1]);
       }
     }
 
     function nextTrack() {
       if (currentTrackIndex < tracks.length - 1) {
-        playTrack(currentTrackIndex + 1, document.querySelectorAll('.track-item')[currentTrackIndex + 1]);
+        playTrack(currentTrackIndex + 1, document.querySelectorAll('.track-item, .library-track-item, .card')[currentTrackIndex + 1]);
+      } else {
+        playTrack(0, document.querySelectorAll('.track-item, .library-track-item, .card')[0]);
       }
     }
 
@@ -1113,10 +1554,17 @@
       updateProgress();
     }
 
+    function viewArtist(name) {
+      alert(`Navigating to artist: ${name}`);
+    }
+
+    function viewAlbum(title) {
+      alert(`Navigating to album: ${title}`);
+    }
+
     function toggleFilter(button) {
       filterButtons.forEach(btn => btn.classList.remove('active'));
       button.classList.add('active');
-      // Add filtering logic here if needed
     }
 
     filterButtons.forEach(button => {
