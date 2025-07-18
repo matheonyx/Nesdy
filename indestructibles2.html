@@ -5,7 +5,6 @@
   <title>Les Indestructibles 2 | Disney++</title>
   <link rel="icon" href="https://static-mh.content.disney.io/matterhorn/assets/favicon-94e3862e7fb9.ico">
   <style>
-    /* Style de base et plein écran */
     html, body {
       margin: 0;
       padding: 0;
@@ -24,7 +23,6 @@
       height: 100%;
       border: none;
     }
-    /* En-tête en haut à gauche */
     .header {
       position: absolute;
       top: 20px;
@@ -32,14 +30,13 @@
       display: flex;
       align-items: center;
       color: #fff;
-      z-index: 10; /* S'assurer que le titre et la flèche sont visibles */
+      z-index: 10;
     }
     .movie-title {
       font-size: 22px;
       font-weight: bold;
       margin-left: 10px;
     }
-    /* Bouton de retour */
     .back-button {
       display: flex;
       align-items: center;
@@ -49,13 +46,12 @@
       width: 30px;
       height: 30px;
       fill: white;
-      transform: rotate(360deg); /* Pointe vers la gauche */
+      transform: rotate(360deg);
       transition: transform 0.3s ease;
     }
     .back-button:hover .chevron-left {
-      transform: rotate(170deg); /* Légère rotation au survol */
+      transform: rotate(170deg);
     }
-    /* Overlay noir avec bouton Play/Pause */
     .overlay {
       position: absolute;
       top: 0;
@@ -68,7 +64,6 @@
       align-items: center;
       z-index: 5;
     }
-    /* Rendre la flèche et le titre visibles sur l'overlay */
     .overlay .header {
       z-index: 15;
     }
@@ -110,13 +105,79 @@
       0% { transform: scale(0); opacity: 0; }
       50% { transform: scale(1.1); }
     }
+
+    /* Loader */
+    .hippopotame {
+      --hue: 210;
+      --size: 100px;
+      --border: 10px;
+      --speed: 1s;
+      --blur: var(--border);
+      width: var(--border);
+      aspect-ratio: 1;
+      background: white;
+      border-radius: 50%;
+      position: absolute;
+      --y: calc((var(--size) * -0.5) + (var(--border) * 0.5));
+      transform: rotate(0deg) translateY(var(--y));
+      animation: spin var(--speed) infinite linear;
+    }
+    .hippopotame::before {
+      content: "";
+      position: absolute;
+      inset: calc(var(--border) * -0.5);
+      border-radius: 50%;
+      background: white;
+      filter: blur(var(--blur));
+      z-index: -1;
+    }
+    .hippopotame::after {
+      content: "";
+      width: var(--size);
+      aspect-ratio: 1;
+      position: absolute;
+      top: 0%;
+      left: 50%;
+      translate: -50% 0;
+      background: conic-gradient(
+        white,
+        hsl(var(--hue), 100%, 70%),
+        hsl(var(--hue), 100%, 10%),
+        transparent 65%
+      );
+      border-radius: 50%;
+      mask: radial-gradient(
+        transparent calc(((var(--size) * 0.5) - var(--border)) - 1px),
+        white calc((var(--size) * 0.5) - var(--border))
+      );
+    }
+    @keyframes spin {
+      to {
+        transform: rotate(-360deg) translateY(var(--y));
+      }
+    }
+    .loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #0f0f0f;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
   </style>
 </head>
 <body>
+  <div class="loading" id="loading">
+    <div class="hippopotame" aria-live="assertive" role="alert"></div>
+  </div>
+
   <div class="video-container">
     <iframe id="video" src="https://filemoon.to/e/qs6k6rf1deaa/Incredibles.2.2018.TRUEFRENCH.720p.HDLight.x264.AC3-Wawacity.ec.mkv" allowfullscreen></iframe>
     
-    <!-- En-tête visible même sur l'overlay -->
     <div class="header">
       <a href="https://magnetic-lowly-sodalite.glitch.me/Les%20indestructibles%202.html" class="back-button">
         <svg class="chevron-left" viewBox="0 0 320 512" xmlns="http://www.w3.org/2000/svg">
@@ -140,7 +201,13 @@
   </div>
 
   <script>
-    document.getElementById('overlay').addEventListener('click', function(event) {
+    // Loader
+    window.addEventListener('load', function () {
+      document.getElementById('loading').style.display = 'none';
+    });
+
+    // Lecture vidéo + masque l’overlay
+    document.getElementById('overlay').addEventListener('click', function (event) {
       if (event.target.closest('.container')) {
         event.stopPropagation();
       } else {
@@ -148,94 +215,38 @@
       }
     });
 
-    document.getElementById('playPauseButton').addEventListener('change', function() {
+    document.getElementById('playPauseButton').addEventListener('change', function () {
       let videoFrame = document.getElementById('video');
       let iframeWindow = videoFrame.contentWindow;
       iframeWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
       document.getElementById('overlay').style.display = 'none';
     });
+
+    // Anti-pub simple (masquer éléments suspects)
+    function removeAds() {
+      const selectors = [
+        'iframe[src*="ads"]',
+        'iframe[src*="doubleclick"]',
+        'iframe[src*="popads"]',
+        '[id*="ad"]',
+        '[class*="ad"]',
+        '[id^="ads"]',
+        '[class^="ads"]',
+        '[class*="sponsor"]',
+        '[id*="banner"]'
+      ];
+
+      selectors.forEach(selector => {
+        document.querySelectorAll(selector).forEach(el => el.remove());
+      });
+    }
+
+    // Appel initial
+    removeAds();
+
+    // Observer les changements dynamiques
+    const observer = new MutationObserver(removeAds);
+    observer.observe(document.body, { childList: true, subtree: true });
   </script>
 </body>
 </html>
-
-<head>
-    <style>
-        /* Styles du loader personnalisé */
-        .hippopotame {
-            --hue: 210;
-            --size: 100px;
-            --border: 10px;
-            --speed: 1s;
-            --blur: var(--border);
-            width: var(--border);
-            aspect-ratio: 1;
-            background: white;
-            border-radius: 50%;
-            position: absolute;
-            --y: calc((var(--size) * -0.5) + (var(--border) * 0.5));
-            transform: rotate(0deg) translateY(var(--y));
-            animation: spin var(--speed) infinite linear;
-        }
-
-        .hippopotame::before {
-            content: "";
-            position: absolute;
-            inset: calc(var(--border) * -0.5);
-            border-radius: 50%;
-            background: white;
-            filter: blur(var(--blur));
-            z-index: -1;
-        }
-
-        .hippopotame::after {
-            content: "";
-            width: var(--size);
-            aspect-ratio: 1;
-            position: absolute;
-            top: 0%;
-            left: 50%;
-            translate: -50% 0;
-            background: conic-gradient(
-                white,
-                hsl(var(--hue), 100%, 70%),
-                hsl(var(--hue), 100%, 10%),
-                transparent 65%
-            );
-            border-radius: 50%;
-            mask: radial-gradient(
-                transparent calc(((var(--size) * 0.5) - var(--border)) - 1px),
-                white calc((var(--size) * 0.5) - var(--border))
-            );
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(-360deg) translateY(var(--y));
-            }
-        }
-
-        /* Styles pour afficher le loader pendant le chargement */
-        .loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #0f0f0f;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
-    </style>
-</head>
-<div class="loading" id="loading">
-    <div class="hippopotame" aria-live="assertive" role="alert"></div>
-</div>
-
-<script>
-    // Enlève le loader après que la page soit complètement chargée
-    window.addEventListener('load', function() {
-        document.getElementById('loading').style.display = 'none';
-    });
-</script>
