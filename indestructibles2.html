@@ -30,12 +30,13 @@
       display: flex;
       align-items: center;
       color: #fff;
-      z-index: 10;
+      z-index: 1000; /* plus élevé que overlay */
     }
     .movie-title {
       font-size: 22px;
       font-weight: bold;
       margin-left: 10px;
+      display: block;
     }
     .back-button {
       display: flex;
@@ -63,9 +64,6 @@
       justify-content: center;
       align-items: center;
       z-index: 5;
-    }
-    .overlay .header {
-      z-index: 15;
     }
     .container {
       --color: white;
@@ -106,7 +104,7 @@
       50% { transform: scale(1.1); }
     }
 
-    /* Loader */
+    /* Loader personnalisé */
     .hippopotame {
       --hue: 210;
       --size: 100px;
@@ -122,6 +120,7 @@
       transform: rotate(0deg) translateY(var(--y));
       animation: spin var(--speed) infinite linear;
     }
+
     .hippopotame::before {
       content: "";
       position: absolute;
@@ -131,6 +130,7 @@
       filter: blur(var(--blur));
       z-index: -1;
     }
+
     .hippopotame::after {
       content: "";
       width: var(--size);
@@ -151,11 +151,13 @@
         white calc((var(--size) * 0.5) - var(--border))
       );
     }
+
     @keyframes spin {
       to {
         transform: rotate(-360deg) translateY(var(--y));
       }
     }
+
     .loading {
       position: fixed;
       top: 0;
@@ -171,6 +173,7 @@
   </style>
 </head>
 <body>
+  <!-- Loader -->
   <div class="loading" id="loading">
     <div class="hippopotame" aria-live="assertive" role="alert"></div>
   </div>
@@ -178,6 +181,7 @@
   <div class="video-container">
     <iframe id="video" src="https://filemoon.to/e/qs6k6rf1deaa/Incredibles.2.2018.TRUEFRENCH.720p.HDLight.x264.AC3-Wawacity.ec.mkv" allowfullscreen></iframe>
     
+    <!-- Titre du film en haut à gauche -->
     <div class="header">
       <a href="https://magnetic-lowly-sodalite.glitch.me/Les%20indestructibles%202.html" class="back-button">
         <svg class="chevron-left" viewBox="0 0 320 512" xmlns="http://www.w3.org/2000/svg">
@@ -187,6 +191,7 @@
       <div class="movie-title">Les Indestructibles 2</div>
     </div>
 
+    <!-- Overlay play/pause -->
     <div class="overlay" id="overlay">
       <label class="container">
         <input type="checkbox" id="playPauseButton" />
@@ -201,12 +206,12 @@
   </div>
 
   <script>
-    // Loader
+    // Supprimer le loader une fois la page chargée
     window.addEventListener('load', function () {
       document.getElementById('loading').style.display = 'none';
     });
 
-    // Lecture vidéo + masque l’overlay
+    // Cacher overlay au clic
     document.getElementById('overlay').addEventListener('click', function (event) {
       if (event.target.closest('.container')) {
         event.stopPropagation();
@@ -222,7 +227,7 @@
       document.getElementById('overlay').style.display = 'none';
     });
 
-    // Anti-pub simple (masquer éléments suspects)
+    // Bloquer pubs (éléments classiques)
     function removeAds() {
       const selectors = [
         'iframe[src*="ads"]',
@@ -235,16 +240,12 @@
         '[class*="sponsor"]',
         '[id*="banner"]'
       ];
-
       selectors.forEach(selector => {
         document.querySelectorAll(selector).forEach(el => el.remove());
       });
     }
 
-    // Appel initial
     removeAds();
-
-    // Observer les changements dynamiques
     const observer = new MutationObserver(removeAds);
     observer.observe(document.body, { childList: true, subtree: true });
   </script>
