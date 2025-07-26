@@ -231,10 +231,14 @@
     .grolot-container {
       position: absolute;
       top: 976px; /* Position verticale */
-      left: 30px; /* Position horizontale */
+      left: 100px; /* Décalé plus à droite */
       width: 323.99px;
       height: 182.25px;
       z-index: 9999; /* Au-dessus de tout */
+      pointer-events: none; /* Permet les clics à travers quand invisible */
+    }
+    .grolot-container:hover {
+      pointer-events: auto; /* Active la détection du survol */
     }
     .grolot-video {
       display: none; /* Invisible au départ */
@@ -278,6 +282,9 @@
       font-size: 12px;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Police pour la durée */
       display: none; /* Invisible au départ */
+      background: rgba(0, 0, 0, 0.7); /* Fond semi-transparent */
+      border-radius: 4px; /* Coins arrondis */
+      padding: 2px 4px; /* Léger padding pour lisibilité */
     }
   </style>
 </head>
@@ -321,7 +328,7 @@
         progressBar.style.display = 'block';
         timeDisplay.style.display = 'block';
         video.play();
-      }, 2000); // Réduit à 2 secondes
+      }, 2000); // 2 secondes
     });
 
     container.addEventListener('mouseleave', function() {
