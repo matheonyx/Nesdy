@@ -10,6 +10,7 @@
             font-family: Arial, sans-serif;
             color: #fff;
             filter: brightness(1.1) contrast(1.2) saturate(1.3);
+            overflow-x: hidden;
         }
         header {
             position: sticky;
@@ -161,6 +162,19 @@
             cursor: pointer;
             position: relative;
         }
+        .search-result .video-item {
+            flex-direction: row;
+            align-items: center;
+        }
+        .search-result .thumbnail-container {
+            width: 200px;
+            height: 112px;
+            flex-shrink: 0;
+        }
+        .search-result .video-info {
+            margin-left: 12px;
+            margin-top: 0;
+        }
         .thumbnail-container {
             position: relative;
             width: 100%;
@@ -309,7 +323,6 @@
         .short-item.loading .loading-bar {
             display: block;
         }
-        /* Custom click effect */
         button, img, .left-icon, .search-icon, .icon, .menu-icon, .close-search {
             outline: none;
             user-select: none;
@@ -331,16 +344,156 @@
         button:focus, img:focus, .left-icon:focus, .search-icon:focus, .icon:focus, .menu-icon:focus, .close-search:focus {
             outline: none;
         }
+        .guide-icon {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            fill: #fff;
+        }
+        .verified-badge {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            margin-left: 4px;
+            vertical-align: middle;
+            position: relative;
+        }
+        .verified-badge svg {
+            width: 100%;
+            height: 100%;
+            fill: #fff;
+        }
+        .popup {
+            position: relative;
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        .popup::before {
+            content: "";
+            display: block;
+            height: 4px;
+            background-image: linear-gradient(to right, #ff4ecd, #3f51b5, #00e0ff);
+        }
+        .popup-content {
+            padding: 24px 16px 32px 16px;
+            background-color: #1e1e1e;
+        }
+        .popup h2 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .popup p {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #ccc;
+        }
+        .popup button {
+            margin-top: 20px;
+            background-color: #333;
+            color: white;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .popup button:hover {
+            background-color: #444;
+        }
+        .close-btn {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            font-size: 20px;
+            color: #aaa;
+            cursor: pointer;
+        }
+        .close-btn:hover {
+            color: white;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background-color: #0f0f0f;
+            z-index: 2000;
+            transition: left 0.3s ease;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+            color: #fff;
+            padding-top: 60px;
+        }
+        .sidebar.active {
+            left: 0;
+        }
+        .sidebar-content {
+            padding: 10px 0;
+        }
+        .sidebar-content h2 {
+            margin: 0 0 15px 15px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #aaa;
+            text-transform: uppercase;
+            padding: 10px 0;
+            border-bottom: 1px solid #222;
+        }
+        .sidebar-content ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sidebar-content ul li {
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 14px;
+            cursor: pointer;
+            color: #ccc;
+        }
+        .sidebar-content ul li:hover {
+            background-color: #222;
+            color: #fff;
+        }
+        .sidebar-content ul li svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1500;
+            display: none;
+        }
+        .overlay.active {
+            display: block;
+        }
     </style>
 </head>
 <body>
     <header>
         <div class="header-top">
-            <div class="left-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path d="M21 6H3V5h18v1zm0 5H3v1h18v-1zm0 6H3v1h18v-1z"></path>
-                </svg>
-            </div>
+            <yt-icon id="guide-icon" class="guide-icon">
+                <span class="yt-icon-shape">
+                    <div style="width: 100%; height: 100%; display: block; fill: currentcolor;"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" focusable="false" aria-hidden="true" style="pointer-events: none; display: inherit; width: 100%; height: 100%;"><path clip-rule="evenodd" d="M22.146 11.146a.5.5 0 01-.353.854H20v7.5a1.5 1.5 0 01-1.5 1.5h-5v-7h-3v7h-5A1.5 1.5 0 014 19.5V12H2.207a.5.5 0 01-.353-.854L12 1l10.146 10.146ZM18.5 9.621l-6.5-6.5-6.5 6.5V19.5H9V13a.5.5 0 01.5-.5h5a.5.5 0 01.5.5v6.5h3.5V9.621Z" fill-rule="evenodd"></path></svg></div>
+                </span>
+            </yt-icon>
             <div class="button-container">
                 <svg class="search-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M16.296 16.996a8 8 0 11.707-.708l3.909 3.91-.707.707-3.909-3.909zM18 11a7 7 0 00-14 0 7 7 0 1014 0z"/>
@@ -357,7 +510,7 @@
         <div class="search-container">
             <button id="back-button" class="back-button">
                 <svg mirror-in-rtl="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" focusable="false" aria-hidden="true" style="pointer-events: none; display: inherit; width: 100%; height: 100%;">
-                    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
+                    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41"></path>
                 </svg>
             </button>
             <input type="text" class="search-input" placeholder="Rechercher...">
@@ -367,115 +520,345 @@
         </div>
         <div class="category-bar">
             <button class="active">Tous</button>
-            <button>Jeux vidéo</button>
-            <button>Science-fiction</button>
+            <button>Disney</button>
+            <button>Pixar</button>
             <button>Marvel</button>
+            <button>Star Wars</button>
+            <button>Jeux vidéo</button>
         </div>
     </header>
-    <div class="video-list">
-        <!-- Première vidéo (publicité) -->
-        <div class="video-item">
-            <div class="thumbnail-container loading">
-                <img class="thumbnail" src="https://i.ytimg.com/vi/ArhI0JI_Gdw/hq720.jpg?sqp=-oaymwFBCNAFEJQDSFryq4qpAzMIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB8AEB-AH-CYAC0AWKAgwIABABGGMgZSg7MA8=&rs=AOn4CLAK2IfWTSlEpVeqAfqg35AZM_hB8Q" alt="Miniature vidéo sponsorisée">
-                <div class="loading-bar"></div>
-            </div>
-            <div class="video-info">
-                <h3 class="video-title">Estimer votre<br>automobile maintenant</h3>
-                <p class="sponsored">Sponsorisé • vendezvotrevoture.fr</p>
-            </div>
-            <div class="button-group">
-                <button class="action-button">Regarder</button>
-                <button class="action-button">Visiter le site</button>
-            </div>
-            <div class="menu-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-                    <path d="M12 16.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5-1.5-.67-1.5-1.5.67-1.5 1.5-1.5zM10.5 12c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5-1.5.67-1.5 1.5zm0-6c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5-1.5.67-1.5 1.5z"/>
-                </svg>
-            </div>
-        </div>
-        <!-- Seconde vidéo -->
-        <div class="video-item">
-            <div class="thumbnail-container loading">
-                <img class="thumbnail" src="https://i9.ytimg.com/vi/3SzKVYbCOks/hq720_custom_1.jpg?sqp=CIi_icQG-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLBCTHkMUX8z1qeqO3KEmkDHRnCTCQ" alt="Miniature vidéo">
-                <div class="loading-bar"></div>
-            </div>
-            <div class="video-info">
-                <h3 class="video-title">FIVE NIGHT AT FREDDY'S 2 Bande Annonce VF (2025)</h3>
-                <p class="video-author">Universal Pictures</p>
-                <p class="video-views">125 k vues • il y a 2 heures</p>
-            </div>
-            <div class="menu-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-                    <path d="M12 16.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5-1.5-.67-1.5-1.5.67-1.5 1.5-1.5zM10.5 12c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5-1.5.67-1.5 1.5zm0-6c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5-1.5.67-1.5 1.5z"/>
-                </svg>
-            </div>
-        </div>
-        <!-- Section Shorts -->
-        <div class="shorts-section">
-            <div class="shorts-title">Shorts</div>
-            <div class="shorts-container">
-                <div class="short-item loading">
-                    <img src="https://i.ytimg.com/vi/jKh_nEujKaY/oardefault.jpg?sqp=-oaymwEdCJUDENAFSFWQAgHyq4qpAwwIARUAAIhCcAHAAQY=&rs=AOn4CLALONSAEm_va9-vfNqLH-AaK22ekg" alt="Short 1">
-                    <div class="loading-bar"></div>
-                </div>
-                <div class="short-item loading">
-                    <img src="https://i.ytimg.com/vi/UI_zPF4riZE/oardefault.jpg?sqp=-oaymwEdCJUDENAFSFWQAgHyq4qpAwwIARUAAIhCcAHAAQY=&rs=AOn4CLAOf2k_0C-SzO2l6U5XR-2y-0ibXA" alt="Short 2">
-                    <div class="loading-bar"></div>
-                </div>
-            </div>
-        </div>
-        <!-- Dernière vidéo -->
-        <div class="video-item">
-            <div class="thumbnail-container loading">
-                <img class="thumbnail" src="https://i.ytimg.com/vi/YH50YRu94_A/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAW2_SQXmakgUyNlussCc5NRB7KtQ" alt="Miniature nouvelle vidéo">
-                <div class="loading-bar"></div>
-            </div>
-            <div class="video-info">
-                <h3 class="video-title">Vaiana 2<br></h3>
-                <p class="video-author">Disney</p>
-                <p class="video-views">100 k vues • il y a 1 jour</p>
-            </div>
-            <div class="menu-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-                    <path d="M12 16.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5-1.5-.67-1.5-1.5.67-1.5 1.5-1.5zM10.5 12c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5-1.5.67-1.5 1.5zm0-6c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5-1.5.67-1.5 1.5z"/>
-                </svg>
-            </div>
-        </div>
-        <!-- Nouveaux vidéos ajoutées -->
-        <div class="video-item">
-            <div class="thumbnail-container loading">
-                <img class="thumbnail" src="https://i.ytimg.com/vi/hNv58iLnv8M/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDxo5_w8l3Jg1y1r2UVwyJgL0IWKQ" alt="Miniature nouvelle vidéo 1">
-                <div class="loading-bar"></div>
-            </div>
-            <div class="video-info">
-                <h3 class="video-title">Les Gardiens de la Galaxie Vol. 3</h3>
-                <p class="video-author">Marvel</p>
-                <p class="video-views">50 k vues • il y a 2 jours</p>
-            </div>
-            <div class="menu-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-                    <path d="M12 16.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5-1.5-.67-1.5-1.5.67-1.5 1.5-1.5zM10.5 12c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5-1.5.67-1.5 1.5zm0-6c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5-1.5.67-1.5 1.5z"/>
-                </svg>
-            </div>
-        </div>
-        <div class="video-item">
-            <div class="thumbnail-container loading">
-                <img class="thumbnail" src="https://i.ytimg.com/vi/1nV5q5pp_Ok/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBoQeW9WM8UYUIRh66ZdC1y3rvMqg" alt="Miniature nouvelle vidéo 2">
-                <div class="loading-bar"></div>
-            </div>
-            <div class="video-info">
-                <h3 class="video-title">Moi, moche et méchant 4</h3>
-                <p class="video-author">Illumination</p>
-                <p class="video-views">75 k vues • il y a 3 jours</p>
-            </div>
-            <div class="menu-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-                    <path d="M12 16.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5-1.5-.67-1.5-1.5.67-1.5 1.5-1.5zM10.5 12c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5-1.5.67-1.5 1.5zm0-6c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5-1.5.67-1.5 1.5z"/>
-                </svg>
-            </div>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-content">
+            <h2>Vos</h2>
+            <ul>
+                <li><div style="width: 100%; height: 100%; display: block; fill: currentcolor;"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" focusable="false" aria-hidden="true" style="pointer-events: none; display: inherit; width: 100%; height: 100%;"><path clip-rule="evenodd" d="M22.146 11.146a.5.5 0 01-.353.854H20v7.5a1.5 1.5 0 01-1.5 1.5h-5v-7h-3v7h-5A1.5 1.5 0 014 19.5V12H2.207a.5.5 0 01-.353-.854L12 1l10.146 10.146ZM18.5 9.621l-6.5-6.5-6.5 6.5V19.5H9V13a.5.5 0 01.5-.5h5a.5.5 0 01.5.5v6.5h3.5V9.621Z" fill-rule="evenodd"></path></svg></div>Accueil</li>
+                <li><span class="yt-icon-shape style-scope yt-icon yt-spec-icon-shape"><div style="width: 100%; height: 100%; display: block; fill: currentcolor;"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" focusable="false" aria-hidden="true" style="pointer-events: none; display: inherit; width: 100%; height: 100%;"><path clip-rule="evenodd" d="m7.61 15.719.392-.22v-2.24l-.534-.228-.942-.404c-.869-.372-1.4-1.15-1.446-1.974-.047-.823.39-1.642 1.203-2.097h.001L15.13 3.59c1.231-.689 2.785-.27 3.466.833.652 1.058.313 2.452-.879 3.118l-1.327.743-.388.217v2.243l.53.227.942.404c.869.372 1.4 1.15 1.446 1.974.047.823-.39 1.642-1.203 2.097l-.002.001-8.845 4.964-.001.001c-1.231.688-2.784.269-3.465-.834-.652-1.058-.313-2.451.879-3.118l1.327-.742Zm1.993 6.002c-1.905 1.066-4.356.46-5.475-1.355-1.057-1.713-.548-3.89 1.117-5.025a4.14 4.14 0 01.305-.189l1.327-.742-.942-.404a4.055 4.055 0 01-.709-.391c-.963-.666-1.578-1.718-1.644-2.877-.08-1.422.679-2.77 1.968-3.49l8.847-4.966c1.905-1.066 4.356-.46 5.475 1.355 1.057 1.713.548 3.89-1.117 5.025a4.074 4.074 0 01-.305.19l-1.327.742.942.403c.253.109.49.24.709.392.963.666 1.578 1.717 1.644 2.876.08 1.423-.679 2.77-1.968 3.491l-8.847 4.965ZM10 14.567a.25.25 0 00.374.217l4.45-2.567a.25.25 0 000-.433l-4.45-2.567a.25.25 0 00-.374.216v5.134Z" fill-rule="evenodd"></path></svg></div></span>Shorts</li>
+                <li><div style="width: 100%; height: 100%; display: block; fill: currentcolor;"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" focusable="false" aria-hidden="true" style="pointer-events: none; display: inherit; width: 100%; height: 100%;"><path clip-rule="evenodd" d="M4 4.5A1.5 1.5 0 015.5 3h13A1.5 1.5 0 0120 4.5H4Zm16.5 3h-17v11h17v-11ZM3.5 6A1.5 1.5 0 002 7.5v11A1.5 1.5 0 003.5 20h17a1.5 1.5 0 001.5-1.5v-11A1.5 1.5 0 0020.5 6h-17Zm7.257 4.454a.5.5 0 00-.757.43v4.233a.5.5 0 00.757.429L15 13l-4.243-2.546Z" fill-rule="evenodd"></path></svg></div>Abonnements</li>
+            </ul>
+            <h2>Vos</h2>
+            <ul>
+                <li><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" focusable="false" aria-hidden="true"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path></svg>Historique</li>
+                <li><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" focusable="false" aria-hidden="true"><path d="M14 10H2v2h12v-2zm0-4H2v2h12V6zM2 16h8v-2H2v2zm19.5-4.5L23 13l-6.99 7-4.51-4.5L13 14l3.01 3 5.49-5.5z"></path></svg>Playlists</li>
+                <li><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" focusable="false" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8zm-8-8H5v10h2V8z"></path></svg>À regarder plus tard</li>
+                <li><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" focusable="false" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"></path></svg>Vidéos "J'aime"</li>
+            </ul>
+            <h2>Explorer</h2>
+            <ul>
+                <li><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" focusable="false" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v2h-2zm0 4h2v6h-2zm4-6h-2v10h2z"></path></svg>Musique</li>
+                <li><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" focusable="false" aria-hidden="true"><path d="M18 7V4c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v3H4v6h8v-2h4v2h8V7h-4zM8 4h8v3h-2V6h-1v1H9V6H8V4zm10 8V9h-2v1h-4V9H8v3H6v7c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2v-7h-2z"></path></svg>Films et séries TV</li>
+                <li><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" focusable="false" aria-hidden="true"><path d="M21 6h-7.59l3.29-3.29L16 2l-4 4-4-4-.71.71L10.59 6H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 14H3V8h18v12zM9 10c0-1.1.9-2 2-2s2 .9 2 2-1.1 2-2 2-2-.9-2-2zm10 6H5v-2h14v2z"></path></svg>Direct</li>
+                <li><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" focusable="false" aria-hidden="true"><path d="M15 12c0-1.654-1.346-3-3-3s-3 1.346-3 3 1.346 3 3 3 3-1.346 3-3zm9-2c0 5.514-4.486 10-10 10S4 15.514 4 10 8.486 0 14 0c1.849 0 3.583.481 5.083 1.317l-1.416 1.416A7.967 7.967 0 0014 2c-4.411 0-8 3.589-8 8s3.589 8 8 8c4.411 0 8-3.589 8-8h-2zm3-3v14h-24V7h4.465c-.273.958-.465 1.957-.465 3 0 5.514 4.486 10 10 10s10-4.486 10-10c0-1.043-.192-2.042-.465-3H24z"></path></svg>Jeux vidéo</li>
+                <li><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" focusable="false" aria-hidden="true"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path></svg>Actualités</li>
+                <li><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" focusable="false" aria-hidden="true"><path d="M13 7h-2v2h2V7zm0 4h-2v6h2v-6zm4-9.99L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"></path></svg>Sport</li>
+                <li><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" focusable="false" aria-hidden="true"><path d="M11 7h2v10h-2zm-5 3h2v7H6zm10-6h-2v13h2z"></path></svg>Savoirs & Cultures</li>
+                <li><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" focusable="false" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"></path></svg>Mode et beauté</li>
+                <li><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" focusable="false" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v2h-2zm0 4h2v6h-2z"></path></svg>Podcasts</li>
+            </ul>
         </div>
     </div>
+    <div class="overlay" id="overlay"></div>
+    <div class="video-list" id="videoList"></div>
     <script>
+        // Array of videos with added category
+        const videos = [
+            {
+                isSponsored: true,
+                href: "#",
+                thumbnail: "https://i.ytimg.com/vi/ArhI0JI_Gdw/hq720.jpg?sqp=-oaymwFBCNAFEJQDSFryq4qpAzMIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB8AEB-AH-CYAC0AWKAgwIABABGGMgZSg7MA8=&rs=AOn4CLAK2IfWTSlEpVeqAfqg35AZM_hB2Q",
+                alt: "Miniature vidéo sponsorisée",
+                title: "Estimer votre<br>automobile maintenant",
+                author: "vendezvotrevoture.fr",
+                views: "",
+                sponsoredText: "Sponsorisé • vendezvotrevoture.fr",
+                buttons: [
+                    { label: "Regarder", class: "action-button" },
+                    { label: "Visiter le site", class: "action-button" }
+                ],
+                category: "Tous"
+            },
+            {
+                isSponsored: false,
+                href: "#",
+                thumbnail: "https://i.ytimg.com/vi/YH50YRu94_A/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAW2_SQXmakgUyNlussCcAZM_hB8Q",
+                alt: "Miniature nouvelle vidéo",
+                title: "Vaiana 2",
+                author: "Disney",
+                views: "100 k vues • il y a 1 jour",
+                sponsoredText: "",
+                buttons: [],
+                category: "Disney"
+            },
+            {
+                isSponsored: false,
+                href: "#",
+                thumbnail: "https://i.ytimg.com/vi/3SzKVYbCOks/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBdoPrk_ETX2dU6brmYAndbDQLSyg",
+                alt: "Miniature vidéo",
+                title: "FIVE NIGHT AT FREDDY'S 2 Bande Annonce VF (2025)",
+                author: "Universal Pictures",
+                views: "125 k vues • il y a 2 heures",
+                sponsoredText: "",
+                buttons: [],
+                category: "Jeux vidéo"
+            },
+            {
+                isSponsored: false,
+                href: "#",
+                thumbnail: "https://i.ytimg.com/vi/VuAbDG8FnH8/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLALNCdl4e3y1aeYD8oe7CCmtdjhvQ",
+                alt: "Miniature nouvelle vidéo 1",
+                title: "Les Gardiens de la Galaxie Vol. 3",
+                author: "Marvel",
+                views: "50 k vues • il y a 2 jours",
+                sponsoredText: "",
+                buttons: [],
+                category: "Marvel"
+            },
+            {
+                isSponsored: false,
+                href: "#",
+                thumbnail: "https://i.ytimg.com/vi/1nV5q5pp_Ok/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBoQeW9WM8UYUIRh66ZdC1y3rvMqg",
+                alt: "Miniature nouvelle vidéo 2",
+                title: "Moi, moche et méchant 4",
+                author: "Illumination",
+                views: "75 k vues • il y a 3 jours",
+                sponsoredText: "",
+                buttons: [],
+                category: "Tous"
+            },
+            {
+                isSponsored: false,
+                href: "#",
+                thumbnail: "https://matheonyx.github.io/Nesdy/Ragnarok.png",
+                alt: "Miniature nouvelle vidéo 3",
+                title: "Thor: Ragnarok",
+                author: "Marvel",
+                views: "200 k vues • il y a 4 jours",
+                sponsoredText: "",
+                buttons: [],
+                category: "Marvel"
+            },
+            {
+                isSponsored: false,
+                href: "#",
+                thumbnail: "https://i.ytimg.com/vi/5QjL4l-3NRg/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAKBTxRtqVIzERvbC7kZy2NFbxSQQ",
+                alt: "Miniature nouvelle vidéo 4",
+                title: "Les Indestructibles 2",
+                author: "Pixar",
+                views: "150 k vues • il y a 5 jours",
+                sponsoredText: "",
+                buttons: [],
+                category: "Pixar"
+            },
+            {
+                isSponsored: false,
+                href: "#",
+                thumbnail: "https://i.ytimg.com/vi/AAWJ21wLN4A/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCztSr4-SquhCU13QZ54XJ8vjLa5g",
+                alt: "Miniature nouvelle vidéo 5",
+                title: "Deadpool & Wolverine Bande Annonce VF (2024)",
+                author: "Marvel",
+                views: "250 k vues • il y a 6 jours",
+                sponsoredText: "",
+                buttons: [],
+                category: "Marvel"
+            },
+            {
+                isSponsored: false,
+                href: "#",
+                thumbnail: "https://i.ytimg.com/vi/7w_w10HVa54/hq720.jpg?sqp=-oaymwEcCK4FEIIDSEbyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAejsV_qkZtc03hh4MVz6TY68RCQw",
+                alt: "Miniature nouvelle vidéo 6",
+                title: "Spider-Man: No Way Home (2025)",
+                author: "Sony Pictures",
+                views: "180 k vues • il y a 7 jours",
+                sponsoredText: "",
+                buttons: [],
+                category: "Tous"
+            },
+            {
+                isSponsored: false,
+                href: "#",
+                thumbnail: "https://i.ytimg.com/vi/iAqtD3iIY0w/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBvdRuyh8YvMqRzG0HZDwTb4Wdfew",
+                alt: "Miniature nouvelle vidéo 7",
+                title: "Star Wars: The Mandalorian Saison 4",
+                author: "Lucasfilm",
+                views: "300 k vues • il y a 8 jours",
+                sponsoredText: "",
+                buttons: [],
+                category: "Star Wars"
+            },
+            {
+                isSponsored: false,
+                href: "#",
+                thumbnail: "https://i.ytimg.com/vi/csAZcgKiQaQ/hq720.jpg?sqp=-oaymwEcCK4FEIIDSEbyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAXya72FGrnIaDHQj0Z_JiONVHCAw",
+                alt: "Miniature nouvelle vidéo 8",
+                title: "Toy Story 4",
+                author: "Pixar",
+                views: "220 k vues • il y a 9 jours",
+                sponsoredText: "",
+                buttons: [],
+                category: "Pixar"
+            },
+            {
+                isSponsored: false,
+                href: "#",
+                thumbnail: "https://i.ytimg.com/vi/iOra9WNvWIs/hq720.jpg?sqp=-oaymwEcCK4FEIIDSEbyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCoe11-V1QVBA6bBTSns4x_sVTmWQ",
+                alt: "Miniature nouvelle vidéo 9",
+                title: "Avengers: Endgame",
+                author: "Marvel",
+                views: "400 k vues • il y a 10 jours",
+                sponsoredText: "",
+                buttons: [],
+                category: "Marvel"
+            },
+            {
+                isSponsored: false,
+                href: "#",
+                thumbnail: "https://i.ytimg.com/vi/2kL9z2gW4h9/hq720.jpg",
+                alt: "Miniature nouvelle vidéo 10",
+                title: "The Last of Us Part II Gameplay",
+                author: "Naughty Dog",
+                views: "150 k vues • il y a 11 jours",
+                sponsoredText: "",
+                buttons: [],
+                category: "Jeux vidéo"
+            }
+        ];
+
+        // Shorts section
+        const shorts = [
+            {
+                href: "#",
+                src: "https://i.ytimg.com/vi/jKh_nEujKaY/oardefault.jpg?sqp=-oaymwEdCJUDENAFSFWQAgHyq4qpAwwIARUAAIhCcAHAAQY=&rs=AOn4CLALONSAEm_va9-vfNqLH-AaK22ekg",
+                alt: "Short 1"
+            },
+            {
+                href: "#",
+                src: "https://pbs.twimg.com/media/GwaRIlobsAAaXZj?format=jpg&name=large",
+                alt: "Short 2"
+            }
+        ];
+
+        // Function to shuffle array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Function to render videos
+        function renderVideos(category = 'Tous', query = '') {
+            const videoList = document.getElementById('videoList');
+            videoList.innerHTML = '';
+            videoList.classList.toggle('search-result', query !== '');
+
+            // Filter videos based on category and search query
+            let filteredVideos = videos;
+            if (category !== 'Tous') {
+                filteredVideos = videos.filter(v => v.category === category || v.isSponsored);
+            }
+            if (query) {
+                filteredVideos = filteredVideos.filter(v => v.title.toLowerCase().includes(query.toLowerCase()));
+            }
+
+            // Separate sponsored and non-sponsored videos
+            const sponsoredVideo = filteredVideos.find(v => v.isSponsored);
+            const nonSponsoredVideos = shuffleArray(filteredVideos.filter(v => !v.isSponsored));
+
+            // Combine videos: sponsored first (if exists), then shuffled non-sponsored
+            const orderedVideos = sponsoredVideo ? [sponsoredVideo, ...nonSponsoredVideos] : nonSponsoredVideos;
+
+            orderedVideos.forEach((video, index) => {
+                const videoItem = document.createElement('div');
+                videoItem.className = 'video-item';
+                if (query) {
+                    videoItem.innerHTML = `
+                        <a href="${video.href}" onclick="return false;">
+                            <div class="thumbnail-container">
+                                <img class="thumbnail" src="${video.thumbnail}" alt="${video.alt}" onerror="this.onerror=null; this.src='https://via.placeholder.com/200x112';">
+                            </div>
+                        </a>
+                        <div class="video-info">
+                            <h3 class="video-title">${video.title}</h3>
+                            <p class="video-author">${video.author}<span class="verified-badge"><svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 24 24" width="14"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zM9.8 17.3l-4.2-4.1L7 11.8l2.8 2.7L17 7.4l1.4 1.4-8.6 8.5z"></path></svg></span></p>
+                            ${video.views ? `<p class="video-views">${video.views}</p>` : ''}
+                            ${video.sponsoredText ? `<p class="sponsored">${video.sponsoredText}</p>` : ''}
+                        </div>
+                    `;
+                } else {
+                    videoItem.innerHTML = `
+                        <a href="${video.href}" onclick="return false;">
+                            <div class="thumbnail-container loading">
+                                <img class="thumbnail" src="${video.thumbnail}" alt="${video.alt}" onerror="this.onerror=null; this.src='https://via.placeholder.com/200x112';">
+                                <div class="loading-bar"></div>
+                            </div>
+                        </a>
+                        <div class="video-info">
+                            <h3 class="video-title">${video.title}</h3>
+                            <p class="video-author">${video.author}<span class="verified-badge"><svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 24 24" width="14"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zM9.8 17.3l-4.2-4.1L7 11.8l2.8 2.7L17 7.4l1.4 1.4-8.6 8.5z"></path></svg></span></p>
+                            ${video.views ? `<p class="video-views">${video.views}</p>` : ''}
+                            ${video.sponsoredText ? `<p class="sponsored">${video.sponsoredText}</p>` : ''}
+                        </div>
+                        ${video.buttons.length > 0 ? `
+                            <div class="button-group">
+                                ${video.buttons.map(btn => `<button class="${btn.class}">${btn.label}</button>`).join('')}
+                            </div>
+                        ` : ''}
+                        <div class="menu-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                                <path d="M12 16.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5-1.5-.67-1.5-1.5.67-1.5 1.5-1.5zM10.5 12c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5-1.5.67-1.5 1.5zm0-6c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5-1.5.67-1.5 1.5z"/>
+                            </svg>
+                        </div>
+                    `;
+                }
+                videoList.appendChild(videoItem);
+
+                // Insert Shorts section after the second video (only if no search query)
+                if (index === 1 && !query) {
+                    const shortsSection = document.createElement('div');
+                    shortsSection.className = 'shorts-section';
+                    shortsSection.innerHTML = `
+                        <div class="shorts-title">Shorts</div>
+                        <div class="shorts-container">
+                            ${shorts.map(short => `
+                                <div class="short-item loading">
+                                    <a href="${short.href}" onclick="return false;">
+                                        <img src="${short.src}" alt="${short.alt}" onerror="this.onerror=null; this.src='https://via.placeholder.com/150x300';">
+                                        <div class="loading-bar"></div>
+                                    </a>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                    videoList.appendChild(shortsSection);
+                }
+
+                // Insert Popup after the third video (only if no search query)
+                if (index === 2 && !query) {
+                    const popup = document.createElement('div');
+                    popup.className = 'popup';
+                    popup.id = 'popup';
+                    popup.innerHTML = `
+                        <div class="popup-content">
+                            <span class="close-btn" onclick="closePopup()">×</span>
+                            <h2>Envie de changement ?</h2>
+                            <p>Découvrez des vidéos différentes de celles que vous regardez habituellement</p>
+                            <button onclick="alert('Nouveautés affichées !')">Nouveautés pour vous</button>
+                        </div>
+                    `;
+                    videoList.appendChild(popup);
+                }
+            });
+        }
+
+        // Function to close popup
+        function closePopup() {
+            document.getElementById("popup").style.display = "none";
+        }
+
+        // Initial render
+        renderVideos();
+
+        // Button click event
         document.querySelector('.button').addEventListener('click', () => {
             alert('Bouton Créer cliqué!');
         });
@@ -500,8 +883,6 @@
         const closeSearch = document.querySelector('.close-search');
         const searchInput = document.querySelector('.search-input');
         const videoList = document.querySelector('.video-list');
-        const videoItems = document.querySelectorAll('.video-item');
-        const shortsSection = document.querySelector('.shorts-section');
         const categoryBar = document.querySelector('.category-bar');
 
         searchIcon.addEventListener('click', () => {
@@ -514,25 +895,44 @@
             headerTop.style.display = 'flex';
             searchContainer.classList.remove('active');
             searchInput.value = '';
-            videoItems.forEach(item => item.style.display = 'flex');
-            shortsSection.style.display = 'block';
+            renderVideos(); // Re-render to reset display
         });
 
         closeSearch.addEventListener('click', () => {
             headerTop.style.display = 'flex';
             searchContainer.classList.remove('active');
             searchInput.value = '';
-            videoItems.forEach(item => item.style.display = 'flex');
-            shortsSection.style.display = 'block';
+            renderVideos(); // Re-render to reset display
         });
 
         searchInput.addEventListener('input', () => {
-            const query = searchInput.value.toLowerCase();
-            videoItems.forEach(item => {
-                const title = item.querySelector('.video-title').textContent.toLowerCase();
-                item.style.display = title.includes(query) ? 'flex' : 'none';
+            const query = searchInput.value;
+            renderVideos('Tous', query);
+        });
+
+        // Category filtering
+        document.querySelectorAll('.category-bar button').forEach(button => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.category-bar button').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                const category = button.textContent;
+                renderVideos(category);
             });
-            shortsSection.style.display = query ? 'none' : 'block';
+        });
+
+        // Sidebar toggle
+        const guideIcon = document.getElementById('guide-icon');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+
+        guideIcon.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        });
+
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
         });
     </script>
 </body>
