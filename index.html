@@ -230,18 +230,17 @@
   <style>
     .grolot-container {
       position: absolute;
-      top: 976px; /* Ajusté à 976px */
-      left: 30px; /* Ajusté à 30px */
+      top: 976px; /* Position verticale */
+      left: 30px; /* Position horizontale */
       width: 323.99px;
       height: 182.25px;
       z-index: 9999; /* Au-dessus de tout */
-      pointer-events: none; /* Permet les clics à travers le conteneur */
     }
     .grolot-video {
       display: none; /* Invisible au départ */
       width: 100%;
       height: 100%;
-      pointer-events: none; /* Permet les clics à travers la vidéo */
+      pointer-events: none; /* Clics passent à travers */
       border-radius: 8px; /* Coins arrondis */
     }
     .grolot-controls {
@@ -251,7 +250,7 @@
       display: none; /* Contrôles invisibles au départ */
       flex-direction: column;
       align-items: flex-end;
-      pointer-events: none; /* Permet les clics à travers les contrôles */
+      pointer-events: none; /* Clics passent à travers */
     }
     .grolot-controls svg {
       pointer-events: auto; /* Boutons SVG cliquables */
@@ -307,8 +306,8 @@
     const container = document.querySelector('.grolot-container');
     const video = container.querySelector('.grolot-video');
     const controls = container.querySelector('.grolot-controls');
-    const progressBar = container.querySelector('.grolot-progress-bar');
-    const timeDisplay = container.querySelector('.grolot-time-display');
+    const progressBar = document.querySelector('.grolot-progress-bar');
+    const timeDisplay = document.querySelector('.grolot-time-display');
     const speakerIcon = controls.querySelector('.grolot-speaker-icon');
     const subtitlesIcon = controls.querySelector('.grolot-subtitles-icon');
     const progress = progressBar.querySelector('.grolot-progress');
@@ -322,7 +321,7 @@
         progressBar.style.display = 'block';
         timeDisplay.style.display = 'block';
         video.play();
-      }, 3000);
+      }, 2000); // Réduit à 2 secondes
     });
 
     container.addEventListener('mouseleave', function() {
@@ -357,7 +356,6 @@
     }
   });
 </script>
-
 
 
 
