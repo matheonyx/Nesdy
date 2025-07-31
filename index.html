@@ -237,7 +237,7 @@
 </head>
 <body>
 
-  <!-- Bouton d'ouverture -->
+  <!-- Bouton d'ouverture du menu -->
   <div class="xai-reels-menu-container">
     <button class="reels-menu-toggle-btn" aria-label="Ouvrir le menu" onclick="reelsToggleContent()">
       <svg aria-label="Identifications" class="xai-reels-icon" fill="currentColor" height="12" role="img" viewBox="0 0 24 24" width="12">
@@ -247,28 +247,22 @@
     </button>
   </div>
 
-  <!-- Conteneur du menu -->
+  <!-- Menu Reels au centre de l'écran -->
   <div class="reels-clone">
     <div id="reels-content" class="reels-container">
-
-      <!-- Bouton de fermeture -->
-      <button class="reels-close-btn" aria-label="Fermer le menu" onclick="reelsToggleContent()">
-        <svg viewBox="0 0 24 24" width="24" height="24" fill="#fff">
-          <path d="M18.3 5.71a1 1 0 0 0-1.42 0L12 10.59 7.12 5.7a1 1 0 0 0-1.41 1.42L10.59 12l-4.88 4.88a1 1 0 1 0 1.41 1.41L12 13.41l4.88 4.88a1 1 0 0 0 1.42-1.41L13.41 12l4.88-4.88a1 1 0 0 0 .01-1.41z"/>
-        </svg>
-      </button>
-
       <!-- VIDEO -->
       <div class="reels-video-section">
         <video id="reels-reelVideo" autoplay muted loop playsinline>
           <source src="https://matheonyx.github.io/style/In%20ONE%20MONTH,%20Marvel%20Studios%E2%80%99%20The%20Fantastic%20Four%20First%20Steps%20arrives....mp4" type="video/mp4" />
         </video>
         <button class="reels-mute-btn" aria-label="Le son est coupé" onclick="reelsToggleMute()">
-          <svg id="reels-muteIcon" viewBox="0 0 48 48" width="12" height="12"></svg>
+          <svg id="reels-muteIcon" viewBox="0 0 48 48" width="12" height="12">
+            <path clip-rule="evenodd" d="..." /> <!-- Ce path est remplacé dynamiquement -->
+          </svg>
         </button>
       </div>
 
-      <!-- DESCRIPTION -->
+      <!-- DESCRIPTION + INTERACTIONS -->
       <div class="reels-description-section">
         <div class="reels-account-info">
           <img src="https://instagram.fcdg3-1.fna.fbcdn.net/v/t51.2885-19/434554500_1269943290630353_1121718376626983348_n.jpg" alt="Profil" class="reels-profile-pic">
@@ -292,6 +286,7 @@
         </div>
 
         <div class="reels-post-actions">
+          <!-- Icônes de réaction -->
           <svg viewBox="0 0 24 24" width="24" height="24"><path d="..."/></svg>
           <svg viewBox="0 0 24 24" width="24" height="24"><path d="..."/></svg>
           <svg viewBox="0 0 24 24" width="24" height="24"><polygon ... /></svg>
@@ -301,6 +296,7 @@
         <div class="reels-likes">1 353 J’aime</div>
         <div class="reels-date">17 juillet</div>
 
+        <!-- Commentaires -->
         <div class="reels-comment-input">
           <div class="reels-emoji-wrapper" onclick="reelsToggleEmojiPicker()">
             <svg viewBox="0 0 24 24" width="24" height="24"><path d="..."/></svg>
@@ -319,9 +315,11 @@
     </div>
   </div>
 
+  <!-- Fichier JS -->
   <script src="https://matheonyx.github.io/style/reels.js"></script>
 </body>
 </html>
+
 
 
 
