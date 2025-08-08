@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Versa</title>
+  <title>Bloo</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
   <link rel="stylesheet" href="{{ url_for('static', filename='custom.css') }}" />
   <style>
-    /* Votre CSS reste inchangé */
     /* Écran de chargement personnalisé */
     #ecran-chargement {
       position: fixed;
@@ -55,8 +54,6 @@
       0%, 50% { transform: translate(-50%, 0%) scale(1); }
       100% { transform: translate(-50%, -100%) scale(0); }
     }
-    
-    /* Les styles d'émotions ont été supprimés */
 
     :root {
       --bg-color: #1a1a1a;
@@ -198,7 +195,7 @@
     .tooltip {
       position: relative;
       display: inline-block;
-      transform: scale(2.5);
+      transform: scale(1.2);
       margin: 10px;
     }
 
@@ -464,7 +461,6 @@
       pointer-events: auto;
     }
 
-    /* Style Caillou Menu */
     .dropdown-menu.caillou {
       background-color: #1e1e1e;
       color: white;
@@ -504,7 +500,6 @@
       margin: 6px 0;
     }
 
-    /* Styles pour la rétrocompatibilité */
     .menu-item {
       display: flex;
       align-items: center;
@@ -608,48 +603,80 @@
       width: 100%;
     }
 
-    .input {
-      background-color: var(--bg-color);
-      border: 1px solid #fff;
-      border-radius: 30px;
-      padding: 10px 20px;
-      width: 100%;
-      max-width: 600px;
+    .search-bar {
+      background-color: #2d2d2d;
+      border-radius: 9999px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      padding: 6px 10px;
+      width: 420px;
+      max-width: 90%;
+      gap: 6px;
       transition: border 0.3s, box-shadow 0.3s;
     }
 
-    .input:hover,
-    .input:focus-within {
+    .search-bar:hover,
+    .search-bar:focus-within {
       border: 1px solid #fff;
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
     }
 
-    .input input {
-      flex: 1;
-      background: transparent;
-      border: none;
-      color: #fff;
-      font-size: 15px;
-      outline: none;
-    }
-
-    .ai-input-container button {
-      background: transparent;
+    .composer-btn {
+      background-color: transparent;
       border: none;
       cursor: pointer;
-      transition: transform 0.2s ease-in-out, color 0.3s;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .composer-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
       color: #fff;
     }
 
-    .ai-input-container button:hover {
-      transform: scale(1.1);
+    .search-bar input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #dcdcdc;
+      flex: 1;
+      font-size: 14px;
+      padding: 0 8px;
+    }
+
+    .action-btn {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+
+    .action-btn svg {
+      width: 18px;
+      height: 18px;
       color: #fff;
     }
 
-    .ai-input-container button.active {
+    .action-btn:hover {
+      background-color: #3b3b3b;
+    }
+
+    .composer-speech-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .composer-speech-btn.active {
       color: var(--accent-hover);
       animation: pulse 1.5s infinite;
     }
@@ -658,16 +685,6 @@
       0% { opacity: 1; }
       50% { opacity: 0.7; }
       100% { opacity: 1; }
-    }
-
-    @keyframes borderAnim {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    .me-2 {
-      margin-right: 8px;
     }
 
     .voice-active-overlay {
@@ -683,12 +700,12 @@
       transition: opacity 0.3s ease;
     }
 
-    .ai-input-container.voice-active {
+    .search-bar.voice-active {
       position: relative;
       z-index: 999;
     }
 
-    .ai-input-container.voice-active::before {
+    .search-bar.voice-active::before {
       content: '';
       position: absolute;
       top: -5px;
@@ -713,10 +730,10 @@
       box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
     }
 
-    .ai-input-container svg {
-      width: 24px;
-      height: 24px;
-      fill: currentColor;
+    @keyframes borderAnim {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     .conversation {
@@ -771,10 +788,10 @@
 
     .message.user {
       align-self: flex-end;
-      background-color: transparent; /* Fond transparent au lieu de #303030 */
+      background-color: transparent;
       border-bottom-left-radius: 15px;
       max-width: 80%;
-      box-shadow: none; /* Suppression de l'ombre */
+      box-shadow: none;
       border-top-left-radius: 15px;
       border-top-right-radius: 15px;
       border-bottom-right-radius: 4px;
@@ -784,7 +801,7 @@
       font-size: 15px;
       font-family: 'Inter', 'Open Sans', Helvetica, Arial, sans-serif;
       line-height: 1.6;
-      color: #FFFFFF; /* S'assurer que le texte est bien visible */
+      color: #FFFFFF;
     }
 
     .message.ai {
@@ -889,7 +906,7 @@
 </head>
 <body>
   <!-- Écran de chargement -->
-  <div id="ecran-chargement" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background-color: #1a1a1a; z-index: 9999; transition: opacity 0.5s ease-out;">
+  <div id="ecran-chargement">
     <span class="chargeur-cercle"></span>
   </div>
 
@@ -903,14 +920,14 @@
     </div>
     <div class="logo">
       <div class="tooltip">
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-doc" style="display: inline-block; margin-right: 10px; padding: 4px; cursor: pointer;" id="toggle-sidebar-btn">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-doc" id="toggle-sidebar-btn">
           <path fill-rule="evenodd" clip-rule="evenodd" d="M8.85719 3L13.5 3C14.0523 3 14.5 3.44772 14.5 4C14.5 4.55229 14.0523 5 13.5 5H11.5V19H15.1C16.2366 19 17.0289 18.9992 17.6458 18.9488C18.2509 18.8994 18.5986 18.8072 18.862 18.673C19.4265 18.3854 19.8854 17.9265 20.173 17.362C20.3072 17.0986 20.3994 16.7509 20.4488 16.1458C20.4992 15.5289 20.5 14.7366 20.5 13.6V11.5C20.5 10.9477 20.9477 10.5 21.5 10.5C22.0523 10.5 22.5 10.9477 22.5 11.5V13.6428C22.5 14.7266 22.5 15.6008 22.4422 16.3086C22.3826 17.0375 22.2568 17.6777 21.955 18.27C21.4757 19.2108 20.7108 19.9757 19.77 20.455C19.1777 20.7568 18.5375 20.8826 17.8086 20.9422C17.1008 21 16.2266 21 15.1428 21H8.85717C7.77339 21 6.89925 21 6.19138 20.9422C5.46253 20.8826 4.82234 20.7568 4.23005 20.455C3.28924 19.9757 2.52433 19.2108 2.04497 18.27C1.74318 17.6777 1.61737 17.0375 1.55782 16.3086C1.49998 15.6007 1.49999 14.7266 1.5 13.6428V10.3572C1.49999 9.27341 1.49998 8.39926 1.55782 7.69138C1.61737 6.96253 1.74318 6.32234 2.04497 5.73005C2.52433 4.78924 3.28924 4.02433 4.23005 3.54497C4.82234 3.24318 5.46253 3.11737 6.19138 3.05782C6.89926 2.99998 7.77341 2.99999 8.85719 3ZM9.5 19V5H8.9C7.76339 5 6.97108 5.00078 6.35424 5.05118C5.74907 5.10062 5.40138 5.19279 5.13803 5.32698C4.57354 5.6146 4.1146 6.07354 3.82698 6.63803C3.69279 6.90138 3.60062 7.24907 3.55118 7.85424C3.50078 8.47108 3.5 9.26339 3.5 10.4V13.6C3.5 14.7366 3.50078 15.5289 3.55118 16.1458C3.60062 16.7509 3.69279 17.0986 3.82698 17.362C4.1146 17.9265 4.57354 18.3854 5.13803 18.673C5.40138 18.8072 5.74907 18.8994 6.35424 18.9488C6.97108 18.9992 7.76339 19 8.9 19H9.5ZM5 8.5C5 7.94772 5.44772 7.5 6 7.5H7C7.55229 7.5 8 7.94772 8 8.5C8 9.05229 7.55229 9.5 7 9.5H6C5.44772 9.5 5 9.05229 5 8.5ZM5 12C5 11.4477 5.44772 11 6 11H7C7.55229 11 8 11.4477 8 12C8 12.5523 7.55229 13 7 13H6C5.44772 13 5 12.5523 5 12Z" fill="white"/>
           <circle cx="20" cy="5" r="4" fill="#0285FF"/>
         </svg>
         <span class="tooltiptext">Réduire la barre latérale</span>
       </div>
       <div class="tooltip">
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-edit" style="display: inline-block; padding: 4px; cursor: pointer;" id="new-chat-btn">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-edit" id="new-chat-btn">
           <path d="M15.6729 3.91287C16.8918 2.69392 18.8682 2.69392 20.0871 3.91287C21.3061 5.13182 21.3061 7.10813 20.0871 8.32708L14.1499 14.2643C13.3849 15.0293 12.3925 15.5255 11.3215 15.6785L9.14142 15.9899C8.82983 16.0344 8.51546 15.9297 8.29289 15.7071C8.07033 15.4845 7.96554 15.1701 8.01005 14.8586L8.32149 12.6785C8.47449 11.6075 8.97072 10.615 9.73572 9.85L15.6729 3.91287ZM18.6729 5.32708C18.235 4.88918 17.525 4.88918 17.0871 5.32708L11.1499 11.2643C10.6909 11.7233 10.3932 12.3187 10.3014 12.9613L10.1785 13.8215L11.0386 13.6986C11.6812 13.6068 12.2767 13.3091 12.7357 12.8501L18.6729 6.91287C19.1108 6.47497 19.1108 5.76499 18.6729 5.32708ZM11 3.99929C11.0004 4.55157 10.5531 4.99963 10.0008 5.00007C9.00227 5.00084 8.29769 5.00827 7.74651 5.06064C7.20685 5.11191 6.88488 5.20117 6.63803 5.32695C6.07354 5.61457 5.6146 6.07351 5.32698 6.63799C5.19279 6.90135 5.10062 7.24904 5.05118 7.8542C5.00078 8.47105 5 9.26336 5 10.4V13.6C5 14.7366 5.00078 15.5289 5.05118 16.1457C5.10062 16.7509 5.19279 17.0986 5.32698 17.3619C5.6146 17.9264 6.07354 18.3854 6.63803 18.673C6.90138 18.8072 7.24907 18.8993 7.85424 18.9488C8.47108 18.9992 9.26339 19 10.4 19H13.6C14.7366 19 15.5289 18.9992 16.1458 18.9488C16.7509 18.8993 17.0986 18.8072 17.362 18.673C17.9265 18.3854 18.3854 17.9264 18.673 17.3619C18.7988 17.1151 18.8881 16.7931 18.9393 16.2535C18.9917 15.7023 18.9991 14.9977 18.9999 13.9992C19.0003 13.4469 19.4484 12.9995 20.0007 13C20.553 13.0004 21.0003 13.4485 20.9999 14.0007C20.9991 14.9789 20.9932 15.7808 20.9304 16.4426C20.8664 17.116 20.7385 17.7136 20.455 18.2699C19.9757 19.2107 19.2108 19.9756 18.27 20.455C17.6777 20.7568 17.0375 20.8826 16.3086 20.9421C15.6008 21 14.7266 21 13.6428 21H10.3572C9.27339 21 8.39925 21 7.69138 20.9421C6.96253 20.8826 6.32234 20.7568 5.73005 20.455C4.78924 19.9756 4.02433 19.2107 3.54497 18.2699C3.24318 17.6776 3.11737 17.0374 3.05782 16.3086C2.99998 15.6007 2.99999 14.7266 3 13.6428V10.3572C2.99999 9.27337 2.99998 8.39922 3.05782 7.69134C3.11737 6.96249 3.24318 6.3223 3.54497 5.73001C4.02433 4.7892 4.78924 4.0243 5.73005 3.54493C6.28633 3.26149 6.88399 3.13358 7.55735 3.06961C8.21919 3.00673 9.02103 3.00083 9.99922 3.00007C10.5515 2.99964 10.9996 3.447 11 3.99929Z" fill="white"/>
         </svg>
         <span class="tooltiptext">Nouveau chat</span>
@@ -963,7 +980,7 @@
     
     <div class="topbar">
       <div class="title-container">
-        <div class="title" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: white;">Versa</div>
+        <div class="title" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: white;">Bloo</div>
         
         <div class="toolsbar">
           <div class="tool-btn" id="design-mode-toggle" title="Mode design" style="display: none;">
@@ -973,27 +990,17 @@
       </div>
       <div class="icons">
         <div class="theme-toggle" id="theme-toggle" title="Changer de thème">
-          <svg class="moon" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-          </svg>
-          <svg class="sun" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="5"></circle>
-            <line x1="12" y1="1" x2="12" y2="3"></line>
-            <line x1="12" y1="21" x2="12" y2="23"></line>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-            <line x1="1" y1="12" x2="3" y2="12"></line>
-            <line x1="21" y1="12" x2="23" y2="12"></line>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" class="icon">
+            <path d="M2.66821 12.6663V12.5003C2.66821 12.1331 2.96598 11.8353 3.33325 11.8353C3.70052 11.8353 3.99829 12.1331 3.99829 12.5003V12.6663C3.99829 13.3772 3.9992 13.8707 4.03052 14.2542C4.0612 14.6298 4.11803 14.8413 4.19849 14.9993L4.2688 15.1263C4.44511 15.4137 4.69813 15.6481 5.00024 15.8021L5.13013 15.8577C5.2739 15.9092 5.46341 15.947 5.74536 15.97C6.12888 16.0014 6.62221 16.0013 7.33325 16.0013H12.6663C13.3771 16.0013 13.8707 16.0014 14.2542 15.97C14.6295 15.9394 14.8413 15.8825 14.9993 15.8021L15.1262 15.7308C15.4136 15.5545 15.6481 15.3014 15.802 14.9993L15.8577 14.8695C15.9091 14.7257 15.9469 14.536 15.97 14.2542C16.0013 13.8707 16.0012 13.3772 16.0012 12.6663V12.5003C16.0012 12.1332 16.2991 11.8355 16.6663 11.8353C17.0335 11.8353 17.3313 12.1331 17.3313 12.5003V12.6663C17.3313 13.3553 17.3319 13.9124 17.2952 14.3626C17.2624 14.7636 17.1974 15.1247 17.053 15.4613L16.9866 15.6038C16.7211 16.1248 16.3172 16.5605 15.8215 16.8646L15.6038 16.9866C15.227 17.1786 14.8206 17.2578 14.3625 17.2952C13.9123 17.332 13.3553 17.3314 12.6663 17.3314H7.33325C6.64416 17.3314 6.0872 17.332 5.63696 17.2952C5.23642 17.2625 4.87552 17.1982 4.53931 17.054L4.39673 16.9866C3.87561 16.7211 3.43911 16.3174 3.13501 15.8216L3.01294 15.6038C2.82097 15.2271 2.74177 14.8206 2.70435 14.3626C2.66758 13.9124 2.66821 13.3553 2.66821 12.6663ZM9.33521 12.5003V4.9388L7.13696 7.13704C6.87732 7.39668 6.45625 7.39657 6.19653 7.13704C5.93684 6.87734 5.93684 6.45631 6.19653 6.19661L9.52954 2.86263L9.6311 2.77962C9.73949 2.70742 9.86809 2.66829 10.0002 2.66829C10.1763 2.66838 10.3454 2.73819 10.47 2.86263L13.804 6.19661C14.0633 6.45628 14.0634 6.87744 13.804 7.13704C13.5443 7.39674 13.1222 7.39674 12.8625 7.13704L10.6653 4.93977V12.5003C10.6651 12.8673 10.3673 13.1652 10.0002 13.1654C9.63308 13.1654 9.33538 12.8674 9.33521 12.5003Z"></path>
           </svg>
         </div>
         <div class="menu-container">
           <label class="hamburger menu-button" id="menu-button">
             <input type="checkbox">
-            <svg viewBox="0 0 32 32">
-              <path class="line line-top-bottom" d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22"></path>
-              <path class="line" d="M7 16 27 16"></path>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" class="icon">
+              <path d="M15.498 8.50159C16.3254 8.50159 16.9959 9.17228 16.9961 9.99963C16.9961 10.8271 16.3256 11.4987 15.498 11.4987C14.6705 11.4987 14 10.8271 14 9.99963C14.0002 9.17228 14.6706 8.50159 15.498 8.50159Z"></path>
+              <path d="M4.49805 8.50159C5.32544 8.50159 5.99689 9.17228 5.99707 9.99963C5.99707 10.8271 5.32555 11.4987 4.49805 11.4987C3.67069 11.4985 3 10.827 3 9.99963C3.00018 9.17239 3.6708 8.50176 4.49805 8.50159Z"></path>
+              <path d="M10.0003 8.50159C10.8276 8.50176 11.4982 9.17239 11.4984 9.99963C11.4984 10.827 10.8277 11.4985 10.0003 11.4987C9.17283 11.4987 8.50131 10.8271 8.50131 9.99963C8.50149 9.17228 9.17294 8.50159 10.0003 8.50159Z"></path>
             </svg>
           </label>
           <div class="dropdown-menu caillou" id="dropdown-menu">
@@ -1033,59 +1040,79 @@
     <div class="voice-active-overlay" id="voice-overlay"></div>
 
     <div class="center" id="welcome-screen">
-      <h1 class="greeting" id="greeting-text" style="color: #FFFFFF;" onclick="toggleTimeDisplayInGreeting()">Bonjour {{ username }}</h1>
+      <h1 class="greeting" id="greeting-text" style="color: #FFFFFF;" onclick="toggleTimeDisplayInGreeting()">Bonjour Mathéo</h1>
       <div class="input-box">
-        <div class="input ai-input-container">
-          <input type="text" id="welcome-input" placeholder="Ask anything" />
-          <button id="welcome-mic" class="me-2">
-            <svg viewBox="0 0 24 24">
-              <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5zm6 6c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.47 6 6.93V21h2v-2.07c3.39-.46 6-3.4 6-6.93h-2z"></path>
-            </svg>
+        <div class="search-bar" id="welcome-input-container">
+          <button type="button" class="composer-btn" aria-haspopup="menu" aria-expanded="false">
+            <svg viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M9.33496 16.5V10.665H3.5C3.13273 10.665 2.83496 10.3673 2.83496 10C2.83496 9.63273 3.13273 9.33496 3.5 9.33496H9.33496V3.5C9.33496 3.13273 9.63273 2.83496 10 2.83496C10.3673 2.83496 10.665 3.13273 10.665 3.5V9.33496H16.5L16.6338 9.34863C16.9369 9.41057 17.165 9.67857 17.165 10C17.165 10.3214 16.9369 10.5894 16.6338 10.6514L16.5 10.665H10.665V16.5C10.665 16.8673 10.3673 17.165 10 17.165C9.63273 17.165 9.33496 16.8673 9.33496 16.5Z"/></svg>
           </button>
-          <button id="welcome-submit">
-            <svg viewBox="0 0 24 24">
-              <path d="M2 21l21-9L2 3v7l15 2-15 2z"></path>
-            </svg>
+          <input type="text" id="welcome-input" placeholder="Poser une question" oninput="toggleButtons(true)" autocomplete="off">
+          <button id="welcome-mini-mic" aria-label="Micro (blanc)" title="Micro" class="composer-btn">
+            <svg viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M15.7806 10.1963C16.1326 10.3011 16.3336 10.6714 16.2288 11.0234L16.1487 11.2725C15.3429 13.6262 13.2236 15.3697 10.6644 15.6299L10.6653 16.835H12.0833L12.2171 16.8486C12.5202 16.9106 12.7484 17.1786 12.7484 17.5C12.7484 17.8214 12.5202 18.0894 12.2171 18.1514L12.0833 18.165H7.91632C7.5492 18.1649 7.25128 17.8672 7.25128 17.5C7.25128 17.1328 7.5492 16.8351 7.91632 16.835H9.33527L9.33429 15.6299C6.775 15.3697 4.6558 13.6262 3.84992 11.2725L3.76984 11.0234L3.74445 10.8906C3.71751 10.5825 3.91011 10.2879 4.21808 10.1963C4.52615 10.1047 4.84769 10.2466 4.99347 10.5195L5.04523 10.6436L5.10871 10.8418C5.8047 12.8745 7.73211 14.335 9.99933 14.335C12.3396 14.3349 14.3179 12.7789 14.9534 10.6436L15.0052 10.5195C15.151 10.2466 15.4725 10.1046 15.7806 10.1963ZM12.2513 5.41699C12.2513 4.17354 11.2437 3.16521 10.0003 3.16504C8.75675 3.16504 7.74835 4.17343 7.74835 5.41699V9.16699C7.74853 10.4104 8.75685 11.418 10.0003 11.418C11.2436 11.4178 12.2511 10.4103 12.2513 9.16699V5.41699ZM13.5814 9.16699C13.5812 11.1448 11.9781 12.7479 10.0003 12.748C8.02232 12.748 6.41845 11.1449 6.41828 9.16699V5.41699C6.41828 3.43889 8.02221 1.83496 10.0003 1.83496C11.9783 1.83514 13.5814 3.439 13.5814 5.41699V9.16699Z"/></svg>
+          </button>
+          <button data-testid="composer-speech-button" id="welcome-speech-btn" aria-label="Démarrer le mode vocal" class="composer-speech-btn action-btn" style="view-transition-name: var(--vt-composer-speech-button);" title="Démarrer le mode vocal">
+            <div style="display:flex;align-items:center;justify-content:center;">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="icon"><path d="M7.167 15.416V4.583a.75.75 0 0 1 1.5 0v10.833a.75.75 0 0 1-1.5 0Zm4.166-2.5V7.083a.75.75 0 0 1 1.5 0v5.833a.75.75 0 0 1-1.5 0ZM3 11.25V8.75a.75.75 0 0 1 1.5 0v2.5a.75.75 0 0 1-1.5 0Zm12.5 0V8.75a.75.75 0 0 1 1.5 0v2.5a.75.75 0 0 1-1.5 0Z"></path></svg>
+            </div>
+          </button>
+          <button id="welcome-send" aria-label="Envoyer le prompt" class="action-btn" style="display: none;" title="Envoyer">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M8.99992 16V6.41407L5.70696 9.70704C5.31643 10.0976 4.68342 10.0976 4.29289 9.70704C3.90237 9.31652 3.90237 8.6835 4.29289 8.29298L9.29289 3.29298L9.36907 3.22462C9.76184 2.90427 10.3408 2.92686 10.707 3.29298L15.707 8.29298L15.7753 8.36915C16.0957 8.76192 16.0731 9.34092 15.707 9.70704C15.3408 10.0732 14.7618 10.0958 14.3691 9.7754L14.2929 9.70704L10.9999 6.41407V16C10.9999 16.5523 10.5522 17 9.99992 17C9.44764 17 8.99992 16.5523 8.99992 16Z"/></svg>
           </button>
         </div>
       </div>
     </div>
     <div class="conversation" id="conversation">
       <div class="messages" id="messages"></div>
-
       <div class="input-box">
-        <div class="input ai-input-container">
-          <input type="text" id="chat-input" placeholder="Ask anything" />
-          <button id="chat-mic" class="me-2">
-            <svg viewBox="0 0 24 24">
-              <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5zm6 6c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.47 6 6.93V21h2v-2.07c3.39-.46 6-3.4 6-6.93h-2z"></path>
-            </svg>
+        <div class="search-bar" id="chat-input-container">
+          <button type="button" class="composer-btn" aria-haspopup="menu" aria-expanded="false">
+            <svg viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M9.33496 16.5V10.665H3.5C3.13273 10.665 2.83496 10.3673 2.83496 10C2.83496 9.63273 3.13273 9.33496 3.5 9.33496H9.33496V3.5C9.33496 3.13273 9.63273 2.83496 10 2.83496C10.3673 2.83496 10.665 3.13273 10.665 3.5V9.33496H16.5L16.6338 9.34863C16.9369 9.41057 17.165 9.67857 17.165 10C17.165 10.3214 16.9369 10.5894 16.6338 10.6514L16.5 10.665H10.665V16.5C10.665 16.8673 10.3673 17.165 10 17.165C9.63273 17.165 9.33496 16.8673 9.33496 16.5Z"/></svg>
           </button>
-          <button id="chat-submit">
-            <svg viewBox="0 0 24 24" class="send-icon">
-              <path d="M2 21l21-9L2 3v7l15 2-15 2z"></path>
-            </svg>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="stop-icon" style="display: none;">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="white"/>
-              <path d="M9 9h6v6H9z" fill="black"/>
-            </svg>
+          <input type="text" id="chat-input" placeholder="Poser une question" oninput="toggleButtons(false)" autocomplete="off">
+          <button id="chat-mini-mic" aria-label="Micro (blanc)" title="Micro" class="composer-btn">
+            <svg viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M15.7806 10.1963C16.1326 10.3011 16.3336 10.6714 16.2288 11.0234L16.1487 11.2725C15.3429 13.6262 13.2236 15.3697 10.6644 15.6299L10.6653 16.835H12.0833L12.2171 16.8486C12.5202 16.9106 12.7484 17.1786 12.7484 17.5C12.7484 17.8214 12.5202 18.0894 12.2171 18.1514L12.0833 18.165H7.91632C7.5492 18.1649 7.25128 17.8672 7.25128 17.5C7.25128 17.1328 7.5492 16.8351 7.91632 16.835H9.33527L9.33429 15.6299C6.775 15.3697 4.6558 13.6262 3.84992 11.2725L3.76984 11.0234L3.74445 10.8906C3.71751 10.5825 3.91011 10.2879 4.21808 10.1963C4.52615 10.1047 4.84769 10.2466 4.99347 10.5195L5.04523 10.6436L5.10871 10.8418C5.8047 12.8745 7.73211 14.335 9.99933 14.335C12.3396 14.3349 14.3179 12.7789 14.9534 10.6436L15.0052 10.5195C15.151 10.2466 15.4725 10.1046 15.7806 10.1963ZM12.2513 5.41699C12.2513 4.17354 11.2437 3.16521 10.0003 3.16504C8.75675 3.16504 7.74835 4.17343 7.74835 5.41699V9.16699C7.74853 10.4104 8.75685 11.418 10.0003 11.418C11.2436 11.4178 12.2511 10.4103 12.2513 9.16699V5.41699ZM13.5814 9.16699C13.5812 11.1448 11.9781 12.7479 10.0003 12.748C8.02232 12.748 6.41845 11.1449 6.41828 9.16699V5.41699C6.41828 3.43889 8.02221 1.83496 10.0003 1.83496C11.9783 1.83514 13.5814 3.439 13.5814 5.41699V9.16699Z"/>
+          </svg>
+          </button>
+          <button data-testid="composer-speech-button" id="chat-speech-btn" aria-label="Démarrer le mode vocal" class="composer-speech-btn action-btn" style="view-transition-name: var(--vt-composer-speech-button);" title="Démarrer le mode vocal">
+            <div style="display:flex;align-items:center;justify-content:center;">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="icon"><path d="M7.167 15.416V4.583a.75.75 0 0 1 1.5 0v10.833a.75.75 0 0 1-1.5 0Zm4.166-2.5V7.083a.75.75 0 0 1 1.5 0v5.833a.75.75 0 0 1-1.5 0ZM3 11.25V8.75a.75.75 0 0 1 1.5 0v2.5a.75.75 0 0 1-1.5 0Zm12.5 0V8.75a.75.75 0 0 1 1.5 0v2.5a.75.75 0 0 1-1.5 0Z"></path></svg>
+            </div>
+          </button>
+          <button id="chat-send" aria-label="Envoyer le prompt" class="action-btn" style="display: none;" title="Envoyer">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M8.99992 16V6.41407L5.70696 9.70704C5.31643 10.0976 4.68342 10.0976 4.29289 9.70704C3.90237 9.31652 3.90237 8.6835 4.29289 8.29298L9.29289 3.29298L9.36907 3.22462C9.76184 2.90427 10.3408 2.92686 10.707 3.29298L15.707 8.29298L15.7753 8.36915C16.0957 8.76192 16.0731 9.34092 15.707 9.70704C15.3408 10.0732 14.7618 10.0958 14.3691 9.7754L14.2929 9.70704L10.9999 6.41407V16C10.9999 16.5523 10.5522 17 9.99992 17C9.44764 17 8.99992 16.5523 8.99992 16Z"/></svg>
           </button>
         </div>
       </div>
     </div>
-
+  </div>
   <script>
-    // Fonction pour afficher l'heure au format Microsoft (style blanc) dans le menu
+    // Fonction pour envoyer un message à l'API Bloo
+    async function sendMessageToBloo(message) {
+      try {
+        const response = await fetch("https://e6b709217713.ngrok-free.app/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ message: message })
+        });
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const data = await response.json();
+        return data.response;
+      } catch (error) {
+        console.error('Erreur lors de l\'envoi du message à Bloo:', error);
+        return "Désolé, une erreur est survenue lors de la connexion au serveur. Veuillez réessayer.";
+      }
+    }
+
+    // Fonction pour afficher l'heure dans le menu
     function toggleTimeDisplay(element) {
       const textSpan = document.getElementById('design-assistant-text');
-      
       if (textSpan.getAttribute('data-showing-time') === 'true') {
-        // Si l'heure est déjà affichée, on revient au texte original
         textSpan.textContent = 'Design Assistant';
         textSpan.setAttribute('data-showing-time', 'false');
         textSpan.style.color = '';
       } else {
-        // Sinon, on affiche l'heure actuelle en blanc (style Microsoft)
         const now = new Date();
         const hours = now.getHours().toString().padStart(2, '0');
         const minutes = now.getMinutes().toString().padStart(2, '0');
@@ -1093,77 +1120,62 @@
         textSpan.setAttribute('data-showing-time', 'true');
         textSpan.style.color = 'white';
         
-        // Mise à jour de l'heure toutes les minutes
         const timeUpdateInterval = setInterval(() => {
           if (textSpan.getAttribute('data-showing-time') !== 'true') {
             clearInterval(timeUpdateInterval);
             return;
           }
-          
           const now = new Date();
           const hours = now.getHours().toString().padStart(2, '0');
           const minutes = now.getMinutes().toString().padStart(2, '0');
           textSpan.textContent = `${hours}:${minutes}`;
-        }, 60000); // Mise à jour toutes les minutes
+        }, 60000);
       }
-      
-      // Empêcher la fermeture du menu pour pouvoir voir l'heure
       event.stopPropagation();
     }
-    
-    // Variable globale pour stocker l'intervalle de mise à jour de l'heure
-    let timeUpdateInterval = null;
-    
-    // Fonction pour afficher l'heure dans le titre de bienvenue (au lieu de "Bonjour username")
+
+    // Fonction pour afficher l'heure dans le titre de bienvenue
     function toggleTimeDisplayInGreeting() {
       const greetingElement = document.getElementById('greeting-text');
-      const originalText = "Bonjour {{ username }}";
-      
+      const originalText = "Bonjour Mathéo";
       if (greetingElement.getAttribute('data-showing-time') === 'true') {
-        // Si l'heure est déjà affichée, on revient au texte original
         greetingElement.textContent = originalText;
         greetingElement.setAttribute('data-showing-time', 'false');
         greetingElement.style.color = '';
-        
-        // Arrêter la mise à jour automatique de l'heure
         if (timeUpdateInterval) {
           clearInterval(timeUpdateInterval);
           timeUpdateInterval = null;
         }
       } else {
-        // Sinon, on affiche l'heure actuelle en blanc (style Microsoft)
         updateGreetingClock(greetingElement);
-        
-        // Mise à jour de l'heure toutes les secondes pour plus de précision
         timeUpdateInterval = setInterval(() => {
           updateGreetingClock(greetingElement);
-        }, 1000); // Mise à jour toutes les secondes
+        }, 1000);
       }
     }
-    
-    // Fonction d'aide pour mettre à jour l'horloge
+
+    // Fonction pour mettre à jour l'horloge dans le titre
     function updateGreetingClock(element) {
       const now = new Date();
       const hours = now.getHours().toString().padStart(2, '0');
       const minutes = now.getMinutes().toString().padStart(2, '0');
       const seconds = now.getSeconds().toString().padStart(2, '0');
-      
       element.textContent = `${hours}:${minutes}:${seconds}`;
       element.setAttribute('data-showing-time', 'true');
-      element.style.color = '#FFFFFF'; // Blanc pur pour meilleure visibilité
-      element.style.fontWeight = 'bold'; // Texte en gras pour ressortir davantage
-      element.style.textShadow = '0 0 5px rgba(255, 255, 255, 0.3)'; // Léger halo lumineux pour effet moderne
+      element.style.color = '#FFFFFF';
+      element.style.fontWeight = 'bold';
+      element.style.textShadow = '0 0 5px rgba(255, 255, 255, 0.3)';
     }
-    
-    // Script pour cacher l'écran de chargement dès que tout est prêt
+
+    let timeUpdateInterval = null;
+
+    // Script pour cacher l'écran de chargement
     document.addEventListener("DOMContentLoaded", function() {
-      // Masquer l'écran de chargement après un court délai
       setTimeout(function() {
         const loader = document.getElementById('ecran-chargement');
         if (loader) {
           loader.style.opacity = '0';
           loader.style.pointerEvents = 'none';
-          
           setTimeout(function() {
             loader.style.display = 'none';
           }, 500);
@@ -1176,11 +1188,11 @@
       const conversation = document.getElementById('conversation');
       const messagesContainer = document.getElementById('messages');
       const welcomeInput = document.getElementById('welcome-input');
-      const welcomeSubmit = document.getElementById('welcome-submit');
-      const welcomeMic = document.getElementById('welcome-mic');
+      const welcomeSubmit = document.getElementById('welcome-send');
+      const welcomeMic = document.getElementById('welcome-mini-mic');
       const chatInput = document.getElementById('chat-input');
-      const chatSubmit = document.getElementById('chat-submit');
-      const chatMic = document.getElementById('chat-mic');
+      const chatSubmit = document.getElementById('chat-send');
+      const chatMic = document.getElementById('chat-mini-mic');
       const newChatBtn = document.getElementById('new-chat-btn');
       const menuButton = document.getElementById('menu-button');
       const dropdownMenu = document.getElementById('dropdown-menu');
@@ -1188,185 +1200,82 @@
       const sidebar = document.querySelector('.sidebar');
       const toggleSidebarBtn = document.getElementById('toggle-sidebar-btn');
       const mainContent = document.querySelector('.main');
+      const designModeToggle = document.getElementById('design-mode-toggle');
+      const colorPickerOverlay = document.getElementById('color-picker-overlay');
+      const designNotification = document.getElementById('design-notification');
+      const colorSwatches = document.querySelectorAll('.color-swatch');
 
-      let currentConversationId = null;
       let isDarkTheme = true;
       let recognition = null;
-      
+      let currentRequestController = null;
+      let designModeActive = false;
+
       // Menu hamburger toggle
       if (menuButton && dropdownMenu) {
         menuButton.addEventListener('click', function(e) {
           e.preventDefault();
           e.stopPropagation();
           dropdownMenu.classList.toggle('active');
-          console.log('Menu button clicked, dropdown active:', dropdownMenu.classList.contains('active'));
         });
-        
-        // Close dropdown when clicking outside
         document.addEventListener('click', function(e) {
           if (dropdownMenu.classList.contains('active') && !menuButton.contains(e.target) && !dropdownMenu.contains(e.target)) {
             dropdownMenu.classList.remove('active');
-            console.log('Clicked outside, closing dropdown');
           }
         });
-      } else {
-        console.error('Menu button or dropdown menu not found');
       }
-      
-      // Menu items click handlers with optional ID check
-      const optionalAddListener = (id, message) => {
-        const element = document.getElementById(id);
-        if (element) {
-          element.addEventListener('click', () => {
-            alert(message);
-            dropdownMenu.classList.remove('active');
-            if (menuButton.querySelector('input[type="checkbox"]')) {
-              menuButton.querySelector('input[type="checkbox"]').checked = false;
-            }
-          });
-        }
-      };
-      
+
       // Design mode functionality
-      const designModeToggle = document.getElementById('design-mode-toggle');
-      const colorPickerOverlay = document.getElementById('color-picker-overlay');
-      const designNotification = document.getElementById('design-notification');
-      const colorSwatches = document.querySelectorAll('.color-swatch');
-      const specialtyBadge = document.querySelector('.specialty-badge');
-      
-      // Hide badge by default
-      if (specialtyBadge) {
-        specialtyBadge.style.display = 'none';
-      }
-      
-      // Initial state
-      let designModeActive = false;
-      
-      // Toggle design mode when clicking the design tool button
       if (designModeToggle) {
         designModeToggle.addEventListener('click', function() {
           designModeActive = !designModeActive;
           document.body.classList.toggle('design-mode-active', designModeActive);
-          
           if (designModeActive) {
-            // Show color picker and notification
             colorPickerOverlay.style.display = 'flex';
             designNotification.classList.add('show');
-            
-            // Show badge
-            if (specialtyBadge) {
-              specialtyBadge.style.display = 'inline-block';
-            }
-            
-            // Hide notification after 3 seconds
             setTimeout(() => {
               designNotification.classList.remove('show');
             }, 3000);
           } else {
-            // Hide color picker
             colorPickerOverlay.style.display = 'none';
-            
-            // Hide badge
-            if (specialtyBadge) {
-              specialtyBadge.style.display = 'none';
-            }
           }
         });
       }
-      
-      // Apply color when clicking on a swatch
+
       colorSwatches.forEach(swatch => {
         swatch.addEventListener('click', function() {
           const color = this.getAttribute('data-color');
           document.documentElement.style.setProperty('--bg-color', color);
-          
-          // Show notification with color name
           designNotification.textContent = `Couleur ${this.getAttribute('title')} appliquée`;
           designNotification.classList.add('show');
-          
-          // Hide notification after 2 seconds
           setTimeout(() => {
             designNotification.classList.remove('show');
           }, 2000);
         });
       });
-      
-      // Menu item handlers in dropdown
+
+      // Menu item handlers
       document.getElementById('design-assistance').addEventListener('click', function() {
-        // Toggle design mode
         designModeToggle.click();
         dropdownMenu.classList.remove('active');
       });
-      
-      document.getElementById('color-palette').addEventListener('click', function() {
-        // Generate custom color palette
-        const colors = [
-          '#' + Math.floor(Math.random()*16777215).toString(16),
-          '#' + Math.floor(Math.random()*16777215).toString(16),
-          '#' + Math.floor(Math.random()*16777215).toString(16),
-          '#' + Math.floor(Math.random()*16777215).toString(16),
-          '#' + Math.floor(Math.random()*16777215).toString(16)
-        ];
-        
-        // Display colors
-        let colorPaletteHtml = '<div style="display: flex; gap: 10px; margin: 10px 0;">';
-        colors.forEach(color => {
-          colorPaletteHtml += `<div style="width: 30px; height: 30px; background-color: ${color}; border-radius: 4px;"></div>`;
-        });
-        colorPaletteHtml += '</div>';
-        
-        // Create user message
-        addMessage("Génère une palette de couleurs harmonieuse", 'user');
-        
-        // Create AI response with palette
-        const aiResponse = `
-          <p>Voici une palette de couleurs générée pour vous :</p>
-          ${colorPaletteHtml}
-          <p>Vous pouvez utiliser ces couleurs en design web, pour des présentations ou tout autre projet créatif.</p>
-          <p>Codes HEX : ${colors.join(', ')}</p>
-        `;
-        
-        addMessage(aiResponse, 'ai');
-        dropdownMenu.classList.remove('active');
-      });
-      
-      document.getElementById('ui-mockup').addEventListener('click', function() {
-        // Create user message
-        addMessage("Génère une maquette UI simple", 'user');
-        
-        // Create AI response with mockup
-        const mockupHtml = `
-          <div style="max-width: 320px; background: #f5f5f5; border-radius: 8px; overflow: hidden; margin: 10px 0; border: 1px solid #ddd;">
-            <div style="background: #2c3e50; color: white; padding: 15px; font-weight: bold;">En-tête App</div>
-            <div style="padding: 15px;">
-              <div style="background: white; border-radius: 6px; padding: 10px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                Élément de liste 1
-              </div>
-              <div style="background: white; border-radius: 6px; padding: 10px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                Élément de liste 2
-              </div>
-              <div style="background: white; border-radius: 6px; padding: 10px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                Élément de liste 3
-              </div>
-              <button style="background: #3498db; color: white; border: none; padding: 10px 15px; border-radius: 4px; width: 100%;">Action principale</button>
-            </div>
-          </div>
-        `;
-        
-        const aiResponse = `
-          <p>Voici une maquette UI simple dans un style "Material Design" :</p>
-          ${mockupHtml}
-          <p>Cette maquette représente une interface mobile avec une liste d'éléments et un bouton d'action. Vous pouvez utiliser ce modèle comme point de départ pour vos projets.</p>
-        `;
-        
-        addMessage(aiResponse, 'ai');
-        dropdownMenu.classList.remove('active');
-      });
-      
-      // Keep other menu handlers
-      optionalAddListener('settings', 'Settings clicked');
-      optionalAddListener('log-out', 'Logging out...');
 
+      // Theme toggle
+      themeToggle.addEventListener('click', function() {
+        isDarkTheme = !isDarkTheme;
+        if (isDarkTheme) {
+          document.body.removeAttribute('data-theme');
+        } else {
+          document.body.setAttribute('data-theme', 'light');
+        }
+      });
+
+      // Sidebar toggle
+      toggleSidebarBtn.addEventListener('click', function() {
+        sidebar.classList.toggle('collapsed');
+        mainContent.style.marginLeft = sidebar.classList.contains('collapsed') ? '60px' : '280px';
+      });
+
+      // Speech recognition
       if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
         recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
         recognition.lang = 'fr-FR';
@@ -1376,15 +1285,15 @@
         recognition.onresult = function(event) {
           const activeInput = welcomeScreen.style.display !== 'none' ? welcomeInput : chatInput;
           const transcript = Array.from(event.results)
-              .map(result => result[0])
-              .map(result => result.transcript)
-              .join('');
+            .map(result => result[0])
+            .map(result => result.transcript)
+            .join('');
           activeInput.value = transcript;
         };
 
         const voiceOverlay = document.getElementById('voice-overlay');
-        const welcomeInputContainer = welcomeInput.closest('.ai-input-container');
-        const chatInputContainer = chatInput.closest('.ai-input-container');
+        const welcomeInputContainer = welcomeInput.closest('.search-bar');
+        const chatInputContainer = chatInput.closest('.search-bar');
 
         function activateVoiceEffect(isWelcomeScreen) {
           const mic = isWelcomeScreen ? welcomeMic : chatMic;
@@ -1436,6 +1345,7 @@
         console.warn('La reconnaissance vocale n\'est pas supportée par ce navigateur.');
       }
 
+      // Message handling
       welcomeSubmit.addEventListener('click', handleWelcomeSubmit);
       welcomeInput.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') handleWelcomeSubmit();
@@ -1448,370 +1358,48 @@
 
       newChatBtn.addEventListener('click', showWelcomeScreen);
 
-      toggleSidebarBtn.addEventListener('click', function() {
-        sidebar.classList.toggle('collapsed');
-        mainContent.style.marginLeft = sidebar.classList.contains('collapsed') ? '60px' : '280px';
-      });
-
-      // Gestion du nouveau système de prédiction de tokens
-      
-      // Nouveau système de prédiction de tokens pour une IA plus intelligente
-      
-      // Classe pour le nouveau système de prédiction de tokens
-      class TokenPredictionSystem {
-        constructor() {
-          // Dictionnaire de tokens (mots) avec leurs fréquences et contextes
-          this.tokenFrequencies = {};
-          this.nGramModel = {}; // Pour les séquences de mots
-          this.initialized = false;
-          this.contextWindow = 3; // Considère les 3 mots précédents pour le contexte
-        }
-        
-        // Initialiser le système avec un corpus de texte
-        initializeFromCorpus(corpus) {
-          const text = corpus.toLowerCase();
-          const words = text.split(/\s+/);
-          
-          // Construction du dictionnaire de fréquences de tokens
-          words.forEach(word => {
-            if (word.length > 0) {
-              if (!this.tokenFrequencies[word]) {
-                this.tokenFrequencies[word] = 0;
-              }
-              this.tokenFrequencies[word]++;
-            }
-          });
-          
-          // Construction du modèle n-gram pour les séquences de mots
-          for (let i = this.contextWindow; i < words.length; i++) {
-            const context = words.slice(i - this.contextWindow, i).join(' ');
-            const nextWord = words[i];
-            
-            if (!this.nGramModel[context]) {
-              this.nGramModel[context] = {};
-            }
-            
-            if (!this.nGramModel[context][nextWord]) {
-              this.nGramModel[context][nextWord] = 0;
-            }
-            
-            this.nGramModel[context][nextWord]++;
-          }
-          
-          this.initialized = true;
-          console.log("Système de prédiction de tokens initialisé avec succès");
-        }
-        
-        // Tokeniser un message en mots individuels
-        tokenize(message) {
-          return message.toLowerCase().split(/\s+/).filter(token => token.length > 0);
-        }
-        
-        // Calculer la probabilité du prochain mot basé sur le contexte
-        predictNextToken(context) {
-          if (!this.initialized) {
-            console.warn("Le système de prédiction n'est pas encore initialisé");
-            return null;
-          }
-          
-          const contextKey = this.tokenize(context).slice(-this.contextWindow).join(' ');
-          
-          // Si nous avons ce contexte dans notre modèle
-          if (this.nGramModel[contextKey]) {
-            const candidates = this.nGramModel[contextKey];
-            let total = 0;
-            
-            // Calculer le total des occurrences
-            for (const word in candidates) {
-              total += candidates[word];
-            }
-            
-            // Trier par probabilité
-            const sortedCandidates = Object.entries(candidates)
-              .map(([word, count]) => ({ 
-                word, 
-                probability: count / total 
-              }))
-              .sort((a, b) => b.probability - a.probability);
-            
-            // Retourner le candidat le plus probable
-            if (sortedCandidates.length > 0) {
-              return sortedCandidates[0].word;
-            }
-          }
-          
-          // Si aucun contexte n'est trouvé, retourner le mot le plus fréquent
-          return this.getMostFrequentToken();
-        }
-        
-        // Obtenir le token le plus fréquent du corpus
-        getMostFrequentToken() {
-          let maxFreq = 0;
-          let mostFrequentToken = null;
-          
-          for (const token in this.tokenFrequencies) {
-            if (this.tokenFrequencies[token] > maxFreq) {
-              maxFreq = this.tokenFrequencies[token];
-              mostFrequentToken = token;
-            }
-          }
-          
-          return mostFrequentToken;
-        }
-        
-        // Génère une réponse complète basée sur un début de phrase
-        generateResponse(startPhrase, maxLength = 50) {
-          if (!this.initialized) {
-            console.warn("Le système de prédiction n'est pas encore initialisé");
-            return startPhrase;
-          }
-          
-          let response = startPhrase;
-          let context = startPhrase;
-          
-          for (let i = 0; i < maxLength; i++) {
-            const nextToken = this.predictNextToken(context);
-            
-            if (!nextToken) break;
-            
-            response += ' ' + nextToken;
-            context = this.tokenize(response).slice(-this.contextWindow).join(' ');
-            
-            // Arrêter si on atteint un point
-            if (nextToken.endsWith('.') || nextToken.endsWith('!') || nextToken.endsWith('?')) {
-              if (Math.random() < 0.3) break; // 30% de chance de terminer après une phrase
-            }
-          }
-          
-          return response;
-        }
-      }
-      
-      // Créer une instance du système de prédiction
-      const tokenPredictor = new TokenPredictionSystem();
-      
-      // Fonction pour charger le corpus de connaissances
-      function loadKnowledgeCorpus() {
-        // Cette fonction chargera le corpus de connaissances depuis un fichier texte
-        fetch('/static/knowledge_corpus.txt')
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('Impossible de charger le corpus de connaissances');
-            }
-            return response.text();
-          })
-          .then(corpus => {
-            // Initialiser le système avec le corpus
-            tokenPredictor.initializeFromCorpus(corpus);
-            console.log("Corpus de connaissances chargé avec succès");
-          })
-          .catch(error => {
-            console.error("Erreur lors du chargement du corpus:", error);
-            // Utiliser un petit corpus par défaut si le fichier ne peut pas être chargé
-            const defaultCorpus = "Bonjour, comment allez-vous aujourd'hui? Je suis Versa, votre assistant intelligent. Je peux vous aider avec diverses tâches et répondre à vos questions. N'hésitez pas à me demander ce que vous voulez savoir.";
-            tokenPredictor.initializeFromCorpus(defaultCorpus);
-          });
-      }
-      
-      // Charger le corpus de connaissances au démarrage
-      loadKnowledgeCorpus();
-
-      // Suppression du code redondant pour le menu hamburger
-      // Ce code a déjà été ajouté plus haut
-
-      themeToggle.addEventListener('click', function() {
-        isDarkTheme = !isDarkTheme;
-        if (isDarkTheme) {
-          document.body.removeAttribute('data-theme');
-        } else {
-          document.body.setAttribute('data-theme', 'light');
-        }
-      });
-
-      function handleWelcomeSubmit() {
+      async function handleWelcomeSubmit() {
         const message = welcomeInput.value.trim();
         if (!message) return;
-        startNewConversation(message);
-        welcomeInput.value = '';
-      }
-
-      function handleChatSubmit() {
-        const message = chatInput.value.trim();
-        if (!message || !currentConversationId) return;
-        sendMessage(message);
-        chatInput.value = '';
-      }
-
-      function startNewConversation(message) {
         showConversation();
         addMessageToUI(message, true);
         showTypingIndicator();
-        
-        // Utiliser le système de prédiction de tokens
-        // Générer une réponse locale avant d'envoyer au serveur
-        const initialResponse = tokenPredictor.initialized 
-          ? tokenPredictor.generateResponse("Je vais répondre à votre question sur: " + message, 30) 
-          : "Chargement du modèle en cours...";
-
-        fetch('/api/conversations', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: message })
-        })
-        .then(response => response.json())
-        .then(data => {
-          currentConversationId = data.id;
-          hideTypingIndicator();
-          
-          // Si nous avons une réponse du serveur, l'utiliser, sinon utiliser notre réponse générée localement
-          const responseText = data.message || initialResponse;
-          addMessageToUI(responseText, false);
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          hideTypingIndicator();
-          
-          // En cas d'erreur, utiliser notre réponse générée localement
-          const fallbackResponse = tokenPredictor.initialized 
-            ? tokenPredictor.generateResponse("Je ne peux pas accéder au serveur actuellement, mais je peux quand même vous aider avec: " + message, 50)
-            : "Désolé, une erreur est survenue lors de la création de la conversation.";
-          
-          addMessageToUI(fallbackResponse, false);
-        });
+        const response = await sendMessageToBloo(message);
+        hideTypingIndicator();
+        addMessageToUI(response, false);
+        welcomeInput.value = '';
       }
 
-      function sendMessage(message) {
+      async function handleChatSubmit() {
+        const message = chatInput.value.trim();
+        if (!message) return;
         addMessageToUI(message, true);
-        if (needsWebSearch(message)) {
-          showWebSearchingAnimation();
-          setTimeout(() => {
-            hideWebSearchingAnimation();
-            showTypingIndicator();
-            performNormalRequest(message);
-          }, 2000);
-        } else {
-          showTypingIndicator();
-          performNormalRequest(message);
-        }
-      }
-
-      function needsWebSearch(message) {
-        const webSearchKeywords = [
-          'actualité', 'nouvelles', 'dernière', 'dernier', 'récent', 'récente',
-          'qui est', 'qu\'est-ce que', 'explique', 'recherche', 'trouve',
-          'site web', 'internet', 'en ligne', 'google', 'politique', 'sport',
-          'événement', 'événements', 'technologie', 'tech', 'science',
-          'président', 'ministre', 'gouvernement', 'économie', 'bourse',
-          'weather', 'météo', 'température', 'climat',
-          'transfert', 'mercato', 'classement', 'ligue 1', 'premier league', 'serie a',
-          'bundesliga', 'la liga', 'champion', 'ballon d\'or', 'uefa', 'fifa',
-          'psg', 'om', 'manchester city', 'chelsea', 'juventus', 'bayern', 'barcelone', 'barcelona',
-          'coupe du monde', 'euro', 'mondial', 'championnat', 'compétition', 'tournoi',
-          'joueur', 'équipe', 'attaquant', 'défenseur', 'gardien', 'milieu', 'coach', 'entraîneur',
-          'but', 'penalty', 'carton rouge', 'carton jaune', 'hors-jeu', 'faute', 'corner',
-          'kylian mbappé', 'messi', 'ronaldo', 'neymar', 'benzema', 'lewandowski', 'haaland',
-          'résultat', 'score', 'victoire', 'défaite', 'match nul', 'qualification',
-          'real madrid', 'liverpool', 'arsenal', 'tottenham', 'ac milan', 'inter milan', 'naples', 'roma'
-        ];
-
-        const explicitSearchPhrases = [
-          'fais une recherche', 'fais des recherches',
-          'recherche sur', 'cherche sur',
-          'trouve des infos', 'trouve des informations',
-          'informe-moi sur', 'renseigne-moi sur'
-        ];
-
-        const lowerMessage = message.toLowerCase();
-        const isExplicitSearch = explicitSearchPhrases.some(phrase => lowerMessage.includes(phrase.toLowerCase()));
-        if (isExplicitSearch) return true;
-        return webSearchKeywords.some(keyword => lowerMessage.includes(keyword.toLowerCase()));
-      }
-
-      function showWebSearchingAnimation() {
-        const searchingContainer = document.createElement('div');
-        searchingContainer.className = 'searching-container message ai';
-        searchingContainer.id = 'searching-animation';
-        searchingContainer.style.display = 'flex';
-        searchingContainer.style.justifyContent = 'center';
-        searchingContainer.style.width = '100%';
-        searchingContainer.style.margin = '10px 0';
-
-        const searchingText = document.createElement('div');
-        searchingText.className = 'btn-shine';
-        searchingText.textContent = 'Recherche en cours sur le web...';
-        searchingText.style.padding = '12px 20px';
-        searchingText.style.borderRadius = '8px';
-        searchingText.style.fontWeight = 'bold';
-
-        searchingContainer.appendChild(searchingText);
-        messagesContainer.appendChild(searchingContainer);
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-      }
-
-      function hideWebSearchingAnimation() {
-        const searchingAnimation = document.getElementById('searching-animation');
-        if (searchingAnimation) searchingAnimation.remove();
-      }
-
-      let currentRequestController = null;
-
-      function performNormalRequest(message) {
+        showTypingIndicator();
         toggleStopButton(true);
         currentRequestController = new AbortController();
-        const signal = currentRequestController.signal;
-        
-        // Utiliser notre système de prédiction de tokens pour une réponse locale immédiate
-        const predictedStartPhrase = tokenPredictor.initialized 
-          ? "Je vais vous répondre concernant: " + message.substring(0, 30) + "..."
-          : "Analyse de votre message en cours...";
-        
-        const localResponse = tokenPredictor.initialized 
-          ? tokenPredictor.generateResponse(predictedStartPhrase, 40)
-          : null;
+        const response = await sendMessageToBloo(message);
+        hideTypingIndicator();
+        toggleStopButton(false);
+        addMessageToUI(response, false);
+        chatInput.value = '';
+      }
 
-        fetch(`/api/conversations/${currentConversationId}/messages`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: message }),
-          signal
-        })
-        .then(response => response.json())
-        .then(data => {
-          hideTypingIndicator();
-          
-          // IMPORTANT: Toujours utiliser la réponse du serveur qui contient les réponses complètes
-          // Nous ne vérifions pas si la réponse est vide car nous savons que le serveur génère toujours des réponses
-          const finalResponse = data.response;
-          console.log("Réponse du serveur reçue, longueur:", finalResponse ? finalResponse.length : 0);
-          
-          if (finalResponse && finalResponse.length > 10) {
-            // Utiliser uniquement la réponse du serveur si elle est valide
-            addMessageToUI(finalResponse, false);
-          } else {
-            // Dans le cas très rare où le serveur renvoie une réponse vide, utiliser une réponse par défaut
-            const defaultResponse = "# 👋 À Votre Service!\n\nJe vous remercie pour votre message. Comment puis-je vous aider davantage aujourd'hui? 😊";
-            addMessageToUI(defaultResponse, false);
-          }
-          
-          toggleStopButton(false);
-        })
-        .catch(error => {
-          if (error.name === 'AbortError') {
-            console.log('Requête annulée par l\'utilisateur');
-          } else {
-            console.error('Error:', error);
-            // En cas d'erreur, utiliser une réponse par défaut claire
-            addMessageToUI("# 🔄 Service Temporairement Indisponible\n\nDésolé, je n'ai pas pu traiter votre demande en raison d'une erreur de connexion avec le serveur. Veuillez réessayer dans quelques instants.", false);
-          }
-          hideTypingIndicator();
-          toggleStopButton(false);
-        });
+      function showConversation() {
+        welcomeScreen.style.display = 'none';
+        conversation.classList.add('active');
+        chatInput.focus();
+      }
+
+      function showWelcomeScreen() {
+        messagesContainer.innerHTML = '';
+        conversation.classList.remove('active');
+        welcomeScreen.style.display = 'flex';
+        welcomeInput.focus();
       }
 
       function addMessageToUI(content, isUser) {
         const messageEl = document.createElement('div');
         messageEl.className = `message ${isUser ? 'user' : 'ai'}`;
-
         if (isUser) {
           let formattedContent = formatMessage(content);
           messageEl.innerHTML = formattedContent;
@@ -1821,14 +1409,12 @@
           messageEl.innerHTML = '';
           messagesContainer.appendChild(messageEl);
           messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
           let formattedContent = formatMessage(content);
           const typeWriter = (element, formatted, index = 0, speed = 15) => {
             if (index < formatted.length) {
               const currentChar = formatted[index];
               let nextSpeed = speed;
               let charsToAdd = 1;
-
               if (currentChar === '<') {
                 const closingIndex = formatted.indexOf('>', index);
                 if (closingIndex !== -1) {
@@ -1844,32 +1430,25 @@
               } else if (currentChar === '\n' || (currentChar === '<' && formatted.substring(index, index + 4) === '<br>')) {
                 nextSpeed = speed * 3;
               }
-
               element.innerHTML = formatted.substring(0, index + charsToAdd);
               messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
               setTimeout(() => {
                 typeWriter(element, formatted, index + charsToAdd, speed);
               }, nextSpeed);
             } else {
-              // Animation terminée, ajouter le bouton de copie
               addCopyButton(element, content);
             }
           };
-
           setTimeout(() => {
             typeWriter(messageEl, formattedContent);
           }, 100);
         }
       }
-      
+
       function addCopyButton(messageElement, content) {
-        // Créer un conteneur pour le bouton de copie
         const copyBtnContainer = document.createElement('div');
         copyBtnContainer.className = 'copy-button-container';
         copyBtnContainer.style.cssText = 'display: flex; justify-content: flex-start; margin-top: 8px;';
-        
-        // Créer le bouton de copie avec l'icône SVG
         const copyBtn = document.createElement('button');
         copyBtn.className = 'copy-button';
         copyBtn.style.cssText = 'background: transparent; border: none; cursor: pointer; opacity: 0.6; transition: opacity 0.2s ease-in-out; color: white;';
@@ -1950,33 +1529,26 @@
         if (indicator) indicator.remove();
       }
 
-      function showConversation() {
-        welcomeScreen.style.display = 'none';
-        conversation.classList.add('active');
-        chatInput.focus();
-      }
-
-      function showWelcomeScreen() {
-        messagesContainer.innerHTML = '';
-        currentConversationId = null;
-        conversation.classList.remove('active');
-        welcomeScreen.style.display = 'flex';
-        welcomeInput.focus();
-      }
-
       function toggleStopButton(showStop) {
-        const sendIcon = chatSubmit.querySelector('.send-icon');
-        const stopIcon = chatSubmit.querySelector('.stop-icon');
+        const sendIcon = chatSubmit.querySelector('svg');
+        const stopIcon = document.createElement('svg');
+        stopIcon.setAttribute('width', '20');
+        stopIcon.setAttribute('height', '20');
+        stopIcon.setAttribute('viewBox', '0 0 20 20');
+        stopIcon.setAttribute('fill', 'currentColor');
+        stopIcon.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+        stopIcon.innerHTML = `<path d="M5 5h10v10H5z"/>`;
 
         if (showStop) {
           sendIcon.style.display = 'none';
-          stopIcon.style.display = 'block';
+          chatSubmit.appendChild(stopIcon);
           chatSubmit.classList.add('stop-active');
           chatSubmit.removeEventListener('click', handleChatSubmit);
           chatSubmit.addEventListener('click', stopGeneration);
         } else {
+          const existingStopIcon = chatSubmit.querySelector('svg:not(.send-icon)');
+          if (existingStopIcon) existingStopIcon.remove();
           sendIcon.style.display = 'block';
-          stopIcon.style.display = 'none';
           chatSubmit.classList.remove('stop-active');
           chatSubmit.removeEventListener('click', stopGeneration);
           chatSubmit.addEventListener('click', handleChatSubmit);
