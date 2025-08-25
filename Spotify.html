@@ -129,6 +129,7 @@
       font-weight: 600;
       color: #fff;
       transition: background 0.2s ease;
+      text-decoration: none;
     }
     .filter-button.active {
       background: rgba(255, 255, 255, 0.2);
@@ -391,15 +392,6 @@
       opacity: 1;
       transform: translateY(0);
     }
-    .audio-menu.fullscreen {
-      height: 100vh;
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(to bottom, #2a2a2a 0%, #0a0a0a 100%);
-    }
     .audio-menu .close-btn {
       position: absolute;
       top: 8px;
@@ -427,12 +419,6 @@
       min-width: 0;
       max-width: 40%;
     }
-    .audio-menu.fullscreen .left-section {
-      flex-direction: column;
-      align-items: center;
-      max-width: 100%;
-      margin-bottom: 12px;
-    }
     .audio-menu img {
       width: 36px;
       height: 36px;
@@ -441,23 +427,12 @@
       object-fit: cover;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     }
-    .audio-menu.fullscreen img {
-      width: 50vw;
-      max-width: 200px;
-      height: auto;
-      margin-right: 0;
-      margin-bottom: 10px;
-    }
     .audio-menu .track-info {
       display: flex;
       flex-direction: column;
       justify-content: center;
       min-width: 0;
       flex: 1;
-    }
-    .audio-menu.fullscreen .track-info {
-      align-items: center;
-      text-align: center;
     }
     .audio-menu .track-info .track-title {
       font-size: 12px;
@@ -468,11 +443,6 @@
       text-overflow: ellipsis;
       font-weight: 600;
     }
-    .audio-menu.fullscreen .track-info .track-title {
-      font-size: 18px;
-      white-space: normal;
-      max-width: 90%;
-    }
     .audio-menu .track-info .track-artists {
       font-size: 10px;
       color: #b3b3b3;
@@ -480,11 +450,6 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-    }
-    .audio-menu.fullscreen .track-info .track-artists {
-      font-size: 14px;
-      white-space: normal;
-      max-width: 90%;
     }
     .audio-menu .progress-container {
       position: absolute;
@@ -496,21 +461,10 @@
       align-items: center;
       gap: 5px;
     }
-    .audio-menu.fullscreen .progress-container {
-      position: static;
-      width: 90%;
-      max-width: 400px;
-      padding: 0;
-      margin-top: 12px;
-    }
     .audio-menu .progress-time {
       font-size: 8px;
       color: #b3b3b3;
       min-width: 32px;
-    }
-    .audio-menu.fullscreen .progress-time {
-      font-size: 10px;
-      min-width: 40px;
     }
     .audio-menu .progress {
       flex: 1;
@@ -519,9 +473,6 @@
       border-radius: 1.5px;
       position: relative;
       cursor: pointer;
-    }
-    .audio-menu.fullscreen .progress {
-      height: 4px;
     }
     .audio-menu .progress-bar {
       height: 100%;
@@ -538,11 +489,6 @@
       min-width: 100px;
       margin-left: 4px;
       margin-right: 6px;
-    }
-    .audio-menu.fullscreen .controls {
-      min-width: 160px;
-      gap: 8px;
-      margin: 12px 0;
     }
     .audio-menu .controls button {
       background: none;
@@ -561,17 +507,9 @@
       width: 16px;
       height: 16px;
     }
-    .audio-menu.fullscreen .controls button svg {
-      width: 18px;
-      height: 18px;
-    }
     .audio-menu .controls button.play-pause svg {
       width: 18px;
       height: 18px;
-    }
-    .audio-menu.fullscreen .controls button.play-pause svg {
-      width: 24px;
-      height: 24px;
     }
     .library-page {
       display: none;
@@ -639,6 +577,123 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
+    /* Player plein écran */
+    .player-overlay {
+      position: fixed;
+      inset: 0;
+      background: #0f0f0f;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      z-index: 1350;
+      padding: 22px 16px 32px;
+    }
+    .player-overlay.active {
+      display: flex;
+    }
+    .player-cover {
+      width: min(70vw, 320px);
+      aspect-ratio: 1/1;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+    }
+    .player-title {
+      font-size: 18px;
+      font-weight: 700;
+      text-align: center;
+      margin: 6px 0 0;
+      padding: 0 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #fff;
+    }
+    .player-artists {
+      font-size: 13px;
+      color: #b3b3b3;
+      text-align: center;
+      margin: 2px 0 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .player-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 26px;
+      margin-top: 6px;
+    }
+    .player-controls button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 999px;
+      transition: background 0.15s ease, transform 0.08s ease;
+      fill: #fff;
+    }
+    .player-controls button:active {
+      transform: scale(0.96);
+    }
+    .player-controls svg {
+      width: 42px;
+      height: 42px;
+    }
+    .player-controls #play-btn svg {
+      width: 54px;
+      height: 54px;
+    }
+    .back-button {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 50%;
+      transition: background 0.2s ease;
+    }
+    .back-button:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+    .back-button svg {
+      width: 16px;
+      height: 16px;
+      fill: #fff;
+    }
+    .player-progress-container {
+      width: 90%;
+      max-width: 400px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .player-progress-time {
+      font-size: 10px;
+      color: #b3b3b3;
+      min-width: 40px;
+    }
+    .player-progress {
+      flex: 1;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 1.5px;
+      position: relative;
+      cursor: pointer;
+    }
+    .player-progress-bar {
+      height: 100%;
+      background: #fff;
+      width: 0;
+      border-radius: 1.5px;
+      transition: width 0.1s linear;
+    }
     @media (min-width: 769px) {
       .section {
         transform: translateX(0);
@@ -662,58 +717,30 @@
         height: 64px;
         padding: 8px 16px;
       }
-      .audio-menu.fullscreen {
-        padding: 24px;
-      }
       .audio-menu img {
         width: 40px;
         height: 40px;
       }
-      .audio-menu.fullscreen img {
-        width: 240px;
-        height: 240px;
-      }
       .audio-menu .track-info .track-title {
         font-size: 13px;
       }
-      .audio-menu.fullscreen .track-info .track-title {
-        font-size: 24px;
-      }
       .audio-menu .track-info .track-artists {
         font-size: 11px;
-      }
-      .audio-menu.fullscreen .track-info .track-artists {
-        font-size: 18px;
       }
       .audio-menu .controls {
         min-width: 120px;
         gap: 6px;
       }
-      .audio-menu.fullscreen .controls {
-        min-width: 200px;
-        gap: 12px;
-      }
       .audio-menu .controls button svg {
         width: 18px;
         height: 18px;
-      }
-      .audio-menu.fullscreen .controls button svg {
-        width: 24px;
-        height: 24px;
       }
       .audio-menu .controls button.play-pause svg {
         width: 20px;
         height: 20px;
       }
-      .audio-menu.fullscreen .controls button.play-pause svg {
-        width: 32px;
-        height: 32px;
-      }
       .audio-menu .progress-time {
         font-size: 9px;
-      }
-      .audio-menu.fullscreen .progress-time {
-        font-size: 12px;
       }
       .audio-menu .left-section {
         max-width: 50%;
@@ -829,74 +856,35 @@
         height: 56px;
         padding: 6px 8px;
       }
-      .audio-menu.fullscreen {
-        padding: 12px;
-      }
       .audio-menu img {
         width: 32px;
         height: 32px;
-      }
-      .audio-menu.fullscreen img {
-        width: 50vw;
-        max-width: 180px;
-        height: auto;
-        margin-bottom: 10px;
       }
       .audio-menu .track-info .track-title {
         font-size: 11px;
         max-width: 100px;
       }
-      .audio-menu.fullscreen .track-info .track-title {
-        font-size: 16px;
-        max-width: 90%;
-      }
       .audio-menu .track-info .track-artists {
         font-size: 9px;
         max-width: 100px;
-      }
-      .audio-menu.fullscreen .track-info .track-artists {
-        font-size: 13px;
-        max-width: 90%;
       }
       .audio-menu .controls {
         gap: 4px;
         min-width: 90px;
       }
-      .audio-menu.fullscreen .controls {
-        min-width: 140px;
-        gap: 8px;
-      }
-      .audio-menu .controls button {
-        padding: 8px;
-      }
       .audio-menu .controls button svg {
         width: 14px;
         height: 14px;
-      }
-      .audio-menu.fullscreen .controls button svg {
-        width: 16px;
-        height: 16px;
       }
       .audio-menu .controls button.play-pause svg {
         width: 16px;
         height: 16px;
       }
-      .audio-menu.fullscreen .controls button.play-pause svg {
-        width: 22px;
-        height: 22px;
-      }
       .audio-menu .progress-time {
         font-size: 8px;
       }
-      .audio-menu.fullscreen .progress-time {
-        font-size: 10px;
-      }
       .audio-menu .left-section {
         max-width: 45%;
-      }
-      .audio-menu.fullscreen .progress-container {
-        width: 85%;
-        max-width: 350px;
       }
     }
     @media (max-width: 480px) {
@@ -998,74 +986,35 @@
         height: 52px;
         padding: 5px 6px;
       }
-      .audio-menu.fullscreen {
-        padding: 10px;
-      }
       .audio-menu img {
         width: 28px;
         height: 28px;
-      }
-      .audio-menu.fullscreen img {
-        width: 60vw;
-        max-width: 160px;
-        height: auto;
-        margin-bottom: 8px;
       }
       .audio-menu .track-info .track-title {
         font-size: 10px;
         max-width: 90px;
       }
-      .audio-menu.fullscreen .track-info .track-title {
-        font-size: 14px;
-        max-width: 95%;
-      }
       .audio-menu .track-info .track-artists {
         font-size: 8px;
         max-width: 90px;
-      }
-      .audio-menu.fullscreen .track-info .track-artists {
-        font-size: 12px;
-        max-width: 95%;
       }
       .audio-menu .controls {
         gap: 3px;
         min-width: 80px;
       }
-      .audio-menu.fullscreen .controls {
-        min-width: 120px;
-        gap: 6px;
-      }
-      .audio-menu .controls button {
-        padding: 6px;
-      }
       .audio-menu .controls button svg {
         width: 12px;
         height: 12px;
-      }
-      .audio-menu.fullscreen .controls button svg {
-        width: 14px;
-        height: 14px;
       }
       .audio-menu .controls button.play-pause svg {
         width: 14px;
         height: 14px;
       }
-      .audio-menu.fullscreen .controls button.play-pause svg {
-        width: 20px;
-        height: 20px;
-      }
       .audio-menu .progress-time {
         font-size: 7px;
       }
-      .audio-menu.fullscreen .progress-time {
-        font-size: 9px;
-      }
       .audio-menu .left-section {
         max-width: 40%;
-      }
-      .audio-menu.fullscreen .progress-container {
-        width: 90%;
-        max-width: 300px;
       }
     }
     .hidden {
@@ -1114,8 +1063,6 @@
   </style>
 </head>
 <body>
-
-    
   <div class="play-effect" id="play-effect"></div>
   <div class="search-bar-container">
     <div class="home-and-search">
@@ -1131,20 +1078,13 @@
         <input type="text" placeholder="Que souhaitez-vous écouter ou regarder ?" oninput="searchContent(this.value)">
       </div>
     </div>
-     <div class="filter-container">
-    <div class="filter-buttons" role="list" aria-label="Filtres de la page d'accueil">
-      <a href="https://example.com/laly" class="filter-button active" aria-label="Laly">Laly</a>
-      <a href="https://example.com/remi" class="filter-button" aria-label="Rémi">Rémi</a>
-      <a href="https://example.com/evan" class="filter-button" aria-label="Evan">Evan</a>
-      <a href="https://matheonyx.github.io/Nesdy/Math%C3%A9o.html" class="filter-button" aria-label="Mathéo">Mathéo</a>
-    </div>
-  </div>
-  <!-- Add this CSS to the existing <style> section -->
-  <style>
-    .filter-button {
-      text-decoration: none;
-    }
-  </style>
+    <div class="filter-container">
+      <div class="filter-buttons" role="list" aria-label="Filtres de la page d'accueil">
+        <a href="https://example.com/laly" class="filter-button active" aria-label="Laly">Laly</a>
+        <a href="https://example.com/remi" class="filter-button" aria-label="Rémi">Rémi</a>
+        <a href="https://example.com/evan" class="filter-button" aria-label="Evan">Evan</a>
+        <a href="https://matheonyx.github.io/Nesdy/Math%C3%A9o.html" class="filter-button" aria-label="Mathéo">Mathéo</a>
+      </div>
     </div>
   </div>
   <div class="search-results" id="search-results">
@@ -1155,7 +1095,7 @@
     <div class="trending-title">Titres tendance</div>
     <div class="trending-content">
       <div class="track-item" onclick="playTrack(0, this)">
-        <img src="https://i.scdn.co/image/ab67616d0000b2738f23ac56db2576fc122cff78" alt="Charger">
+        <img src="https://i.scdn.co/image/ab67616d0000b2738f23ac56db2576fc122cff78" alt="Baianá">
         <div class="track-title">Baianá</div>
         <div class="track-artists">Bakermat</div>
       </div>
@@ -1165,22 +1105,22 @@
         <div class="track-artists">Bleu Soleil et LUIZA</div>
       </div>
       <div class="track-item" onclick="playTrack(2, this)">
-        <img src="https://i.scdn.co/image/ab67616d0000b2737c04344b48e4742334549691" alt="L’Étoile Filante">
+        <img src="https://i.scdn.co/image/ab67616d0000b2737c04344b48e4742334549691" alt="APPELLE TA COPINE">
         <div class="track-title">APPELLE TA COPINE</div>
         <div class="track-artists">GIMS</div>
       </div>
       <div class="track-item" onclick="playTrack(3, this)">
-        <img src="https://i.scdn.co/image/ab67616d0000b2731ecd6877bf9fc8eaf5be76e6" alt="Nuit Éternelle">
+        <img src="https://i.scdn.co/image/ab67616d0000b2731ecd6877bf9fc8eaf5be76e6" alt="FUNK UNIVERSO">
         <div class="track-title">FUNK UNIVERSO</div>
         <div class="track-artists">Irokz</div>
       </div>
       <div class="track-item" onclick="playTrack(4, this)">
-        <img src="https://i.scdn.co/image/ab67616d0000b2739568fc14ab5f80eb1214388b" alt="Rêve d’Or">
+        <img src="https://i.scdn.co/image/ab67616d0000b2739568fc14ab5f80eb1214388b" alt="AIR FORCE BLANCHE">
         <div class="track-title">AIR FORCE BLANCHE</div>
         <div class="track-artists">GIMS,Jul</div>
       </div>
       <div class="track-item" onclick="playTrack(5, this)">
-        <img src="https://i.scdn.co/image/ab67616d0000b2737e81bf206d9ec5bbcab4d39d" alt="Danse avec Moi">
+        <img src="https://i.scdn.co/image/ab67616d0000b2737e81bf206d9ec5bbcab4d39d" alt="Δ. Dieu ne ment jamais">
         <div class="track-title">Δ. Dieu ne ment jamais </div>
         <div class="track-artists">Damso</div>
       </div>
@@ -1215,27 +1155,27 @@
     </div>
     <div class="popular-albums-title">Albums et singles populaires</div>
     <div class="popular-albums-content">
-      <div class="album-item" onclick="viewAlbum('IPSEITE')">
-        <img src="https://i.scdn.co/image/ab67616d0000b27349d694203245f241a1bcaa72" alt="IPSEITE">
+      <div class="album-item" onclick="playAlbum(0, this)">
+        <img src="https://i.scdn.co/image/ab67616d0000b27349d694203245f241a1bcaa72" alt="Tití Me Preguntó">
         <div class="album-title">Tití Me Preguntó</div>
         <div class="album-artists">Bad Bunny</div>
       </div>
-      <div class="album-item" onclick="viewAlbum('LE DERNIER DU CODE')">
+      <div class="album-item" onclick="playAlbum(1, this)">
         <img src="https://i.scdn.co/image/ab67616d0000b2739568fc14ab5f80eb1214388b" alt="LE DERNIER DU CODE">
         <div class="album-title">LE DERNIER DU CODE</div>
         <div class="album-artists">GIMS</div>
       </div>
-      <div class="album-item" onclick="viewAlbum('Carré')">
+      <div class="album-item" onclick="playAlbum(2, this)">
         <img src="https://i.scdn.co/image/ab67616d0000b273c0b0eba01296859b801a7fcd" alt="Carré">
         <div class="album-title">Carré</div>
         <div class="album-artists">Werenoi</div>
       </div>
-      <div class="album-item" onclick="viewAlbum('Jefe')">
+      <div class="album-item" onclick="playAlbum(3, this)">
         <img src="https://i.scdn.co/image/ab67616d0000b273e1d2b368e4b2d9c5e91ad3d8" alt="Jefe">
         <div class="album-title">Jefe</div>
         <div class="album-artists">Ninho</div>
       </div>
-      <div class="album-item" onclick="viewAlbum('Blackout')">
+      <div class="album-item" onclick="playAlbum(4, this)">
         <img src="https://i.scdn.co/image/ab67616d0000b273f1b43b9a8e8e1a3f7b5a9a6e" alt="Blackout">
         <div class="album-title">Blackout</div>
         <div class="album-artists">Black M</div>
@@ -1246,7 +1186,7 @@
     <div class="section-header">
       <h1 class="library-title">Bibliothèque</h1>
       <button class="library-button" onclick="showLibraryPage()">
-        <svg dataenc-id="icon" role="img" aria-hidden="true" class="e-91000-icon e-91000-baseline" viewBox="0 0 24 24">
+        <svg data-encore-id="icon" role="img" aria-hidden="true" class="e-91000-icon e-91000-baseline" viewBox="0 0 24 24">
           <path d="M5.21 1.57a6.76 6.76 0 0 1 6.708 1.545.124.124 0 0 0 .165 0 6.74 6.74 0 0 1 5.715-1.78l.004.001a6.8 8 0 0 1 5.571 5.376v.003a6.69 6.69 0 0 1-1.49 5.655l-7.954 9.48a2.518 2.518 0 0 1-3.857 0L2.12 12.37A6.68 6.68 0 0 1 .627 6.714 6.76 6.76 0 0 1 5.21 1.57m3.12 1.803a4.757 4.757 0 0 0-5.74 3.725l-.001.002a4.68 4.68 0 0 0 1.049 3.969l.009.01 7.958 9.485a.518.518 0 0 0 .79 0l7.968-9.495a4.69 4.69 0 0 0 1.049-3.965 4.8 4.8 0 0 0-3.931-3.794 4.74 4.74 0 0 0-4.023 1.256l-.008.008a2.123 2.123 0 0 1-2.9 0l-.007-.007a4.76 4.76 0 0 0-2.214-1.194z"></path>
         </svg>
       </button>
@@ -1320,21 +1260,58 @@
       </div>
       <span class="progress-time duration">0:00</span>
     </div>
-    <audio id="audio-player" src="" ontimeupdate="updateProgress()" onended="playNextTrack()"></audio>
   </div>
+  <div class="player-overlay" id="player-overlay">
+    <button class="back-button" onclick="closePlayer()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="#fff" xmlns="http://www.w3.org/2000/svg" class="icon-sm text-token-text-tertiary">
+        <path d="M12.1338 5.94433C12.3919 5.77382 12.7434 5.80202 12.9707 6.02929C13.1979 6.25656 13.2261 6.60807 13.0556 6.8662L12.9707 6.9707L8.47067 11.4707C8.21097 11.7304 7.78896 11.7304 7.52926 11.4707L3.02926 6.9707L2.9443 6.8662C2.77379 6.60807 2.80199 6.25656 3.02926 6.02929C3.25653 5.80202 3.60804 5.77382 3.86617 5.94433L3.97067 6.02929L7.99996 10.0586L12.0293 6.02929L12.1338 5.94433Z"></path>
+      </svg>
+    </button>
+    <img id="player-cover" class="player-cover" alt="cover">
+    <h2 id="player-title" class="player-title">Titre</h2>
+    <p id="player-artists" class="player-artists">Artiste</p>
+    <div class="player-progress-container">
+      <span class="player-progress-time" id="player-current-time">0:00</span>
+      <div class="player-progress" onclick="seek(event)">
+        <div class="player-progress-bar" id="player-progress-bar"></div>
+      </div>
+      <span class="player-progress-time" id="player-duration">0:00</span>
+    </div>
+    <div class="player-controls">
+      <button type="button" aria-label="Précédent" onclick="previousTrack()">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 5h3v14H5z M19 5L9 12l10 7z"></path>
+        </svg>
+      </button>
+      <button type="button" aria-label="Lecture/Pause" id="play-btn" onclick="togglePlayPause()">
+        <svg id="play-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M8 5v14l11-7z"></path>
+        </svg>
+        <svg id="pause-icon" viewBox="0 0 24 24" aria-hidden="true" style="display:none">
+          <path d="M6 19h4V5H6zM14 5h4v14h-4z"></path>
+        </svg>
+      </button>
+      <button type="button" aria-label="Suivant" onclick="nextTrack()">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M16 5h3v14h-3z M5 5l10 7L5 19z"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+  <audio id="audio-player" src="" ontimeupdate="updateProgress()" onended="playNextTrack()"></audio>
   <script>
     const section = document.querySelector('.section');
     let startX = 0;
     let isDragging = false;
     let currentTrackIndex = -1;
+    let currentPlaylist = 'tracks';
     const tracks = [
-      { title: "Doucement", artist: "TRIANGLE DES BERMUDES, MC YOSHI, Mauvais djo, Kokosvoice", src: "https://matheonyx.github.io/Nesdy/Bakermat%20-%20Baian%C3%A1%20(Official%20Video).mp3", image: "https://i.scdn.co/image/ab67616d00001e028c3ef4b93cdfc38c008fd874" },
-      { title: "Charger", artist: "TRIANGLES DES BERMUDES", src: "https://example.com/charger.mp3", image: "https://i.scdn.co/image/ab67616d0000b2738c3ef4b93cdfc38c008fd874" },
-      { title: "Soleil Bleu", artist: "Bleu Soleil et LUIZA", src: "https://example.com/soleilbleu.mp3", image: "https://i.scdn.co/image/ab67616d0000b2735446164bb6862bb37594b5f6" },
+      { title: "Baianá", artist: "Bakermat", src: "https://matheonyx.github.io/Nesdy/Bakermat%20-%20Baian%C3%A1%20(Official%20Video).mp3", image: "https://i.scdn.co/image/ab67616d0000b2738f23ac56db2576fc122cff78" },
+      { title: "Soleil Bleu", artist: "Bleu Soleil et LUIZA", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", image: "https://i.scdn.co/image/ab67616d0000b2735446164bb6862bb37594b5f6" },
       { title: "APPELLE TA COPINE", artist: "GIMS", src: "https://matheonyx.github.io/Nesdy/GIMS%20-%20APPELLE%20TA%20COPINE%20(Clip%20officiel).mp3", image: "https://i.scdn.co/image/ab67616d0000b2737c04344b48e4742334549691" },
       { title: "FUNK UNIVERSO", artist: "Irokz", src: "https://matheonyx.github.io/Nesdy/Irokz%20-%20FUNK%20UNIVERSO.mp3", image: "https://i.scdn.co/image/ab67616d0000b2731ecd6877bf9fc8eaf5be76e6" },
       { title: "AIR FORCE BLANCHE", artist: "GIMS,Jul", src: "https://matheonyx.github.io/Nesdy/GIMS%20&%20Jul%20-%20AIR%20FORCE%20BLANCHE%20(Official%20Lyrics%20Vid%C3%A9o).mp3", image: "https://i.scdn.co/image/ab67616d0000b2739568fc14ab5f80eb1214388b" },
-      { title: "Δ. Dieu ne ment jamais", artist: "Damso", src: "https://example.com/dieunementjamais.mp3", image: "https://i.scdn.co/image/ab67616d0000b2737e81bf206d9ec5bbcab4d39d" }
+      { title: "Δ. Dieu ne ment jamais", artist: "Damso", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3", image: "https://i.scdn.co/image/ab67616d0000b2737e81bf206d9ec5bbcab4d39d" }
     ];
     const artists = [
       { name: "GIMS", image: "https://i.scdn.co/image/ab6761610000e5eb77144f838397a467e807df65", role: "Artiste" },
@@ -1344,11 +1321,11 @@
       { name: "Sexion d'Assaut", image: "https://i.scdn.co/image/ab6761610000e5ebe5380469a579bd4fc105899f", role: "Artiste" }
     ];
     const albums = [
-      { title: "Tití Me Preguntó", artist: "Bad Bunny", src: "https://matheonyx.github.io/Nesdy/Bad%20Bunny%20-%20Tit%C3%AD%20Me%20Pregunt%C3%B3%20(Video%20Oficial)%20%20Un%20Verano%20Sin%20Ti.mp3", image: "https://i.scdn.co/image/ab67616d00001e028c3ef4b93cdfc38c008fd874" },
-      { title: "LE DERNIER DU CODE", artist: "GIMS", image: "https://i.scdn.co/image/ab67616d0000b2739568fc14ab5f80eb1214388b" },
-      { title: "Carré", artist: "Werenoi", image: "https://i.scdn.co/image/ab67616d0000b273a4d73b6f37bb4b7f4f7a8056" },
-      { title: "Jefe", artist: "Ninho", image: "https://i.scdn.co/image/ab67616d0000b273e1d2b368e4b2d9c5e91ad3d8" },
-      { title: "Blackout", artist: "Black M", image: "https://i.scdn.co/image/ab67616d0000b273f1b43b9a8e8e1a3f7b5a9a6e" }
+      { title: "Tití Me Preguntó", artist: "Bad Bunny", src: "https://matheonyx.github.io/Nesdy/Bad%20Bunny%20-%20Tit%C3%AD%20Me%20Pregunt%C3%B3%20(Video%20Oficial)%20%20Un%20Verano%20Sin%20Ti.mp3", image: "https://i.scdn.co/image/ab67616d0000b27349d694203245f241a1bcaa72" },
+      { title: "LE DERNIER DU CODE", artist: "GIMS", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3", image: "https://i.scdn.co/image/ab67616d0000b2739568fc14ab5f80eb1214388b" },
+      { title: "Carré", artist: "Werenoi", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3", image: "https://i.scdn.co/image/ab67616d0000b273c0b0eba01296859b801a7fcd" },
+      { title: "Jefe", artist: "Ninho", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3", image: "https://i.scdn.co/image/ab67616d0000b273e1d2b368e4b2d9c5e91ad3d8" },
+      { title: "Blackout", artist: "Black M", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3", image: "https://i.scdn.co/image/ab67616d0000b273f1b43b9a8e8e1a3f7b5a9a6e" }
     ];
     const audioPlayer = document.getElementById('audio-player');
     const playPauseButton = document.querySelector('.play-pause');
@@ -1364,12 +1341,22 @@
     const libraryPage = document.getElementById('library-page');
     const libraryPageContent = document.querySelector('.library-page-content');
     const playEffect = document.getElementById('play-effect');
+    const playerOverlay = document.getElementById('player-overlay');
+    const playerCover = document.getElementById('player-cover');
+    const playerTitle = document.getElementById('player-title');
+    const playerArtists = document.getElementById('player-artists');
+    const playerProgressBar = document.getElementById('player-progress-bar');
+    const playerCurrentTime = document.getElementById('player-current-time');
+    const playerDuration = document.getElementById('player-duration');
+    const playerPlayIcon = document.getElementById('play-icon');
+    const playerPauseIcon = document.getElementById('pause-icon');
 
     function goHome() {
       searchResults.classList.remove('active');
       trendingSection.classList.remove('hidden');
       libraryPage.classList.remove('active');
       section.classList.remove('active');
+      playerOverlay.classList.remove('active');
       document.querySelector('.search-bar input').value = '';
       searchResultsContent.innerHTML = '';
     }
@@ -1419,6 +1406,7 @@
       trendingSection.classList.add('hidden');
       searchResults.classList.remove('active');
       section.classList.remove('active');
+      playerOverlay.classList.remove('active');
     }
 
     function searchContent(query) {
@@ -1427,6 +1415,7 @@
       trendingSection.classList.toggle('hidden', query !== '');
       searchResults.classList.toggle('active', query !== '');
       libraryPage.classList.remove('active');
+      playerOverlay.classList.remove('active');
 
       if (query === '') {
         return;
@@ -1468,10 +1457,10 @@
         searchResultsContent.appendChild(artistItem);
       });
 
-      filteredAlbums.forEach(album => {
+      filteredAlbums.forEach((album, index) => {
         const albumItem = document.createElement('div');
         albumItem.className = 'album-item';
-        albumItem.onclick = () => viewAlbum(album.title);
+        albumItem.onclick = () => playAlbum(index, albumItem);
         albumItem.innerHTML = `
           <img src="${album.image}" alt="${album.title}">
           <div class="album-title">${album.title}</div>
@@ -1495,73 +1484,93 @@
     }
 
     function playTrack(index, element) {
+      currentPlaylist = 'tracks';
       currentTrackIndex = index;
-      const track = tracks[index];
-      audioPlayer.src = track.src;
-      document.querySelector('.audio-menu img').src = track.image;
-      document.querySelector('.audio-menu .track-title').textContent = track.title;
-      document.querySelector('.audio-menu .track-artists').textContent = track.artist;
+      openPlayer(tracks[index]);
+    }
+
+    function playAlbum(index, element) {
+      currentPlaylist = 'albums';
+      currentTrackIndex = index;
+      openPlayer(albums[index]);
+    }
+
+    function openPlayer(item) {
+      audioPlayer.src = item.src;
+      document.querySelector('.audio-menu img').src = item.image;
+      document.querySelector('.audio-menu .track-title').textContent = item.title;
+      document.querySelector('.audio-menu .track-artists').textContent = item.artist;
+      playerCover.src = item.image;
+      playerTitle.textContent = item.title;
+      playerArtists.textContent = item.artist;
       audioMenu.classList.add('active');
       audioMenu.classList.remove('fullscreen');
+      playerOverlay.classList.add('active');
       triggerPlayEffect();
       audioPlayer.play().then(() => {
-        updatePlayPauseIcon('pause');
+        setPlayState(true);
         durationDisplay.textContent = formatTime(audioPlayer.duration || 0);
+        playerDuration.textContent = formatTime(audioPlayer.duration || 0);
       }).catch(error => console.log("Playback failed:", error));
       progressBar.style.width = '0';
+      playerProgressBar.style.width = '0';
+    }
+
+    function setPlayState(isPlaying) {
+      if (isPlaying) {
+        playPauseSvg.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" fill="#fff"/>';
+        playerPlayIcon.style.display = 'none';
+        playerPauseIcon.style.display = 'block';
+      } else {
+        playPauseSvg.innerHTML = '<path d="m7.05 3.606 13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606" fill="#fff"/>';
+        playerPlayIcon.style.display = 'block';
+        playerPauseIcon.style.display = 'none';
+      }
     }
 
     function playNextTrack() {
-      if (currentTrackIndex < tracks.length - 1) {
-        playTrack(currentTrackIndex + 1, document.querySelectorAll('.track-item, .library-track-item, .card')[currentTrackIndex + 1]);
-      } else {
-        playTrack(0, document.querySelectorAll('.track-item, .library-track-item, .card')[0]);
-      }
+      let playlist = currentPlaylist === 'tracks' ? tracks : albums;
+      currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+      openPlayer(playlist[currentTrackIndex]);
+    }
+
+    function previousTrack() {
+      let playlist = currentPlaylist === 'tracks' ? tracks : albums;
+      currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+      openPlayer(playlist[currentTrackIndex]);
+    }
+
+    function nextTrack() {
+      playNextTrack();
     }
 
     function toggleFullscreenMenu(event) {
       if (event.target.closest('.close-btn, .controls, .progress-container')) return;
       audioMenu.classList.toggle('fullscreen');
+      playerOverlay.classList.remove('active');
     }
 
     function closeMenu() {
       audioMenu.classList.remove('active');
       audioMenu.classList.remove('fullscreen');
+      playerOverlay.classList.remove('active');
       audioPlayer.pause();
-      updatePlayPauseIcon('play');
+      setPlayState(false);
+    }
+
+    function closePlayer() {
+      playerOverlay.classList.remove('active');
     }
 
     function togglePlayPause() {
       if (audioPlayer.paused) {
         audioPlayer.play().then(() => {
-          updatePlayPauseIcon('pause');
+          setPlayState(true);
           triggerPlayEffect();
         }).catch(error => console.log("Playback failed:", error));
       } else {
         audioPlayer.pause();
-        updatePlayPauseIcon('play');
-      }
-    }
-
-    function previousTrack() {
-      if (currentTrackIndex > 0) {
-        playTrack(currentTrackIndex - 1, document.querySelectorAll('.track-item, .library-track-item, .card')[currentTrackIndex - 1]);
-      }
-    }
-
-    function nextTrack() {
-      if (currentTrackIndex < tracks.length - 1) {
-        playTrack(currentTrackIndex + 1, document.querySelectorAll('.track-item, .library-track-item, .card')[currentTrackIndex + 1]);
-      } else {
-        playTrack(0, document.querySelectorAll('.track-item, .library-track-item, .card')[0]);
-      }
-    }
-
-    function updatePlayPauseIcon(state = null) {
-      if (state === 'pause' || (!audioPlayer.paused && state !== 'play')) {
-        playPauseSvg.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" fill="#fff"/>';
-      } else {
-        playPauseSvg.innerHTML = '<path d="m7.05 3.606 13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606" fill="#fff"/>';
+        setPlayState(false);
       }
     }
 
@@ -1569,13 +1578,16 @@
       if (audioPlayer.duration) {
         const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
         progressBar.style.width = `${progress}%`;
+        playerProgressBar.style.width = `${progress}%`;
         currentTimeDisplay.textContent = formatTime(audioPlayer.currentTime);
+        playerCurrentTime.textContent = formatTime(audioPlayer.currentTime);
         durationDisplay.textContent = formatTime(audioPlayer.duration);
+        playerDuration.textContent = formatTime(audioPlayer.duration);
       }
     }
 
     function seek(e) {
-      const progress = document.querySelector('.progress');
+      const progress = e.target.closest('.progress') || e.target.closest('.player-progress');
       const rect = progress.getBoundingClientRect();
       const pos = (e.clientX - rect.left) / rect.width;
       audioPlayer.currentTime = pos * audioPlayer.duration;
@@ -1584,10 +1596,6 @@
 
     function viewArtist(artistName) {
       alert(`Vue de l'artiste : ${artistName}`);
-    }
-
-    function viewAlbum(albumTitle) {
-      alert(`Vue de l'album : ${albumTitle}`);
     }
 
     document.addEventListener('touchstart', handleDragStart);
@@ -1607,6 +1615,9 @@
         button.setAttribute('aria-checked', 'true');
       });
     });
+
+    audioPlayer.addEventListener("play", () => setPlayState(true));
+    audioPlayer.addEventListener("pause", () => setPlayState(false));
   </script>
 </body>
 </html>
