@@ -1114,6 +1114,8 @@
   </style>
 </head>
 <body>
+
+    
   <div class="play-effect" id="play-effect"></div>
   <div class="search-bar-container">
     <div class="home-and-search">
@@ -1129,13 +1131,20 @@
         <input type="text" placeholder="Que souhaitez-vous écouter ou regarder ?" oninput="searchContent(this.value)">
       </div>
     </div>
-    <div class="filter-container">
-      <div class="filter-buttons" role="list" aria-label="Filtres de la page d'accueil">
-        <button class="filter-button active" role="checkbox" aria-checked="true" aria-label="Tout">Tout</button>
-        <button class="filter-button" role="checkbox" aria-checked="false" aria-label="Musique">Musique</button>
-        <button class="filter-button" role="checkbox" aria-checked="false" aria-label="Podcasts">Podcasts</button>
-        <button class="filter-button" role="checkbox" aria-checked="false" aria-label="Livres audio">Livres audio</button>
-      </div>
+     <div class="filter-container">
+    <div class="filter-buttons" role="list" aria-label="Filtres de la page d'accueil">
+      <a href="https://example.com/laly" class="filter-button active" aria-label="Laly">Laly</a>
+      <a href="https://example.com/remi" class="filter-button" aria-label="Rémi">Rémi</a>
+      <a href="https://example.com/evan" class="filter-button" aria-label="Evan">Evan</a>
+      <a href="https://example.com/matheo" class="filter-button" aria-label="Mathéo">Mathéo</a>
+    </div>
+  </div>
+  <!-- Add this CSS to the existing <style> section -->
+  <style>
+    .filter-button {
+      text-decoration: none;
+    }
+  </style>
     </div>
   </div>
   <div class="search-results" id="search-results">
