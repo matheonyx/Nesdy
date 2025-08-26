@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Playlist</title>
+  <style>
+    /* --------- Base --------- */
+    :root{
+      --bg:#191919;
+      --text:#ffffff;
+      --muted:#aaaaaa;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:#191919;
+      color:var(--text);
+      font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* --------- Header --------- */
+    .header{
+      display:flex;
+      align-items:center;
+      padding:10px;
+    }
+    .home-button{
+      background:none;
+      border:none;
+      cursor:pointer;
+      padding:6px;
+      border-radius:50%;
+      transition:background .2s ease;
+    }
+    .home-button:hover{ background:rgba(255,255,255,.08); }
+    .home-button svg{ width:26px;height:26px;fill:#fff; }
+
+    /* --------- Liste --------- */
+    .playlist{
+      display:flex;
+      flex-direction:column;
+      padding:6px 10px 24px;
+      gap:2px;
+    }
+    .song{
+      display:flex;
+      align-items:center;
+      padding:6px 0;
+      gap:10px;
+      cursor:pointer;
+      border-radius:8px;
+      transition:background .15s ease;
+    }
+    .song:active{ background:rgba(255,255,255,.06); }
+    .song img{
+      width:45px;height:45px;
+      border-radius:5px;
+      object-fit:cover;
+      flex:0 0 auto;
+    }
+    .info{ flex:1; min-width:0; }
+    .title{
+      font-size:14px;
+      font-weight:600;
+      margin:0;
+      color:#fff;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .artist{
+      font-size:12px;
+      color:var(--muted);
+      margin:2px 0 0;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .album{
+      font-size:12px;
+      color:var(--muted);
+      white-space:nowrap;
+      margin-left:8px;
+    }
+
+    /* --------- Player plein écran --------- */
+    .player-overlay{
+      position:fixed; inset:0;
+      background:var(--bg);
+      display:none;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:16px;
+      z-index:1000;
+      padding:22px 16px 32px;
+    }
+    .player-overlay.active{ display:flex; }
+    .player-cover{
+      width:min(70vw,320px);
+      aspect-ratio:1/1;
+      object-fit:cover;
+      border-radius:10px;
+      box-shadow:0 10px 30px rgba(0,0,0,.45);
+    }
+    .player-title{
+      font-size:18px;
+      font-weight:700;
+      text-align:center;
+      margin:6px 0 0;
+      padding:0 8px;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .player-artist{
+      font-size:13px;
+      color:var(--muted);
+      text-align:center;
+      margin:2px 0 10px;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .controls{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:26px;
+      margin-top:6px;
+    }
+    .controls button{
+      background:none;
+      border:none;
+      cursor:pointer;
+      padding:8px;
+      border-radius:999px;
+      transition:background .15s ease, transform .08s ease;
+      fill:#fff;
+    }
+    .controls button:active{ transform:scale(.96); }
+    .controls svg{ width:42px; height:42px; }
+    #play-btn svg{ width:54px; height:54px; }
+    .back-button{
+      position:absolute;
+      top:10px;
+      left:10px;
+      background:none;
+      border:none;
+      cursor:pointer;
+      padding:6px;
+      border-radius:50%;
+      transition:background .2s ease;
+    }
+    .back-button:hover{ background:rgba(255,255,255,.08); }
+    .back-button svg{ width:16px; height:16px; fill:#fff; }
+    .player-progress-container{
+      width:90%;
+      max-width:400px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin-top:12px;
+    }
+    .player-progress-time{
+      font-size:10px;
+      color:var(--muted);
+      min-width:40px;
+    }
+    .player-progress{
+      flex:1;
+      height:4px;
+      background:rgba(255,255,255,.2);
+      border-radius:1.5px;
+      position:relative;
+      cursor:pointer;
+    }
+    .player-progress-bar{
+      height:100%;
+      background:#fff;
+      width:0;
+      border-radius:1.5px;
+      transition:width .1s linear;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <button class="home-button" onclick="goHome()">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M13.5 1.515a3 3 0 0 0-3 0L3 5.845a2 2 0 0 0-1 1.732V21a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-6h4v6a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V7.577a2 2 0 0 0-1-1.732z"></path>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Playlist -->
+  <div class="playlist" id="playlist">
+    <div class="song"
+         data-src="https://matheonyx.github.io/Nesdy/Bakermat%20-%20Baian%C3%A1%20(Official%20Video).mp3"
+         data-cover="https://i.scdn.co/image/ab67616d0000b273e71d4f2c73d3ce3ec9e71f78"
+         data-title="Baianá" data-artist="Bakermat">
+      <img src="https://i.scdn.co/image/ab67616d0000b273e71d4f2c73d3ce3ec9e71f78" alt="Baianá">
+      <div class="info">
+        <p class="title">Baianá</p>
+        <p class="artist">Bakermat</p>
+      </div>
+      <p class="album">The Ringmast</p>
+    </div>
+    <div class="song"
+         data-src="https://matheonyx.github.io/Nesdy/Farruko%20-%20Pepas%20(Official%20Video).mp3"
+         data-cover="https://i.scdn.co/image/ab67616d0000b2734239a6aa89738d8f798168ad"
+         data-title="NINAO" data-artist="GIMS">
+      <img src="https://i.scdn.co/image/ab67616d0000b2734239a6aa89738d8f798168ad" alt="Pepas">
+      <div class="info">
+        <p class="title">NINAO</p>
+        <p class="artist">GIMS</p>
+      </div>
+      <p class="album">Le Nord se souvient : L'Odyssée</p>
+    </div>
+    <div class="song"
+         data-src="https://matheonyx.github.io/Nesdy/Bad%20Bunny%20-%20DtMF%20(Letra).mp3"
+         data-cover="https://i.scdn.co/image/ab67616d0000b273bbd45c8d36e0e045ef640411"
+         data-title="DtMF" data-artist="Bad Bunny">
+      <img src="https://i.scdn.co/image/ab67616d0000b273bbd45c8d36e0e045ef640411" alt="DtMF">
+      <div class="info">
+        <p class="title">DtMF</p>
+        <p class="artist">Bad Bunny</p>
+      </div>
+      <p class="album">DeBÍ TiRAR M</p>
+    </div>
+    <div class="song"
+         data-src="https://matheonyx.github.io/Nesdy/Guy2Bezbar%20-%20Monaco%20(Clip%20Officiel).mp3"
+         data-cover="https://i.scdn.co/image/ab67616d0000b273a6cb8fab778e1efc406a5909"
+         data-title="Bye Bye Bye" data-artist="*NSYNC">
+      <img src="https://i.scdn.co/image/ab67616d0000b273a6cb8fab778e1efc406a5909" alt="Summer">
+      <div class="info">
+        <p class="title">Bye Bye Bye</p>
+        <p class="artist">*NSYNC</p>
+      </div>
+      <p class="album">No Strings Attached</p>
+    </div>
+    <div class="song"
+         data-src="https://matheonyx.github.io/Nesdy/BAD%20BUNNY%20x%20JHAY%20CORTEZ%20-%20D%C3%81KITI%20(Video%20Oficial).mp3"
+         data-cover="https://i.scdn.co/image/ab67616d0000b27334c8199b0b3b3fb42b8a98a8"
+         data-title="DÁKITI" data-artist="Bad Bunny, JHAYCO">
+      <img src="https://i.scdn.co/image/ab67616d0000b27334c8199b0b3b3fb42b8a98a8" alt="DÁKITI">
+      <div class="info">
+        <p class="title">DÁKITI</p>
+        <p class="artist">Bad Bunny, JHAYCO</p>
+      </div>
+      <p class="album">DÁKITI</p>
+    </div>
+    <div class="song"
+         data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3"
+         data-cover="https://i.scdn.co/image/ab67616d0000b2734d6cf0d0d5e32ca4fa3a59e1"
+         data-title="BESO" data-artist="ROSALÍA, Rauw Alejandro">
+      <img src="https://i.scdn.co/image/ab67616d0000b2734d6cf0d0d5e32ca4fa3a59e1" alt="BESO">
+      <div class="info">
+        <p class="title">BESO</p>
+        <p class="artist">ROSALÍA, Rauw Alejandro</p>
+      </div>
+      <p class="album">RR</p>
+    </div>
+    <div class="song"
+         data-src="https://matheonyx.github.io/Nesdy/Asaf%20Avidan,%20The%20Mojos%20-%20One%20Day%20%20Reckoning%20Song%20(Videoclip%20Day%20Version).mp3"
+         data-cover="https://i.scdn.co/image/ab67616d0000b273dc4b6b7a94a22e4d09dbd287"
+         data-title="One Day / Reckoning Song (Wankelmut Remix)"
+         data-artist="Asaf Avidan, The Mojos, Wankelmut">
+      <img src="https://i.scdn.co/image/ab67616d0000b273dc4b6b7a94a22e4d09dbd287" alt="One Day">
+      <div class="info">
+        <p class="title">One Day / Reckoning Song (Wankelmut Remix)</p>
+        <p class="artist">Asaf Avidan, The Mojos, Wankelmut</p>
+      </div>
+      <p class="album">One Day</p>
+    </div>
+    <div class="song"
+         data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3"
+         data-cover="https://i.scdn.co/image/ab67616d0000b2732a44597c7d4271d77db8f966"
+         data-title="Exotica" data-artist="Gabry Ponte">
+      <img src="https://i.scdn.co/image/ab67616d0000b2732a44597c7d4271d77db8f966" alt="Exotica">
+      <div class="info">
+        <p class="title">Exotica</p>
+        <p class="artist">Gabry Ponte</p>
+      </div>
+      <p class="album">Exotica</p>
+    </div>
+    <div class="song"
+         data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3"
+         data-cover="https://i.scdn.co/image/ab67616d0000b2734ae3b706cbd1c0cae592943b"
+         data-title="Wayeh" data-artist="THEODORT">
+      <img src="https://i.scdn.co/image/ab67616d0000b2734ae3b706cbd1c0cae592943b" alt="Wayeh">
+      <div class="info">
+        <p class="title">Wayeh</p>
+        <p class="artist">THEODORT</p>
+      </div>
+      <p class="album">Wayeh</p>
+    </div>
+    <div class="song"
+         data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3"
+         data-cover="https://i.scdn.co/image/ab67616d00001e02a3b2978649a60ec3c02d436c"
+         data-title="Walking Away (Infinity)" data-artist="Matway, June">
+      <img src="https://i.scdn.co/image/ab67616d00001e02a3b2978649a60ec3c02d436c" alt="Walking Away">
+      <div class="info">
+        <p class="title">Walking Away (Infinity)</p>
+        <p class="artist">Matway, June</p>
+      </div>
+      <p class="album">Walking Away</p>
+    </div>
+    <div class="song"
+         data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-11.mp3"
+         data-cover="https://i.scdn.co/image/ab67616d0000b27381b12e1a0584e8ea7ba2ae4a"
+         data-title="Stargazing" data-artist="Myles Smith">
+      <img src="https://i.scdn.co/image/ab67616d0000b27381b12e1a0584e8ea7ba2ae4a" alt="Stargazing">
+      <div class="info">
+        <p class="title">Stargazing</p>
+        <p class="artist">Myles Smith</p>
+      </div>
+      <p class="album">Stargazing</p>
+    </div>
+    <div class="song"
+         data-src="https://matheonyx.github.io/Nesdy/GIMS%20&%20La%20Mano%201.9%20-%20PARISIENNE%20(Official%20Lyrics%20Vid%C3%A9o).mp3"
+         data-cover="https://i.scdn.co/image/ab67616d00001e0293db7b33b63de6dc99a131ee"
+         data-title="Parisienne" data-artist="GIMS, LA MANO 1.9">
+      <img src="https://i.scdn.co/image/ab67616d00001e0293db7b33b63de6dc99a131ee" alt="Blinding Lights">
+      <div class="info">
+        <p class="title">Parisienne</p>
+        <p class="artist">GIMS, LA MANO 1.9 </p>
+      </div>
+      <p class="album">Le Nord se souvient : L'Odyssée</p>
+    </div>
+    <div class="song"
+         data-src="https://matheonyx.github.io/Nesdy/Irokz%20-%20FUNK%20UNIVERSO.mp3"
+         data-cover="https://i.scdn.co/image/ab67616d0000b2731ecd6877bf9fc8eaf5be76e6"
+         data-title="FUNK UNIVERSO" data-artist="Irokz">
+      <img src="https://i.scdn.co/image/ab67616d0000b2731ecd6877bf9fc8eaf5be76e6" alt="Levitating">
+      <div class="info">
+        <p class="title">FUNK UNIVERSO</p>
+        <p class="artist">Irokz</p>
+      </div>
+      <p class="album">Future Nostalgia</p>
+    </div>
+    <div class="song"
+         data-src="https://matheonyx.github.io/Nesdy/GIMS%20-%20SOIS%20PAS%20TIMIDE%20(Clip%20officiel).mp3"
+         data-cover="https://i.scdn.co/image/ab67616d0000b2738d3b9bf7f027f18ec7a588b9"
+         data-title="SOIS PAS TIMIDE" data-artist="GIMS">
+      <img src="https://i.scdn.co/image/ab67616d0000b2738d3b9bf7f027f18ec7a588b9" alt="Shape of You">
+      <div class="info">
+        <p class="title">SOIS PAS TIMIDE </p>
+        <p class="artist">GIMS</p>
+      </div>
+      <p class="album">Le Nord se souvient : L'Odyssée</p>
+    </div>
+    <div class="song"
+         data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3"
+         data-cover="https://i.scdn.co/image/ab67616d0000b273d8e3e1b9a3b70e5038e4c3b4"
+         data-title="Uptown Funk" data-artist="Mark Ronson, Bruno Mars">
+      <img src="https://i.scdn.co/image/ab67616d0000b273d8e3e1b9a3b70e5038e4c3b4" alt="Uptown Funk">
+      <div class="info">
+        <p class="title">Uptown Funk</p>
+        <p class="artist">Mark Ronson, Bruno Mars</p>
+      </div>
+      <p class="album">Uptown Special</p>
+    </div>
+    <div class="song"
+         data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-16.mp3"
+         data-cover="https://i.scdn.co/image/ab67616d0000b273a7b6f3c6b7b6f3c6b7b6f3c6"
+         data-title="Dance Monkey" data-artist="Tones and I">
+      <img src="https://i.scdn.co/image/ab67616d0000b273a7b6f3c6b7b6f3c6b7b6f3c6" alt="Dance Monkey">
+      <div class="info">
+        <p class="title">Dance Monkey</p>
+        <p class="artist">Tones and I</p>
+      </div>
+      <p class="album">The Kids Are Coming</p>
+    </div>
+    <div class="song"
+         data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-17.mp3"
+         data-cover="https://i.scdn.co/image/ab67616d0000b273b7b6f3c6b7b6f3c6b7b6f3c7"
+         data-title="Havana" data-artist="Camila Cabello, Young Thug">
+      <img src="https://i.scdn.co/image/ab67616d0000b273b7b6f3c6b7b6f3c6b7b6f3c7" alt="Havana">
+      <div class="info">
+        <p class="title">Havana</p>
+        <p class="artist">Camila Cabello, Young Thug</p>
+      </div>
+      <p class="album">Camila</p>
+    </div>
+    <div class="song"
+         data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+         data-cover="https://i.scdn.co/image/ab67616d0000b273c7b6f3c6b7b6f3c6b7b6f3c8"
+         data-title="Sweet but Psycho" data-artist="Ava Max">
+      <img src="https://i.scdn.co/image/ab67616d0000b273c7b6f3c6b7b6f3c6b7b6f3c8" alt="Sweet but Psycho">
+      <div class="info">
+        <p class="title">Sweet but Psycho</p>
+        <p class="artist">Ava Max</p>
+      </div>
+      <p class="album">Heaven & Hell</p>
+    </div>
+    <div class="song"
+         data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
+         data-cover="https://i.scdn.co/image/ab67616d0000b273d7b6f3c6b7b6f3c6b7b6f3c9"
+         data-title="Cold Heart" data-artist="Elton John, Dua Lipa">
+      <img src="https://i.scdn.co/image/ab67616d0000b273d7b6f3c6b7b6f3c6b7b6f3c9" alt="Cold Heart">
+      <div class="info">
+        <p class="title">Cold Heart</p>
+        <p class="artist">Elton John, Dua Lipa</p>
+      </div>
+      <p class="album">The Lockdown Sessions</p>
+    </div>
+    <div class="song"
+         data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
+         data-cover="https://i.scdn.co/image/ab67616d0000b273e7b6f3c6b7b6f3c6b7b6f3ca"
+         data-title="Watermelon Sugar" data-artist="Harry Styles">
+      <img src="https://i.scdn.co/image/ab67616d0000b273e7b6f3c6b7b6f3c6b7b6f3ca" alt="Watermelon Sugar">
+      <div class="info">
+        <p class="title">Watermelon Sugar</p>
+        <p class="artist">Harry Styles</p>
+      </div>
+      <p class="album">Fine Line</p>
+    </div>
+  </div>
+
+  <!-- Lecteur plein écran -->
+  <div class="player-overlay" id="player">
+    <button class="back-button" onclick="closePlayer()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="#fff" xmlns="http://www.w3.org/2000/svg" class="icon-sm text-token-text-tertiary">
+        <path d="M12.1338 5.94433C12.3919 5.77382 12.7434 5.80202 12.9707 6.02929C13.1979 6.25656 13.2261 6.60807 13.0556 6.8662L12.9707 6.9707L8.47067 11.4707C8.21097 11.7304 7.78896 11.7304 7.52926 11.4707L3.02926 6.9707L2.9443 6.8662C2.77379 6.60807 2.80199 6.25656 3.02926 6.02929C3.25653 5.80202 3.60804 5.77382 3.86617 5.94433L3.97067 6.02929L7.99996 10.0586L12.0293 6.02929L12.1338 5.94433Z"></path>
+      </svg>
+    </button>
+    <img id="player-cover" class="player-cover" alt="cover">
+    <h2 id="player-title" class="player-title">Titre</h2>
+    <p id="player-artist" class="player-artist">Artiste</p>
+    <div class="player-progress-container">
+      <span class="player-progress-time" id="player-current-time">0:00</span>
+      <div class="player-progress" onclick="seek(event)">
+        <div class="player-progress-bar" id="player-progress-bar"></div>
+      </div>
+      <span class="player-progress-time" id="player-duration">0:00</span>
+    </div>
+    <div class="controls">
+      <button type="button" aria-label="Précédent" onclick="prevSong()">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 5h3v14H5z M19 5L9 12l10 7z"></path>
+        </svg>
+      </button>
+      <button type="button" aria-label="Lecture/Pause" id="play-btn" onclick="togglePlay()">
+        <svg id="play-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M8 5v14l11-7z"></path>
+        </svg>
+        <svg id="pause-icon" viewBox="0 0 24 24" aria-hidden="true" style="display:none">
+          <path d="M6 19h4V5H6zM14 5h4v14h-4z"></path>
+        </svg>
+      </button>
+      <button type="button" aria-label="Suivant" onclick="nextSong()">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M16 5h3v14h-3z M5 5l10 7L5 19z"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <audio id="audio" ontimeupdate="updateProgress()" onended="nextSong()"></audio>
+
+  <script>
+    /* --------- Navigation --------- */
+    function goHome(){
+      window.location.href = "https://matheonyx.github.io/Nesdy/Spotify.html";
+    }
+
+    /* --------- Lecteur --------- */
+    const songs = Array.from(document.querySelectorAll(".song"));
+    const audio = document.getElementById("audio");
+    const player = document.getElementById("player");
+    const playerCover = document.getElementById("player-cover");
+    const playerTitle = document.getElementById("player-title");
+    const playerArtist = document.getElementById("player-artist");
+    const playIcon = document.getElementById("play-icon");
+    const pauseIcon = document.getElementById("pause-icon");
+    const playerProgressBar = document.getElementById("player-progress-bar");
+    const playerCurrentTime = document.getElementById("player-current-time");
+    const playerDuration = document.getElementById("player-duration");
+
+    let currentIndex = 0;
+
+    songs.forEach((song, index) => {
+      song.addEventListener("click", () => {
+        currentIndex = index;
+        openPlayer(song);
+      });
+    });
+
+    function openPlayer(songEl){
+      const src = songEl.dataset.src;
+      const cover = songEl.dataset.cover;
+      const title = songEl.dataset.title || songEl.querySelector(".title")?.textContent || "";
+      const artist = songEl.dataset.artist || songEl.querySelector(".artist")?.textContent || "";
+
+      playerCover.src = cover;
+      playerTitle.textContent = title;
+      playerArtist.textContent = artist;
+
+      if (audio.src !== src) audio.src = src;
+      audio.play().then(() => {
+        setPlayState(true);
+        playerDuration.textContent = formatTime(audio.duration || 0);
+      }).catch(() => {});
+      player.classList.add("active");
+      playerProgressBar.style.width = '0';
+    }
+
+    function closePlayer(){
+      player.classList.remove("active");
+      audio.pause();
+      setPlayState(false);
+    }
+
+    function setPlayState(isPlaying){
+      playIcon.style.display = isPlaying ? "none" : "block";
+      pauseIcon.style.display = isPlaying ? "block" : "none";
+    }
+
+    function togglePlay(){
+      if (audio.paused){
+        audio.play().then(() => {
+          setPlayState(true);
+        }).catch(() => {});
+      } else {
+        audio.pause();
+        setPlayState(false);
+      }
+    }
+
+    function nextSong(){
+      currentIndex = (currentIndex + 1) % songs.length;
+      openPlayer(songs[currentIndex]);
+    }
+
+    function prevSong(){
+      currentIndex = (currentIndex - 1 + songs.length) % songs.length;
+      openPlayer(songs[currentIndex]);
+    }
+
+    function formatTime(seconds) {
+      const minutes = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    function updateProgress() {
+      if (audio.duration) {
+        const progress = (audio.currentTime / audio.duration) * 100;
+        playerProgressBar.style.width = `${progress}%`;
+        playerCurrentTime.textContent = formatTime(audio.currentTime);
+        playerDuration.textContent = formatTime(audio.duration);
+      }
+    }
+
+    function seek(e) {
+      const progress = e.target.closest('.player-progress');
+      const rect = progress.getBoundingClientRect();
+      const pos = (e.clientX - rect.left) / rect.width;
+      audio.currentTime = pos * audio.duration;
+      updateProgress();
+    }
+
+    audio.addEventListener("play", () => setPlayState(true));
+    audio.addEventListener("pause", () => setPlayState(false));
+  </script>
+</body>
+</html>
