@@ -12,12 +12,125 @@
   </main>
 
   <div id="videobox">
-    <video id="video" src="https://cdn.glitch.me/aba06776-3d00-4213-9643-021321905a51/Marvel%20Studios%20Thunderbolts_%20%20Final%20Trailer%20%204K%20HDR%20%20%F0%9F%8E%9E%20%20Video%20Enhance%20Studio%20AI%201.6.8.mp4?v=1747845624826" autoplay loop muted></video>
+    <!-- Ambient background div for the Ambilight effect -->
+    <div class="ambient" id="ambient" style="--opacity: 0; --c1: rgb(14,35,41); --c2: rgb(7,14,16); --c3: rgb(99,110,116);"></div>
+
+    <video id="video" src="https://cdn.glitch.me/aba06776-3d00-4213-9643-021321905a51/Marvel%20Studios%20Thunderbolts_%20%20Final%20Trailer%20%204K%20HDR%20%20%F0%9F%8E%9E%20%20Video%20Enhance%20Studio%20AI%201.6.8.mp4?v=1747845624826" autoplay loop muted crossorigin="anonymous" preload="metadata"></video>
    
     <!-- Enveloppez l'image du logo dans une balise <a> -->
     <a id="logoLink" href="https://matheonyx.github.io/Nesdy/thunderbolt.html">
       <img id="logodm4" src="https://matheonyx.github.io/Nesdy/marvels-thunderbolts-2024-movies-marvel-cinematic-universe-3840x1080-8457-removebg-preview%20(2).png" alt="Logo">
     </a>
+
+    <!-- Canvas for sampling video colors -->
+    <canvas id="sampler" width="320" height="180" style="display: none;"></canvas>
+
+    <style>
+        /* Minimal CSS for the Ambilight effect only */
+        .ambient {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(900px 700px at 25% 25%, var(--c1), transparent 70%),
+                radial-gradient(1000px 800px at 75% 75%, var(--c2), transparent 75%),
+                radial-gradient(1200px 1000px at 50% 50%, var(--c3), transparent 80%),
+                #000;
+            filter: blur(70px) saturate(120%);
+            opacity: var(--opacity);
+            transition: background 2200ms ease-in-out, opacity 2500ms ease;
+        }
+    </style>
+
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('sampler');
+        const ambient = document.getElementById('ambient');
+        const ctx = canvas.getContext('2d');
+        let timer;
+
+        function rgb(r, g, b) { return `rgb(${r},${g},${b})`; }
+        function clamp(v) { return Math.max(0, Math.min(255, Math.round(v))); }
+
+        function avgColor(imgData, step = 6) {
+            let d = imgData.data, w = imgData.width, h = imgData.height;
+            let r = 0, g = 0, b = 0, c = 0;
+            for (let y = 0; y < h; y += step) {
+                for (let x = 0; x < w; x += step) {
+                    let i = (y * w + x) * 4;
+                    r += d[i]; g += d[i + 1]; b += d[i + 2]; c++;
+                }
+            }
+            return { r: clamp(r / c), g: clamp(g / c), b: clamp(b / c) };
+        }
+
+        function darker(c, amt = 0.5) { return { r: clamp(c.r * (1 - amt)), g: clamp(c.g * (1 - amt)), b: clamp(c.b * (1 - amt)) }; }
+        function lighter(c, amt = 0.3) { return { r: clamp(c.r + (255 - c.r) * amt), g: clamp(c.g + (255 - c.g) * amt), b: clamp(c.b + (255 - c.b) * amt) }; }
+
+        function lerp(a, b, t) { return { r: clamp(a.r + (b.r - a.r) * t), g: clamp(a.g + (b.g - a.g) * t), b: clamp(a.b + (b.b - a.b) * t) }; }
+
+        function parseCssRgb(css) { let m = css.match(/rgb\((\d+),\s*(\d+),\s*(\d+)/); return m ? { r: +m[1], g: +m[2], b: +m[3] } : null; }
+
+        function applyColors(c1, c2, c3) {
+            ambient.style.setProperty('--c1', rgb(c1.r, c1.g, c1.b));
+            ambient.style.setProperty('--c2', rgb(c2.r, c2.g, c2.b));
+            ambient.style.setProperty('--c3', rgb(c3.r, c3.g, c3.b));
+        }
+
+        function updateFromVideo() {
+            if (video.readyState < 2) return;
+            let w = Math.max(100, video.videoWidth / 6);
+            let h = Math.max(60, video.videoHeight / 6);
+            canvas.width = w; canvas.height = h;
+            ctx.drawImage(video, 0, 0, w, h);
+            let img = ctx.getImageData(0, 0, w, h);
+            let avg = avgColor(img, 6);
+            let dark = darker(avg, 0.6);
+            let light = lighter(avg, 0.35);
+
+            let cur1 = parseCssRgb(getComputedStyle(ambient).getPropertyValue('--c1')) || avg;
+            let cur2 = parseCssRgb(getComputedStyle(ambient).getPropertyValue('--c2')) || dark;
+            let cur3 = parseCssRgb(getComputedStyle(ambient).getPropertyValue('--c3')) || light;
+
+            let nc1 = lerp(cur1, avg, 0.1);
+            let nc2 = lerp(cur2, dark, 0.1);
+            let nc3 = lerp(cur3, light, 0.1);
+
+            applyColors(nc1, nc2, nc3);
+        }
+
+        video.addEventListener('play', () => {
+            ambient.style.setProperty('--opacity', '0.65');
+            timer = setInterval(updateFromVideo, 240);
+        });
+
+        video.addEventListener('pause', () => {
+            clearInterval(timer);
+            ambient.style.setProperty('--opacity', '0.25');
+        });
+
+        video.addEventListener('ended', () => {
+            clearInterval(timer);
+            ambient.style.setProperty('--opacity', '0');
+        });
+
+        video.addEventListener('error', () => {
+            clearInterval(timer);
+            ambient.style.setProperty('--opacity', '0');
+        });
+
+        video.addEventListener('canplay', () => {
+            // Start Ambilight effect when video is ready
+            updateFromVideo();
+        });
+
+        // Start video at 5 seconds
+        video.addEventListener('loadedmetadata', () => {
+            video.currentTime = 5;
+        });
+    </script>
+</div>
     
     <div id="controls">
       <button id="playPauseBtn"><span id="playIcon">&#9654;</span><span id="pauseIcon" style="display:none;">&#10074;&#10074;</span></button>
@@ -412,99 +525,6 @@
     </div>
   </div>
   <script src="https://matheonyx.github.io/style/reels1.js"></script>
-</body>
-</html>
-
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <title>Reels Menu</title>
-  <link rel="stylesheet" href="https://matheonyx.github.io/style/reels2.css">
-</head>
-<body>
-  <!-- Bouton d'ouverture -->
-  <div class="xai-reels-menu-container2">
-    <button class="reels-menu-toggle-btn2" aria-label="Ouvrir le menu" onclick="reelsToggleContent2()">
-      <svg aria-label="Identifications" class="xai-reels-icon2" fill="currentColor" height="12" role="img" viewBox="0 0 24 24" width="12">
-        <title>Identifications</title>
-        <path d="M21.334 23H2.666a1 1 0 0 1-1-1v-1.354a6.279 6.279 0 0 1 6.272-6.272h8.124a6.279 6.279 0 0 1 6.271 6.271V22a1 1 0 0 1-1 1ZM12 13.269a6 6 0 1 1 6-6 6.007 6.007 0 0 1-6 6Z"></path>
-      </svg>
-    </button>
-  </div>
-  <!-- Conteneur du menu -->
-  <div class="reels-clone2">
-    <div id="reels-content2" class="reels-container2">
-      <!-- Bouton de fermeture -->
-      <button class="reels-close-btn2" aria-label="Fermer le menu" onclick="reelsToggleContent2()">
-        <svg viewBox="0 0 24 24" width="24" height="24" fill="#fff">
-          <path d="M18.3 5.71a1 1 0 0 0-1.42 0L12 10.59 7.12 5.7a1 1 0 0 0-1.41 1.42L10.59 12l-4.88 4.88a1 1 0 0 0 1.41 1.41L12 13.41l4.88 4.88a1 1 0 0 0 1.42-1.41L13.41 12l4.88-4.88a1 1 0 0 0 .01-1.41z"/>
-        </svg>
-      </button>
-      <!-- VIDEO -->
-      <div class="reels-video-section2">
-        <video id="reels-reelVideo2" autoplay muted loop playsinline>
-          <source src="https://matheonyx.github.io/style/On%20July%2011,%20It%20Begins.%20Superman%20-%20Only%20in%20Theaters%202025%20#Superman%20#Fi....mp4" type="video/mp4" />
-        </video>
-        <button class="reels-mute-btn2" aria-label="Le son est coupé" onclick="reelsToggleMute2()">
-          <svg id="reels-muteIcon2" viewBox="0 0 48 48" width="12" height="12"></svg>
-        </button>
-      </div>
-      <!-- DESCRIPTION -->
-      <div class="reels-description-section2">
-        <div class="reels-account-info2">
-          <img src="https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/806abd7f5116f70dd343e9cc0eb7a5f4~tplv-tiktokx-cropcenter:1080:1080.jpeg?dr=10399&refresh_token=c6f5c9c6&x-expires=1756494000&x-signature=3IaqXVXinyOFL4aFb32W%2BSgz0mw%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=no1a" alt="Profil" class="reels-profile-pic2">
-          <strong>dc</strong>
-          <div class="reels-verified-badge2">
-            <svg fill="rgb(0, 149, 246)" height="12" viewBox="0 0 40 40" width="12"><path d="..." /></svg>
-          </div>
-        </div>
-        <div class="reels-separator2"></div>
-        <p class="reels-caption2">
-          <strong>dc</strong>Le retour du héros triomphant.<br>
-          Superman, le film sur <span class="reels-hashtag2">#DisneyPlus</span>
-        </p>
-        <div class="reels-comments2" id="reels-comments2">
-          <div class="reels-comment2"><strong>abdelnouaour</strong> Quand j'ai vu la 1ère BA, j'ai cru que le vaisseau était le Covenant.<span class="reels-timestamp2">1 sem</span></div>
-          <div class="reels-comment2"><strong>30nyup</strong> 👽👽<span class="reels-timestamp2">1 sem</span></div>
-          <div class="reels-comment2"><strong>etoile_flunk</strong> Bon anniversaire Disney 70 !!!! <span class="reels-hashtag2">#loveyou</span><span class="reels-timestamp2">1 sem</span></div>
-        </div>
-        <div class="reels-post-actions2">
-          <svg aria-label="J’aime" class="x1lliihq x1n2onr6 xyb1xck" fill="currentColor" height="24" role="img" viewBox="0 0 24 24" width="24">
-            <title>J’aime</title>
-            <path d="M16.792 3.904A4.989 4.989 0 0 1 21.5 9.122c0 3.072-2.652 4.959-5.197 7.222-2.512 2.243-3.865 3.469-4.303 3.752-.477-.309-2.143-1.823-4.303-3.752C5.141 14.072 2.5 12.167 2.5 9.122a4.989 4.989 0 0 1 4.708-5.218 4.21 4.21 0 0 1 3.675 1.941c.84 1.175.98 1.763 1.12 1.763s.278-.588 1.11-1.766a4.17 4.17 0 0 1 3.679-1.938m0-2a6.04 6.04 0 0 0-4.797 2.127 6.052 6.052 0 0 0-4.787-2.127A6.985 6.985 0 0 0 .5 9.122c0 3.61 2.55 5.827 5.015 7.97.283.246.569.494.853.747l1.027.918a44.998 44.998 0 0 0 3.518 3.018 2 2 0 0 0 2.174 0 45.263 45.263 0 0 0 3.626-3.115l.922-.824c.293-.26.59-.519.885-.774 2.334-2.025 4.98-4.32 4.98-7.94a6.985 6.985 0 0 0-6.708-7.218Z"></path>
-          </svg>
-          <svg aria-label="Commenter" class="x1lliihq x1n2onr6 x5n08af" fill="currentColor" height="24" role="img" viewBox="0 0 24 24" width="24">
-            <title>Commenter</title>
-            <path d="M20.656 17.008a9.993 9.993 0 1 0-3.59 3.615L22 22Z" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="2"></path>
-          </svg>
-          <svg viewBox="0 0 24 24" width="24" height="24">
-            <polygon fill="none" points="11.698 20.334 22 3.001 2 3.001 9.218 10.084 11.698 20.334" stroke="currentColor" stroke-linejoin="round" stroke-width="2"></polygon>
-          </svg>
-          <svg class="reels-save-icon2" viewBox="0 0 24 24" width="24" height="24">
-            <polygon fill="none" points="20 21 12 13.44 4 21 4 3 20 3 20 21" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></polygon>
-          </svg>
-        </div>
-        <div class="reels-likes2">101 758 J’aime</div>
-        <div class="reels-date2">17 juillet</div>
-        <div class="reels-comment-input2">
-          <div class="reels-emoji-wrapper2" onclick="reelsToggleEmojiPicker2()">
-            <svg viewBox="0 0 24 24" width="24" height="24"><path d="..."/></svg>
-          </div>
-          <div class="reels-emoji-picker2" id="reels-emojiPicker2">
-            <span onclick="reelsAddEmoji2('😊')">😊</span>
-            <span onclick="reelsAddEmoji2('😂')">😂</span>
-            <span onclick="reelsAddEmoji2('❤️')">❤️</span>
-            <span onclick="reelsAddEmoji2('👍')">👍</span>
-            <span onclick="reelsAddEmoji2('🔥')">🔥</span>
-          </div>
-          <input type="text" id="reels-commentInput2" placeholder="Ajouter un commentaire..." onkeydown="if(event.key === 'Enter') reelsSubmitComment2()">
-          <button class="reels-publish-btn2" onclick="reelsSubmitComment2()">Publier</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <script src="https://matheonyx.github.io/style/reels2.js"></script>
 </body>
 </html>
 
@@ -939,7 +959,7 @@ scrollbar-thumb:active {
   width: 75%;
   height: 75%;
 }
-</style></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"><header><nav class="navbar"><svg class="MuiSvgIcon-root navbar__menuIcon" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path></svg><a href="https://matheonyx.github.io/Nesdy/profils"><img id="logo" src="" alt=""></a><ul class="navbar__list"><li class="navbar__buttonWrapper"><a href="https://matheonyx.github.io/Nesdy/profils"><button class="MuiButtonBase-root MuiButton-root MuiButton-text navbar__button" tabindex="0" type="button"><span class="MuiButton-label"><span class="MuiButton-startIcon MuiButton-iconSizeMedium"><svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path></svg></span>Home</span><span class="MuiTouchRipple-root"></span></button></a></li><li class="navbar__buttonWrapper"><button class="MuiButtonBase-root MuiButton-root MuiButton-text navbar__button" tabindex="0" type="button"><span class="MuiButton-label"><span class="MuiButton-startIcon MuiButton-iconSizeMedium"><svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d=""></path></svg></span>Search</span><span class="MuiTouchRipple-root"></span></button></a></li><li class="navbar__buttonWrapper"><a href="https://overjoyed-colorful-provelone.glitch.me/x.html"><button class="MuiButtonBase-root MuiButton-root MuiButton-text navbar__button" tabindex="0" type="button"><span class="MuiButton-label"><span class="MuiButton-startIcon MuiButton-iconSizeMedium"><svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path></svg></span>Watchlist</span><span class="MuiTouchRipple-root"></span></button></li><li class="navbar__buttonWrapper"><a href="https://careful-immense-replace.glitch.me/originals.html"><button class="MuiButtonBase-root MuiButton-root MuiButton-text navbar__button" tabindex="0" type="button"><span class="MuiButton-label"><span class="MuiButton-startIcon MuiButton-iconSizeMedium"><svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg></span>Originals</span><span class="MuiTouchRipple-root"></span></button></a></li><li class="navbar__buttonWrapper"><button class="MuiButtonBase-root MuiButton-root MuiButton-text navbar__button" tabindex="0" type="button"><span class="MuiButton-label"><span class="MuiButton-startIcon MuiButton-iconSizeMedium"><svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"></path></svg></span>Movies</span><span class="MuiTouchRipple-root"></span></button></li><li class="navbar__buttonWrapper"><button class="MuiButtonBase-root MuiButton-root MuiButton-text navbar__button" tabindex="0" type="button"><span class="MuiButton-label"><span class="MuiButton-startIcon MuiButton-iconSizeMedium"><svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"></path></svg></span>Series</span><span class="MuiTouchRipple-root"></span></button></li></ul></nav><!DOCTYPE html>
+</style></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"><header><nav class="navbar"><svg class="MuiSvgIcon-root navbar__menuIcon" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path></svg><a href="https://matheonyx.github.io/Nesdy/profils"><img id="logo" src="" alt=""></a><ul class="navbar__list"><li class="navbar__buttonWrapper"><a href="https://matheonyx.github.io/Nesdy/profils"><button class="MuiButtonBase-root MuiButton-root MuiButton-text navbar__button" tabindex="0" type="button"><span class="MuiButton-label"><span class="MuiButton-startIcon MuiButton-iconSizeMedium"><svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path></svg></span>Home</span><span class="MuiTouchRipple-root"></span></button></a></li><li class="navbar__buttonWrapper"><button class="MuiButtonBase-root MuiButton-root MuiButton-text navbar__button" tabindex="0" type="button"><span class="MuiButton-label"><span class="MuiButton-startIcon MuiButton-iconSizeMedium"><svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d=""></path></svg></span>Search</span><span class="MuiTouchRipple-root"></span></button></a></li><li class="navbar__buttonWrapper"><a href="https://overjoyed-colorful-provelone.glitch.me/x.html"><button class="MuiButtonBase-root MuiButton-root MuiButton-text navbar__button" tabindex="0" type="button"><span class="MuiButton-label"><span class="MuiButton-startIcon MuiButton-iconSizeMedium"><svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path></svg></span>Watchlist</span><span class="MuiTouchRipple-root"></span></button></li><li class="navbar__buttonWrapper"><a href="https://careful-immense-replace.glitch.me/originals.html"><button class="MuiButtonBase-root MuiButton-root MuiButton-text navbar__button" tabindex="0" type="button"><span class="MuiButton-label"><span class="MuiButton-startIcon MuiButton-iconSizeMedium"><svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg></span>Originals</span><span class="MuiTouchRipple-root"></span></button></a></li><li class="navbar__buttonWrapper"><a href="https://careful-immense-replace.glitch.me/originals.html"></a><button class="MuiButtonBase-root MuiButton-root MuiButton-text navbar__button" tabindex="0" type="button"><span class="MuiButton-label"><span class="MuiButton-startIcon MuiButton-iconSizeMedium"><svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"></path></svg></span>Movies</span><span class="MuiTouchRipple-root"></span></button></li><li class="navbar__buttonWrapper"><a href="https://careful-immense-replace.glitch.me/originals.html"></a><button class="MuiButtonBase-root MuiButton-root MuiButton-text navbar__button" tabindex="0" type="button"><span class="MuiButton-label"><span class="MuiButton-startIcon MuiButton-iconSizeMedium"><svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"></path></svg></span>Series</span><span class="MuiTouchRipple-root"></span></button></li></ul></nav><!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
