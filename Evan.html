@@ -10,6 +10,7 @@
       --bg:#191919;
       --text:#ffffff;
       --muted:#aaaaaa;
+      --shuffle-active: #1db954;
     }
     *{box-sizing:border-box}
     body{
@@ -100,6 +101,7 @@
       object-fit:cover;
       border-radius:10px;
       box-shadow:0 10px 30px rgba(0,0,0,.45);
+      transition: box-shadow 0.3s ease;
     }
     .player-title{
       font-size:18px;
@@ -148,6 +150,20 @@
     }
     .back-button:hover{ background:rgba(255,255,255,.08); }
     .back-button svg{ width:16px; height:16px; fill:#fff; }
+    .shuffle-button{
+      position:absolute;
+      top:10px;
+      right:10px;
+      background:none;
+      border:none;
+      cursor:pointer;
+      padding:6px;
+      border-radius:50%;
+      transition:background .2s ease;
+    }
+    .shuffle-button:hover{ background:rgba(255,255,255,.08); }
+    .shuffle-button.active{ background: var(--shuffle-active); }
+    .shuffle-button svg{ width:16px; height:16px; fill:#fff; }
     .player-progress-container{
       width:90%;
       max-width:400px;
@@ -203,9 +219,9 @@
     </div>
     <div class="song"
          data-src="https://matheonyx.github.io/Nesdy/GIMS%20%20-%20NINAO%20(Official%20Lyrics%20Vid%C3%A9o).mp3"
-         data-cover="https://i.scdn.co/image/ab67616d0000b2734239a6aa89738d8f798168ad"
+         data-cover="https://i.scdn.co/image/ab67616d00001e02ddfe430ec4417e80852f6142"
          data-title="NINAO" data-artist="GIMS">
-      <img src="https://i.scdn.co/image/ab67616d0000b2734239a6aa89738d8f798168ad" alt="Pepas">
+      <img src="https://i.scdn.co/image/ab67616d00001e02ddfe430ec4417e80852f6142" alt="Pepas">
       <div class="info">
         <p class="title">NINAO</p>
         <p class="artist">GIMS</p>
@@ -282,7 +298,7 @@
     <div class="song"
          data-src="https://matheonyx.github.io/Nesdy/Sexion%20dAssaut%20-%20Ma%20direction%20(Clip%20officiel).mp3"
          data-cover="https://i.scdn.co/image/ab67616d0000b273dfd1c99b14c4a31e28d737c0"
-         data-title="L'Apogée" data-artist="Sexion d'Assaut">
+         data-title="Ma direction" data-artist="Sexion d'Assaut">
       <img src="https://i.scdn.co/image/ab67616d0000b273dfd1c99b14c4a31e28d737c0" alt="Wayeh">
       <div class="info">
         <p class="title">Ma direction</p>
@@ -411,6 +427,61 @@
       </div>
       <p class="album">Everytime We Touch</p>
     </div>
+    <div class="song"
+         data-src="https://matheonyx.github.io/style/The%20Weeknd%20-%20Blinding%20Lights.mp3"
+         data-cover="https://i.scdn.co/image/ab67616d0000b2734718b9f4879a82d775df7ce3"
+         data-title="Blinding Lights" data-artist="The Weeknd">
+      <img src="https://i.scdn.co/image/ab67616d0000b2734718b9f4879a82d775df7ce3" alt="Blinding Lights">
+      <div class="info">
+        <p class="title">Blinding Lights</p>
+        <p class="artist">The Weeknd</p>
+      </div>
+      <p class="album">After Hours</p>
+    </div>
+    <div class="song"
+         data-src="https://matheonyx.github.io/style/Dua%20Lipa%20-%20Levitating.mp3"
+         data-cover="https://i.scdn.co/image/ab67616d0000b2734bc66095f8d3e6c7b982f6b6"
+         data-title="Levitating" data-artist="Dua Lipa">
+      <img src="https://i.scdn.co/image/ab67616d0000b2734bc66095f8d3e6c7b982f6b6" alt="Levitating">
+      <div class="info">
+        <p class="title">Levitating</p>
+        <p class="artist">Dua Lipa</p>
+      </div>
+      <p class="album">Future Nostalgia</p>
+    </div>
+    <div class="song"
+         data-src="https://matheonyx.github.io/style/Ed%20Sheeran%20-%20Shape%20of%20You.mp3"
+         data-cover="https://i.scdn.co/image/ab67616d0000b273ba5db46f4b838ef6027e6f96"
+         data-title="Shape of You" data-artist="Ed Sheeran">
+      <img src="https://i.scdn.co/image/ab67616d0000b273ba5db46f4b838ef6027e6f96" alt="Shape of You">
+      <div class="info">
+        <p class="title">Shape of You</p>
+        <p class="artist">Ed Sheeran</p>
+      </div>
+      <p class="album">÷ (Divide)</p>
+    </div>
+    <div class="song"
+         data-src="https://matheonyx.github.io/style/Mark%20Ronson%20-%20Uptown%20Funk.mp3"
+         data-cover="https://i.scdn.co/image/ab67616d0000b273e419ccba0b9a3ac3ce0c2136"
+         data-title="Uptown Funk" data-artist="Mark Ronson ft. Bruno Mars">
+      <img src="https://i.scdn.co/image/ab67616d0000b273e419ccba0b9a3ac3ce0c2136" alt="Uptown Funk">
+      <div class="info">
+        <p class="title">Uptown Funk</p>
+        <p class="artist">Mark Ronson ft. Bruno Mars</p>
+      </div>
+      <p class="album">Uptown Special</p>
+    </div>
+    <div class="song"
+         data-src="https://matheonyx.github.io/style/Tones%20And%20I%20-%20Dance%20Monkey.mp3"
+         data-cover="https://i.scdn.co/image/ab67616d0000b273d2a8d627ad3b8e19a6b31f56"
+         data-title="Dance Monkey" data-artist="Tones And I">
+      <img src="https://i.scdn.co/image/ab67616d0000b273d2a8d627ad3b8e19a6b31f56" alt="Dance Monkey">
+      <div class="info">
+        <p class="title">Dance Monkey</p>
+        <p class="artist">Tones And I</p>
+      </div>
+      <p class="album">The Kids Are Coming</p>
+    </div>
   </div>
 
   <!-- Lecteur plein écran -->
@@ -419,6 +490,14 @@
       <svg width="16" height="16" viewBox="0 0 16 16" fill="#fff" xmlns="http://www.w3.org/2000/svg" class="icon-sm text-token-text-tertiary">
         <path d="M12.1338 5.94433C12.3919 5.77382 12.7434 5.80202 12.9707 6.02929C13.1979 6.25656 13.2261 6.60807 13.0556 6.8662L12.9707 6.9707L8.47067 11.4707C8.21097 11.7304 7.78896 11.7304 7.52926 11.4707L3.02926 6.9707L2.9443 6.8662C2.77379 6.60807 2.80199 6.25656 3.02926 6.02929C3.25653 5.80202 3.60804 5.77382 3.86617 5.94433L3.97067 6.02929L7.99996 10.0586L12.0293 6.02929L12.1338 5.94433Z"></path>
       </svg>
+    </button>
+    <button class="shuffle-button" aria-label="Activer la lecture aléatoire" data-encore-id="buttonTertiary" onclick="toggleShuffle()">
+      <span aria-hidden="true" class="e-91000-button__icon-wrapper">
+        <svg data-encore-id="icon" role="img" aria-hidden="true" class="e-91000-icon e-91000-baseline" viewBox="0 0 16 16">
+          <path d="M13.151.922a.75.75 0 1 0-1.06 1.06L13.109 3H11.16a3.75 3.75 0 0 0-2.873 1.34l-6.173 7.356A2.25 2.25 0 0 1 .39 12.5H0V14h.391a3.75 3.75 0 0 0 2.873-1.34l6.173-7.356a2.25 2.25 0 0 1 1.724-.804h1.947l-1.017 1.018a.75.75 0 0 0 1.06 1.06L15.98 3.75zM.391 3.5H0V2h.391c1.109 0 2.16.49 2.873 1.34L4.89 5.277l-.979 1.167-1.796-2.14A2.25 2.25 0 0 0 .39 3.5z"></path>
+          <path d="m7.5 10.723.98-1.167.957 1.14a2.25 2.25 0 0 0 1.724.804h1.947l-1.017-1.018a.75.75 0 1 1 1.06-1.06l2.829 2.828-2.829 2.828a.75.75 0 1 1-1.06-1.06L13.109 13H11.16a3.75 3.75 0 0 1-2.873-1.34l-.787-.938z"></path>
+        </svg>
+      </span>
     </button>
     <img id="player-cover" class="player-cover" alt="cover">
     <h2 id="player-title" class="player-title">Titre</h2>
@@ -453,6 +532,7 @@
   </div>
 
   <audio id="audio" ontimeupdate="updateProgress()" onended="nextSong()"></audio>
+  <canvas id="ambilight-canvas" style="display:none;"></canvas>
 
   <script>
     /* --------- Navigation --------- */
@@ -472,8 +552,45 @@
     const playerProgressBar = document.getElementById("player-progress-bar");
     const playerCurrentTime = document.getElementById("player-current-time");
     const playerDuration = document.getElementById("player-duration");
+    const shuffleButton = document.querySelector(".shuffle-button");
+    const canvas = document.getElementById("ambilight-canvas");
+    const ctx = canvas.getContext("2d");
 
     let currentIndex = 0;
+    let isShuffle = false;
+
+    function getDominantColor(img) {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0, img.width, img.height);
+      const imageData = ctx.getImageData(0, 0, img.width, img.height).data;
+      let r = 0, g = 0, b = 0, count = 0;
+
+      // Sample pixels from the edges to get a representative color
+      for (let i = 0; i < imageData.length; i += 4) {
+        if (i % (img.width * 4) < 4 || i % (img.width * 4) >= (img.width - 1) * 4 ||
+            i < img.width * 4 || i >= imageData.length - img.width * 4) {
+          r += imageData[i];
+          g += imageData[i + 1];
+          b += imageData[i + 2];
+          count++;
+        }
+      }
+
+      r = Math.floor(r / count);
+      g = Math.floor(g / count);
+      b = Math.floor(b / count);
+
+      return `rgb(${r},${g},${b})`;
+    }
+
+    function applyAmbilightEffect(img) {
+      img.crossOrigin = "Anonymous"; // Handle cross-origin images
+      img.onload = () => {
+        const color = getDominantColor(img);
+        playerCover.style.boxShadow = `0 0 20px 10px ${color}, 0 10px 30px rgba(0,0,0,.45)`;
+      };
+    }
 
     songs.forEach((song, index) => {
       song.addEventListener("click", () => {
@@ -492,6 +609,11 @@
       playerTitle.textContent = title;
       playerArtist.textContent = artist;
 
+      // Apply ambilight effect
+      const img = new Image();
+      img.src = cover;
+      applyAmbilightEffect(img);
+
       if (audio.src !== src) audio.src = src;
       audio.play().then(() => {
         setPlayState(true);
@@ -505,6 +627,7 @@
       player.classList.remove("active");
       audio.pause();
       setPlayState(false);
+      playerCover.style.boxShadow = '0 10px 30px rgba(0,0,0,.45)'; // Reset shadow
     }
 
     function setPlayState(isPlaying){
@@ -523,8 +646,17 @@
       }
     }
 
+    function toggleShuffle(){
+      isShuffle = !isShuffle;
+      shuffleButton.classList.toggle("active");
+    }
+
     function nextSong(){
-      currentIndex = (currentIndex + 1) % songs.length;
+      if (isShuffle) {
+        currentIndex = Math.floor(Math.random() * songs.length);
+      } else {
+        currentIndex = (currentIndex + 1) % songs.length;
+      }
       openPlayer(songs[currentIndex]);
     }
 
