@@ -53,6 +53,7 @@
       cursor:pointer;
       border-radius:8px;
       transition:background .15s ease;
+      position: relative;
     }
     .song:active{ background:rgba(255,255,255,.06); }
     .song img{
@@ -80,6 +81,20 @@
       color:var(--muted);
       white-space:nowrap;
       margin-left:8px;
+    }
+    .drag-handle {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: grab;
+    }
+    .drag-handle svg {
+      width: 20px;
+      height: 20px;
+    }
+    .song.dragging {
+      opacity: 0.5;
     }
 
     /* --------- Player plein écran --------- */
@@ -215,6 +230,11 @@
         <p class="artist">GIMS</p>
       </div>
       <p class="album">Le Nord se souvient : L'Odyssée</p>
+      <div class="drag-handle" draggable="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </div>
     </div>
     <div class="song"
          data-src="https://matheonyx.github.io/Nesdy/Ridsa%20-%20Me%20Enamore%20(Clip%20Officiel).mp3"
@@ -226,6 +246,11 @@
         <p class="artist">Ridsa</p>
       </div>
       <p class="album">EQUATEUR</p>
+      <div class="drag-handle" draggable="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </div>
     </div>
     <div class="song"
          data-src="https://matheonyx.github.io/Nesdy/Bormin%20-%20Break%20Your%20Heart%20(Official%20Video).mp3"
@@ -237,6 +262,11 @@
         <p class="artist">Bormin'</p>
       </div>
       <p class="album">Hey You (No, You Don't Have to Go)</p>
+      <div class="drag-handle" draggable="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </div>
     </div>
     <div class="song"
          data-src="https://matheonyx.github.io/Nesdy/GIMS%20&%20KEBLACK%20-%20TOUCH%C3%89%20(Clip%20officiel).mp3"
@@ -248,6 +278,11 @@
         <p class="artist">GIMS & KEBLACK</p>
       </div>
       <p class="album">Le Nord se souvient : L'Odyssée</p>
+      <div class="drag-handle" draggable="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </div>
     </div>
     <div class="song"
          data-src="https://matheonyx.github.io/Nesdy/J%20Balvin%20-%20Azul.mp3"
@@ -259,6 +294,11 @@
         <p class="artist">J Balvin</p>
       </div>
       <p class="album">Rayo</p>
+      <div class="drag-handle" draggable="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </div>
     </div>
     <div class="song"
          data-src="https://matheonyx.github.io/Nesdy/launch13,%20TOKYOSLEEP%20&%20rodricci%20-%20LIGHTWEIGHT%20FUNK.mp3"
@@ -270,6 +310,11 @@
         <p class="artist">TOKYOSLEEP</p>
       </div>
       <p class="album">TOKYOSLEEP</p>
+      <div class="drag-handle" draggable="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </div>
     </div>
     <div class="song"
          data-src="https://matheonyx.github.io/Nesdy/Alex%20Warren%20-%20Carry%20You%20Home%20(Official%20Video).mp3"
@@ -281,6 +326,11 @@
         <p class="artist">Alex Warren</p>
       </div>
       <p class="album">You'll Be Alright, Kid</p>
+      <div class="drag-handle" draggable="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </div>
     </div>
     <div class="song"
          data-src="https://matheonyx.github.io/Nesdy/Dr.%20Yaro%20-%20Que%20Pasa%20%20(Clip%20Officiel).mp3"
@@ -292,6 +342,11 @@
         <p class="artist">Dr. Yaro</p>
       </div>
       <p class="album">Que Pasa ?</p>
+      <div class="drag-handle" draggable="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </div>
     </div>
     <div class="song"
          data-src="https://matheonyx.github.io/Nesdy/Bakermat%20-%20Baian%C3%A1%20(Official%20Video).mp3"
@@ -303,6 +358,11 @@
         <p class="artist">Bakermat</p>
       </div>
       <p class="album">The Ringmast</p>
+      <div class="drag-handle" draggable="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </div>
     </div>
     <div class="song"
          data-src="https://matheonyx.github.io/Nesdy/GIMS%20%20-%20NINAO%20(Official%20Lyrics%20Vid%C3%A9o).mp3"
@@ -314,6 +374,11 @@
         <p class="artist">GIMS</p>
       </div>
       <p class="album">Le Nord se souvient : L'Odyssée</p>
+      <div class="drag-handle" draggable="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </div>
     </div>
     <div class="song"
          data-src="https://matheonyx.github.io/Nesdy/Bad%20Bunny%20-%20DtMF%20(Letra).mp3"
@@ -325,6 +390,11 @@
         <p class="artist">Bad Bunny</p>
       </div>
       <p class="album">DeBÍ TiRAR M</p>
+      <div class="drag-handle" draggable="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </div>
     </div>
     <div class="song"
          data-src="https://matheonyx.github.io/style/Byebyebye.mp3"
@@ -336,6 +406,11 @@
         <p class="artist">*NSYNC</p>
       </div>
       <p class="album">No Strings Attached</p>
+      <div class="drag-handle" draggable="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </div>
     </div>
     <div class="song"
          data-src="https://matheonyx.github.io/Nesdy/BAD%20BUNNY%20x%20JHAY%20CORTEZ%20-%20D%C3%81KITI%20(Video%20Oficial).mp3"
@@ -347,6 +422,11 @@
         <p class="artist">Bad Bunny, JHAYCO</p>
       </div>
       <p class="album">DÁKITI</p>
+      <div class="drag-handle" draggable="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </div>
     </div>
     <div class="song"
          data-src="https://matheonyx.github.io/Nesdy/MONTAGEM%20COMA%20(Extended).mp3"
@@ -358,6 +438,11 @@
         <p class="artist">ANDROMEDA</p>
       </div>
       <p class="album">MONTAGEM COMA</p>
+      <div class="drag-handle" draggable="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </div>
     </div>
     <div class="song"
          data-src="https://matheonyx.github.io/Nesdy/Sayfalse%20-%20LOS%20VOLTAJE%20Mix%20Best%20versions%20Visualizer%20Extended%20Version%20Best%20new%20Phonk%20Electronc%20funk.mp3"
@@ -369,6 +454,11 @@
         <p class="artist">Sayfalse</p>
       </div>
       <p class="album">LOS VOLTAJES</p>
+      <div class="drag-handle" draggable="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </div>
     </div>
     <div class="song"
          data-src="https://matheonyx.github.io/Nesdy/MONTAGEM%20BAIL%C3%83O.mp3"
@@ -380,6 +470,11 @@
         <p class="artist">Repsaj</p>
       </div>
       <p class="album">MONTAGEM BAILÃO</p>
+      <div class="drag-handle" draggable="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </div>
     </div>
     <div class="song"
          data-src="https://matheonyx.github.io/Nesdy/Sexion%20dAssaut%20-%20Ma%20direction%20(Clip%20officiel).mp3"
@@ -391,6 +486,11 @@
         <p class="artist">Sexion d'Assaut</p>
       </div>
       <p class="album">L'Apogée</p>
+      <div class="drag-handle" draggable="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </div>
     </div>
     <div class="song"
          data-src="https://matheonyx.github.io/Nesdy/Damiano%20David%20-%20Next%20Summer%20(Official%20Video).mp3"
@@ -402,6 +502,11 @@
         <p class="artist">Damiano David</p>
       </div>
       <p class="album">Funny Little Fears</p>
+      <div class="drag-handle" draggable="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </div>
     </div>
     <div class="song"
          data-src="https://matheonyx.github.io/style/Myles%20Smith%20-%20Stargazing%20(Lyric%20Video).mp3"
@@ -413,6 +518,11 @@
         <p class="artist">Myles Smith</p>
       </div>
       <p class="album">Stargazing</p>
+      <div class="drag-handle" draggable="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </div>
     </div>
     <div class="song"
          data-src="https://matheonyx.github.io/Nesdy/GIMS%20&%20La%20Mano%201.9%20-%20PARISIENNE%20(Official%20Lyrics%20Vid%C3%A9o).mp3"
@@ -424,6 +534,11 @@
         <p class="artist">GIMS, LA MANO 1.9</p>
       </div>
       <p class="album">Le Nord se souvient : L'Odyssée</p>
+      <div class="drag-handle" draggable="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </div>
     </div>
     <div class="song"
          data-src="https://matheonyx.github.io/Nesdy/Irokz%20-%20FUNK%20UNIVERSO.mp3"
@@ -435,6 +550,11 @@
         <p class="artist">Irokz</p>
       </div>
       <p class="album">Future Nostalgia</p>
+      <div class="drag-handle" draggable="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </div>
     </div>
     <div class="song"
          data-src="https://matheonyx.github.io/Nesdy/GIMS%20-%20SOIS%20PAS%20TIMIDE%20(Clip%20officiel).mp3"
@@ -446,6 +566,11 @@
         <p class="artist">GIMS</p>
       </div>
       <p class="album">Le Nord se souvient : L'Odyssée</p>
+      <div class="drag-handle" draggable="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </div>
     </div>
     <div class="song"
          data-src="https://matheonyx.github.io/Nesdy/David%20Guetta%20&%20Sia%20-%20Beautiful%20People%20(Official%20Video).mp3"
@@ -457,6 +582,11 @@
         <p class="artist">David Guetta & Sia</p>
       </div>
       <p class="album">Beautiful People</p>
+      <div class="drag-handle" draggable="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </div>
     </div>
     <div class="song"
          data-src="https://matheonyx.github.io/style/Alex%20Warren%20-%20Ordinary%20(Official%20Music%20Video).mp3"
@@ -468,6 +598,11 @@
         <p class="artist">Alex Warren</p>
       </div>
       <p class="album">You’ll Be Alright, Kid</p>
+      <div class="drag-handle" draggable="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </div>
     </div>
     <div class="song"
          data-src="https://matheonyx.github.io/style/Chappell%20Roan%20-%20Pink%20Pony%20Club%20(Lyrics).mp3"
@@ -479,6 +614,11 @@
         <p class="artist">Chappell Roan</p>
       </div>
       <p class="album">The Rise and Fall of a Midwest Princess</p>
+      <div class="drag-handle" draggable="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </div>
     </div>
     <div class="song"
          data-src="https://matheonyx.github.io/style/WizTheMc,%20bees%20&%20honey%20-%20Show%20Me%20Love%20[Official%20Music%20Video]%20prod.%20by%20Hitimpulse.mp3"
@@ -490,6 +630,11 @@
         <p class="artist">WizTheMc, bees & honey</p>
       </div>
       <p class="album">Growing Teeth</p>
+      <div class="drag-handle" draggable="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </div>
     </div>
     <div class="song"
          data-src="https://matheonyx.github.io/style/Dr.%20Yaro%20-%20Simba%20(Clip%20Officiel).mp3"
@@ -501,6 +646,11 @@
         <p class="artist">Dr. Yaro</p>
       </div>
       <p class="album">Simba</p>
+      <div class="drag-handle" draggable="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </div>
     </div>
     <div class="song"
          data-src="https://matheonyx.github.io/style/Upsilone%20-%20Everytime%20We%20Touch.mp3"
@@ -512,6 +662,11 @@
         <p class="artist">Upsilone</p>
       </div>
       <p class="album">Everytime We Touch</p>
+      <div class="drag-handle" draggable="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </div>
     </div>
     <div class="song"
          data-src="https://matheonyx.github.io/style/The%20Weeknd%20-%20Blinding%20Lights.mp3"
@@ -523,6 +678,11 @@
         <p class="artist">The Weeknd</p>
       </div>
       <p class="album">After Hours</p>
+      <div class="drag-handle" draggable="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </div>
     </div>
     <div class="song"
          data-src="https://matheonyx.github.io/style/Dua%20Lipa%20-%20Levitating.mp3"
@@ -534,6 +694,11 @@
         <p class="artist">Dua Lipa</p>
       </div>
       <p class="album">Future Nostalgia</p>
+      <div class="drag-handle" draggable="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </div>
     </div>
     <div class="song"
          data-src="https://matheonyx.github.io/style/Ed%20Sheeran%20-%20Shape%20of%20You.mp3"
@@ -545,6 +710,11 @@
         <p class="artist">Ed Sheeran</p>
       </div>
       <p class="album">÷ (Divide)</p>
+      <div class="drag-handle" draggable="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </div>
     </div>
     <div class="song"
          data-src="https://matheonyx.github.io/style/Mark%20Ronson%20-%20Uptown%20Funk.mp3"
@@ -556,6 +726,11 @@
         <p class="artist">Mark Ronson ft. Bruno Mars</p>
       </div>
       <p class="album">Uptown Special</p>
+      <div class="drag-handle" draggable="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </div>
     </div>
     <div class="song"
          data-src="https://matheonyx.github.io/style/Tones%20And%20I%20-%20Dance%20Monkey.mp3"
@@ -567,6 +742,11 @@
         <p class="artist">Tones And I</p>
       </div>
       <p class="album">The Kids Are Coming</p>
+      <div class="drag-handle" draggable="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </div>
     </div>
   </div>
 
@@ -627,7 +807,7 @@
     }
 
     /* --------- Lecteur --------- */
-    const songs = Array.from(document.querySelectorAll(".song"));
+    const playlist = document.getElementById("playlist");
     const audio = document.getElementById("audio");
     const player = document.getElementById("player");
     const playerCover = document.getElementById("player-cover");
@@ -644,6 +824,7 @@
 
     let currentIndex = 0;
     let isShuffle = false;
+    let songs;
 
     function getDominantColor(img) {
       canvas.width = img.width;
@@ -677,13 +858,6 @@
         playerCover.style.boxShadow = `0 0 20px 10px ${color}, 0 10px 30px rgba(0,0,0,.45)`;
       };
     }
-
-    songs.forEach((song, index) => {
-      song.addEventListener("click", () => {
-        currentIndex = index;
-        openPlayer(song);
-      });
-    });
 
     function openPlayer(songEl){
       const src = songEl.dataset.src;
@@ -774,8 +948,83 @@
       updateProgress();
     }
 
+    function saveOrder() {
+      const currentSongs = Array.from(playlist.querySelectorAll('.song'));
+      const order = currentSongs.map(song => song.dataset.src);
+      localStorage.setItem('playlistOrder', JSON.stringify(order));
+    }
+
+    function getDragAfterElement(container, y) {
+      const draggableElements = [...container.querySelectorAll('.song:not(.dragging)')];
+      return draggableElements.reduce((closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2;
+        if (offset < 0 && offset > closest.offset) {
+          return { offset: offset, element: child };
+        } else {
+          return closest;
+        }
+      }, { offset: Number.NEGATIVE_INFINITY }).element;
+    }
+
     audio.addEventListener("play", () => setPlayState(true));
     audio.addEventListener("pause", () => setPlayState(false));
+
+    document.addEventListener('DOMContentLoaded', () => {
+      songs = Array.from(document.querySelectorAll(".song"));
+
+      const savedOrder = JSON.parse(localStorage.getItem('playlistOrder'));
+      if (savedOrder) {
+        const songMap = new Map(songs.map(song => [song.dataset.src, song]));
+        savedOrder.forEach(src => {
+          const song = songMap.get(src);
+          if (song) playlist.appendChild(song);
+        });
+        songs = Array.from(playlist.querySelectorAll(".song"));
+      }
+
+      playlist.addEventListener('click', (e) => {
+        const songEl = e.target.closest('.song');
+        if (songEl && !e.target.closest('.drag-handle')) {
+          currentIndex = songs.indexOf(songEl);
+          openPlayer(songEl);
+        }
+      });
+
+      playlist.addEventListener('dragstart', (e) => {
+        if (e.target.classList.contains('drag-handle')) {
+          const draggedSong = e.target.closest('.song');
+          draggedSong.classList.add('dragging');
+          e.dataTransfer.setData('text/plain', draggedSong.dataset.src);
+        }
+      });
+
+      playlist.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        const dragging = document.querySelector('.dragging');
+        if (dragging) {
+          const afterElement = getDragAfterElement(playlist, e.clientY);
+          if (afterElement == null) {
+            playlist.appendChild(dragging);
+          } else {
+            playlist.insertBefore(dragging, afterElement);
+          }
+        }
+      });
+
+      playlist.addEventListener('drop', (e) => {
+        e.preventDefault();
+      });
+
+      playlist.addEventListener('dragend', (e) => {
+        const dragging = document.querySelector('.dragging');
+        if (dragging) {
+          dragging.classList.remove('dragging');
+        }
+        songs = Array.from(playlist.querySelectorAll(".song"));
+        saveOrder();
+      });
+    });
   </script>
 </body>
 </html>
