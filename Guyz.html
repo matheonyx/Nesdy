@@ -212,9 +212,9 @@
           const navLinks = [
             { href: '#about', label: 'À Propos' },
             { href: '#services', label: 'Prestations' },
-            { href: '#music', label: 'Mes Mixs' },
+            { href: '#music', label: 'Mes Créations' },
             { href: '#gallery', label: 'Galerie' },
-            { href: '#testimonials', label: 'Témoignages' },
+            { href: '#testimonials', label: 'Avis' },
             { href: '#contact', label: 'Contact' },
           ];
 
@@ -373,7 +373,7 @@
                         <h2 className="text-3xl font-bold mb-4">Gaylor Leconte, alias GUYZ</h2>
                         <div className={`space-y-4 text-base md:text-lg leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                           <p>Je m'appelle Gaylor Leconte, j'ai 19 ans. La musique n'est pas juste une passion, c'est mon moyen d'expression. Depuis mon plus jeune âge, j'ai été captivé par le pouvoir des platines à transformer une simple soirée en un souvenir inoubliable.</p>
-                          <p>Ma spécialité ? Fusionner les hits modernes avec l'énergie contagieuse des classiques des années 80, créant une ambiance nostalgique et résolument festive. Mon objectif est de lire la foule et de faire vibrer chaque personne sur le dancefloor jusqu'au bout de la nuit.</p>
+                          <p>Spécialisé dans l'énergie des années 70 à 90, je reste avant tout un DJ généraliste capable de m'adapter à toutes les ambiances. Mon objectif est de lire la foule et de faire vibrer chaque personne sur le dancefloor jusqu'au bout de la nuit.</p>
                         </div>
                       </div>
                     </div>
@@ -405,10 +405,10 @@
 
                 <Section id="music" animation="left">
                   <div className={`${cardClasses} max-w-5xl text-center`}>
-                    <h2 className="text-3xl font-bold mb-8">Découvrez Mes Mixs</h2>
+                    <h2 className="text-3xl font-bold mb-8">Découvrez Mes Intros & Outros</h2>
                     <div className="space-y-6">
-                      <AudioPlayer src="https://matheonyx.github.io/Nesdy/Claude%20Fran%C3%A7ois%20-%20Cette%20ann%C3%A9e%20l%C3%A0%20%20(Clip%20officiel).mp3" title="Cette année là" artist="Claude François" isDark={isDark} />
-                      <AudioPlayer src="https://matheonyx.github.io/Nesdy/Eurythmics,%20Annie%20Lennox,%20Dave%20Stewart%20-%20Sweet%20Dreams%20(Are%20Made%20Of%20This)%20(Official%20Video).mp3" title="Sweet Dreams (Are Made Of This)" artist="Eurythmics" isDark={isDark} />
+                      <AudioPlayer src="https://matheonyx.github.io/Nesdy/Claude%20Fran%C3%A7ois%20-%20Cette%20ann%C3%A9e%20l%C3%A0%20%20(Clip%20officiel).mp3" title="Intro" artist="GUYZ" isDark={isDark} />
+                      <AudioPlayer src="https://matheonyx.github.io/Nesdy/Eurythmics,%20Annie%20Lennox,%20Dave%20Stewart%20-%20Sweet%20Dreams%20(Are%20Made%20Of%20This)%20(Official%20Video).mp3" title="Outro" artist="GUYZ" isDark={isDark} />
                     </div>
                   </div>
                 </Section>
@@ -440,21 +440,15 @@
                 </Section>
 
                 <Section id="testimonials" animation="right">
-                  <div className={`${cardClasses} max-w-5xl`}>
-                    <h2 className="text-3xl font-bold mb-8 text-center">Témoignages</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      <div className={`p-6 rounded-lg border transition-transform hover:-translate-y-1 ${isDark ? 'border-white/10 bg-black/20' : 'border-black/10 bg-white/50'}`}>
-                          <QuoteIcon className={`w-8 h-8 mb-2 ${isDark ? 'text-indigo-400' : 'text-indigo-600'}`} />
-                          <p className={`italic ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>"Guyz a mis une ambiance de folie à notre mariage ! Le mélange de nouveautés et de classiques des années 80 était parfait. Tous nos invités ont dansé jusqu'au bout de la nuit."</p>
-                          <p className="font-bold text-right mt-4">- Sophie & Marc</p>
-                      </div>
-                       <div className={`p-6 rounded-lg border transition-transform hover:-translate-y-1 ${isDark ? 'border-white/10 bg-black/20' : 'border-black/10 bg-white/50'}`}>
-                          <QuoteIcon className={`w-8 h-8 mb-2 ${isDark ? 'text-pink-400' : 'text-pink-600'}`} />
-                          <p className={`italic ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>"Professionnel, à l'écoute et un talent incroyable pour sentir l'énergie de la salle. Je recommande GUYZ à 100% pour n'importe quel événement."</p>
-                          <p className="font-bold text-right mt-4">- Events Pro</p>
-                      </div>
+                    <div className={`${cardClasses} max-w-5xl text-center`}>
+                        <h2 className="text-3xl font-bold mb-4">Votre Avis Compte</h2>
+                        <p className={`mb-8 max-w-xl mx-auto ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                            Vous avez passé une soirée inoubliable ? Votre témoignage est ma plus belle récompense. N'hésitez pas à partager votre expérience en me contactant ou en laissant un avis sur ma page Facebook !
+                        </p>
+                        <a href="https://www.facebook.com/share/1PfZ73jdBF/" target="_blank" rel="noopener noreferrer" className={`inline-block px-10 py-4 rounded-full font-bold uppercase tracking-wider text-lg transition-all duration-300 transform hover:scale-105 ${isDark ? 'bg-white text-black hover:bg-gray-200' : 'bg-black text-white hover:bg-gray-800'}`}>
+                            Laisser un avis
+                        </a>
                     </div>
-                  </div>
                 </Section>
 
                 <Section id="contact" animation="up">
